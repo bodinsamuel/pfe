@@ -1,9 +1,8 @@
 <?php
 
-class PostController extends BaseController
+class AgencyController extends BaseController
 {
-
-    public function get($id_post = NULL)
+    public function get($id_agency = NULL)
     {
         # code...
     }
@@ -23,7 +22,7 @@ class PostController extends BaseController
         # code...
     }
 
-    public function delete($id_post)
+    public function delete($id_agency)
     {
         # code...
     }

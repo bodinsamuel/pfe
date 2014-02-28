@@ -1,10 +1,11 @@
 <?php
 
-class AccountController extends BaseController {
+class AccountController extends BaseController
+{
 
-    public function run()
+    public function dashboard()
     {
-        return View::make('account/base');
+        return View::make('account/dashboard');
     }
 
     public function register()
@@ -32,7 +33,7 @@ class AccountController extends BaseController {
         # code...
     }
 
-    public function alerts()
+    public function alert()
     {
         # code...
     }
