@@ -16,8 +16,6 @@ class AccountController extends BaseController
 
     public function post_Register()
     {
-        $data = ['__page_title' => 'Register'];
-
         $validator = User::validateRegister();
         if (!$validator->fails())
         {
@@ -30,14 +28,8 @@ class AccountController extends BaseController
             // Insertion succesfull
             if ($inserted === TRUE)
             {
-                return Redirect::to('/')
-                        ->with('flash_notice', 'You have succesfully register, '
-                                                . 'please validate your account by clicking '
-                                                . 'the link on the email you just recieved.');
-            }
-            else
-            {
-
+                $success = Lang::get('account.success.register');
+                return Redirect::to('/')->with('flash.notice.success', $success);
             }
         }
 
