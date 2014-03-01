@@ -25,15 +25,15 @@ Route::get('/selling/business/{id_post}/{title}', 'PostController@get');
     Route::delete('/post/{id_post}', 'PostController@delete');
 
 // Account
-Route::get('/account', 'AccountController@get_Dashboard');
+Route::get('/account', ['as' => 'account', 'uses' => 'AccountController@get_Dashboard']);
     // Register
     Route::get('/register', 'AccountController@get_Register');
     Route::post('/register', ['before' => 'csrf', 'uses' => 'AccountController@post_Register']);
 
     // Login
-    Route::get('/login', 'AccountController@get_Login');
+    Route::get('/login', ['as' => 'login', 'uses' => 'AccountController@get_Login']);
     Route::post('/login', 'AccountController@post_Login');
-    Route::get('/logout', 'AccountController@get_Logout');
+    Route::get('/logout', ['as' => 'logout', 'uses' => 'AccountController@get_Logout']);
 
     // Deactivate
     Route::get('/account/deactivate', 'AccountController@get_Deactivate');

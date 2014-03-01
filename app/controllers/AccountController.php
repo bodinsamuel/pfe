@@ -38,17 +38,33 @@ class AccountController extends BaseController
 
     public function get_Login()
     {
-        # code...
+        $data = ['__page_title' => 'Login'];
+        return View::make('account/login', $data);
     }
 
     public function post_Login()
     {
-        # code...
+        $user = [
+            'email' => Input::get('email'),
+            'password' => Input::get('password')
+        ];
+
+        // Logged
+        if (Auth::attempt($user)) {
+            $success = Lang::get('account.success.login');
+            return Redirect::to('/')->with('flash.notice.success', $success);
+        }
+
+        $error = Lang::get('account.error.login');
+        return Redirect::to('login')->withInput()->with('flash.notice.error', $error);
     }
 
     public function get_Logout()
     {
-        # code...
+        Auth::logout();
+
+        $success = Lang::get('account.success.logout');
+        return Redirect::to('/')->with('flash.notice.success', $success);
     }
 
     public function get_Deactivate()
