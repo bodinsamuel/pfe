@@ -25,30 +25,30 @@ Route::get('/selling/business/{id_post}/{title}', 'PostController@get');
     Route::delete('/post/{id_post}', 'PostController@delete');
 
 // Account
-Route::get('/account', ['as' => 'account', 'uses' => 'AccountController@get_Dashboard']);
+Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'AccountController@get_Dashboard']);
     // Register
-    Route::get('/register', 'AccountController@get_Register');
+    Route::get('/register', ['before' => 'guest', 'uses' => 'AccountController@get_Register']);
     Route::post('/register', ['before' => 'csrf', 'uses' => 'AccountController@post_Register']);
 
     // Login
-    Route::get('/login', ['as' => 'login', 'uses' => 'AccountController@get_Login']);
-    Route::post('/login', 'AccountController@post_Login');
-    Route::get('/logout', ['as' => 'logout', 'uses' => 'AccountController@get_Logout']);
+    Route::get('/login', ['as' => 'login', 'before' => 'guest', 'uses' => 'AccountController@get_Login']);
+    Route::post('/login', ['before' => 'csrf', 'uses' => 'AccountController@post_Login']);
+    Route::get('/logout', ['as' => 'logout', 'before' => 'auth', 'uses' => 'AccountController@get_Logout']);
 
     // Deactivate
-    Route::get('/account/deactivate', 'AccountController@get_Deactivate');
-    Route::post('/account/deactivate', 'AccountController@post_Deactivate');
+    Route::get('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@get_Deactivate']);
+    Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
 
     // Reset Password
-    Route::get('/account/reset_password', 'AccountController@get_ResetPassword');
-    Route::post('/account/reset_password', 'AccountController@post_ResetPassword');
+    Route::get('/account/reset_password', ['before' => 'auth', 'uses' => 'AccountController@get_ResetPassword']);
+    Route::post('/account/reset_password', ['before' => 'auth', 'uses' => 'AccountController@post_ResetPassword']);
 
     // Edit
-    Route::get('/account/edit', 'AccountController@get_Edit');
-    Route::post('/account/edit', 'AccountController@post_Edit');
+    Route::get('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@get_Edit']);
+    Route::post('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@post_Edit']);
 
     // Other
-    Route::get('/account/alert', 'AccountController@get_Alert');
+    Route::get('/account/alert',['before' => 'auth', 'uses' =>  'AccountController@get_Alert']);
 
 
 // Agencies
