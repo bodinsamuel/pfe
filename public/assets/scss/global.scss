@@ -1,5 +1,44 @@
-.clear {
-    clear: both;
-    display: block;
+@import "conf.scss";
+
+._c {
+    &:after {
+        content: " ";
+        clear: both;
+        display: block;
+    }
 }
 
+._box, ._col {
+    display: inline-block;
+    float: left;
+    &.inner {
+        margin: 0 5px 5px 0;
+    }
+}
+
+._icon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center center;
+    &._16 {
+        width: 16px;
+        height: 16px;
+    }
+    &._32 {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+._msg {
+    &._error {
+        color: red;
+    }
+}
+
+/*** FORM **/
+fieldset {
+    &._error {
+
+    }
+}
