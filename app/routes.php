@@ -79,3 +79,25 @@ Route::delete('/alert/{id_alert}', 'AlertController@delete');
 // JSON API
 
 
+
+// **********************************************
+// On matche
+Route::matched(function() {
+    $method = $controller = '';
+    $route = Route::currentRouteAction();
+    $pos = strpos($route, '@');
+    if ($pos !== FALSE)
+    {
+        $route = Str::parseCallback($route, null);
+        if (is_array($route))
+        {
+            $method = $route[1];
+            $controller = str_replace('Controller', '', $route[0]);
+        }
+    }
+
+    View::share('__current_method', $method);
+    View::share('__current_controller', $controller);
+});
+
+
