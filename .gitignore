@@ -7,5 +7,6 @@ composer.lock
 .DS_Store
 Thumbs.db
 .sass-cache
-!*.css
+*.css
 /public/assets/css
+css/
