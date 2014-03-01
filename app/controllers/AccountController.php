@@ -3,7 +3,7 @@
 class AccountController extends BaseController
 {
 
-    public function dashboard()
+    public function get_Dashboard()
     {
         return View::make('account/dashboard');
     }
@@ -13,32 +13,32 @@ class AccountController extends BaseController
         # code...
     }
 
-    public function login()
+    public function get_Deactivate()
     {
         # code...
     }
 
-    public function logout()
+    public function post_Deactivate()
     {
         # code...
     }
 
-    public function deactivate()
+    public function get_resetPassword()
     {
         # code...
     }
 
-    public function reset_password()
+    public function get_alert()
     {
         # code...
     }
 
-    public function alert()
+    public function get_Edit()
     {
         # code...
     }
 
-    public function edit()
+    public function post_Edit()
     {
         # code...
     }

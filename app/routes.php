@@ -25,15 +25,31 @@ Route::get('/selling/business/{id_post}/{title}', 'PostController@get');
     Route::delete('/post/{id_post}', 'PostController@delete');
 
 // Account
-Route::get('/account', 'AccountController@dashboard');
-Route::get('/register', 'AccountController@register');
-Route::get('/login', 'AccountController@login');
-Route::get('/logout', 'AccountController@logout');
-Route::get('/account/deactivate', 'AccountController@deactivate');
-Route::get('/account/reset_password', 'AccountController@reset_password');
-Route::post('/account/reset_password', 'AccountController@reset_password');
-Route::get('/account/alert', 'AccountController@alert');
-Route::get('/account/edit', 'AccountController@edit');
+Route::get('/account', 'AccountController@get_Dashboard');
+    // Register
+    Route::get('/register', 'AccountController@get_Register');
+    Route::post('/register', ['before' => 'csrf', 'uses' => 'AccountController@post_Register']);
+
+    // Login
+    Route::get('/login', 'AccountController@get_Login');
+    Route::post('/login', 'AccountController@post_Login');
+    Route::get('/logout', 'AccountController@get_Logout');
+
+    // Deactivate
+    Route::get('/account/deactivate', 'AccountController@get_Deactivate');
+    Route::post('/account/deactivate', 'AccountController@post_Deactivate');
+
+    // Reset Password
+    Route::get('/account/reset_password', 'AccountController@get_ResetPassword');
+    Route::post('/account/reset_password', 'AccountController@post_ResetPassword');
+
+    // Edit
+    Route::get('/account/edit', 'AccountController@get_Edit');
+    Route::post('/account/edit', 'AccountController@post_Edit');
+
+    // Other
+    Route::get('/account/alert', 'AccountController@get_Alert');
+
 
 // Agencies
 Route::get('/agency/{id_agency}/{title}', 'AgencyController@get');
