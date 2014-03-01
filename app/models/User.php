@@ -10,14 +10,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var string
 	 */
-	protected $table = 'users';
+	protected $table = 'v1_users';
 
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password');
+	protected $hidden = ['password'];
+
+    protected $primaryKey = 'id_user';
+
+    public $timestamps = false;
 
 	/**
 	 * Get the unique identifier for the user.
@@ -49,4 +53,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->email;
 	}
 
+    /**
+     * Validate registering
+     * @param  array $input
+     * @return array
+     */
+    public static function validateRegister($input = NULL)
+    {
+        $input = is_array($input) ? $input : Input::all();
+
+        return Validator::make(
+            $input, [
+                'email' => 'required|email|unique:v1_users',
+                'password' => 'required|min:8'
+            ]
+        );
+    }
 }
