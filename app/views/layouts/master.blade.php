@@ -15,9 +15,12 @@
         <nav>
             <a href="/">Home</a>
         </nav>
+        @include('common/user_box')
     </header>
     <div id="container">
         <div id="content">
+            @include('common/notice')
+
             @yield('content')
         </div>
     </div>
