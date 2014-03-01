@@ -44,12 +44,13 @@ Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'Accoun
     Route::post('/account/reset_password', ['before' => 'auth', 'uses' => 'AccountController@post_ResetPassword']);
 
     // Edit
-    Route::get('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@get_Edit']);
-    Route::post('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@post_Edit']);
+    Route::get('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@get_Edit']);
+    Route::post('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@post_Edit']);
 
     // Other
-    Route::get('/account/alert',['before' => 'auth', 'uses' =>  'AccountController@get_Alert']);
-
+    Route::get('/account/alert', ['as' => 'account_alert', 'before' => 'auth', 'uses' =>  'AccountController@get_Alert']);
+    Route::get('/account/favorite', ['as' => 'account_favorite', 'before' => 'auth', 'uses' =>  'AccountController@get_Favorite']);
+    Route::get('/account/address', ['as' => 'account_address', 'before' => 'auth', 'uses' =>  'AccountController@get_Address']);
 
 // Agencies
 Route::get('/agency/{id_agency}/{title}', 'AgencyController@get');

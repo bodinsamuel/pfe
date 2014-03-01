@@ -5,7 +5,8 @@ class AccountController extends BaseController
 
     public function get_Dashboard()
     {
-        return View::make('account/dashboard');
+        $data = ['__page_title' => 'Dashboard'];
+        return View::make('account/dashboard', $data);
     }
 
     public function get_Register()
