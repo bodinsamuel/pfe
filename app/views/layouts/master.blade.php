@@ -7,6 +7,7 @@
         @if (isset($__page_title)) {{{ $__page_title }}} | @endif
         {{{ $__meta_title }}}
     </title>
+    {{ HTML::style('assets/lib/css/normalize.min.css') }}
     {{ HTML::style('assets/css/layouts/master.css') }}
 </head>
 <body id="__{{{ $__current_controller }}}_{{{ $__current_method }}}"
