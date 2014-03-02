@@ -51,7 +51,8 @@ class AccountController extends BaseController
         ];
 
         // Logged
-        if (Auth::attempt($user)) {
+        if (Auth::attempt($user))
+        {
             $success = Lang::get('account.success.login');
             return Redirect::to('/')->with('flash.notice.success', $success);
         }
@@ -78,9 +79,64 @@ class AccountController extends BaseController
         # code...
     }
 
-    public function get_resetPassword()
+    public function get_ResetPassword()
     {
         # code...
+    }
+
+    public function post_ResetPassword()
+    {
+        # code...
+    }
+
+    public function get_ForgotPassword()
+    {
+        $data = ['__page_title' => 'Forgot Password'];
+        return View::make('account/forgot_password', $data);
+    }
+
+    public function post_ForgotPassword()
+    {
+        $validator = Validator::make(
+            Input::all(), [
+                'email' => 'required|email'
+            ]);
+
+        if (!$validator->fails())
+        {
+            // Get user
+            $user = User::where('email', '=', Input::get('email'))->first();
+            if ($user !== NULL)
+            {
+                // Insert token in database
+                $token = Hash::make($user->email . $user->id . time());
+                $saved = Token::set('reset_password', $token, $user->email);
+
+                // Insertion succesfull
+                if ($saved === TRUE)
+                {
+                    $data = (array)$user;
+                    $data['token'] = $token;
+                    // Send mail
+                    Mail::send('emails.auth.forgot_password', $data, function($message) use ($user)
+                    {
+                        $message->from($conf['address'], $conf['name']);
+                        $message->to($user->email);
+                    });
+                }
+                else
+                {
+                    $error = Lang::get('global.error.oops');
+                    return Redirect::to('/account/forgot_password')->withInput()->with('flash.notice.error', $error);
+                }
+            }
+
+            // Return to Home with message
+            $success = Lang::get('account.success.send_forgot_password');
+            return Redirect::to('/')->with('flash.notice.success', $success);
+        }
+
+        return Redirect::to('/account/forgot_password')->withInput()->withErrors($validator);
     }
 
     public function get_alert()
