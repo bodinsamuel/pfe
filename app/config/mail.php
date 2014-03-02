@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => ['address' => 'dev@pfe.dev', 'name' => 'Dev'],
 
 	/*
 	|--------------------------------------------------------------------------
