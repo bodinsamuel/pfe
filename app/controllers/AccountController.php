@@ -18,23 +18,33 @@ class AccountController extends BaseController
     public function post_Register()
     {
         $validator = User::validateRegister();
-        if (!$validator->fails())
+        if ($validator->fails())
+            return Redirect::to('register')->withInput()->withErrors($validator);
+
+        $user = new User;
+        $user->email = Input::get('email');
+        $user->status = 0;
+        $user->password = Hash::make(Input::get('password'));
+        $inserted = $user->save();
+
+        // Insertion failed
+        if ($inserted !== TRUE)
+            return Redirect::to('register')->withInput();
+
+        // Insert token in database, for email validation
+        $token = Hash::make($user->email . $user->id . time());
+        $saved = Token::set('email_validation', $token, $user->email);
+
+        // Send mail
+        Mail::send('emails.auth.register', $data, function($message) use ($user)
         {
-            $user = new User;
-            $user->email = Input::get('email');
-            $user->status = 0;
-            $user->password = Hash::make(Input::get('password'));
-            $inserted = $user->save();
+            $conf = Config::get('mail.from');
+            $message->from($conf['address'], $conf['name']);
+            $message->to($user->email);
+        });
 
-            // Insertion succesfull
-            if ($inserted === TRUE)
-            {
-                $success = Lang::get('account.success.register');
-                return Redirect::to('/')->with('flash.notice.success', $success);
-            }
-        }
-
-        return Redirect::to('register')->withInput()->withErrors($validator);
+        $success = Lang::get('account.success.register');
+        return Redirect::to('/')->with('flash.notice.success', $success);
     }
 
     public function get_Login()
@@ -53,8 +63,17 @@ class AccountController extends BaseController
         // Logged
         if (Auth::attempt($user))
         {
-            $success = Lang::get('account.success.login');
-            return Redirect::to('/')->with('flash.notice.success', $success);
+            if (Auth::user()->status === 1)
+            {
+                $success = Lang::get('account.success.login');
+                return Redirect::to('/')->with('flash.notice.success', $success);
+            }
+            else
+            {
+                Auth::logout();
+                $error = Lang::get('account.error.email_not_verified');
+                return Redirect::to('login')->with('flash.notice.error', $error);
+            }
         }
 
         $error = Lang::get('account.error.login');
@@ -75,16 +94,6 @@ class AccountController extends BaseController
     }
 
     public function post_Deactivate()
-    {
-        # code...
-    }
-
-    public function get_ResetPassword()
-    {
-        # code...
-    }
-
-    public function post_ResetPassword()
     {
         # code...
     }
