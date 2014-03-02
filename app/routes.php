@@ -40,10 +40,10 @@ Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'Accoun
     Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
 
     // Password
-    Route::get('/account/forgot_password', ['as' => 'account_forgot_password', 'before' => 'guest', 'uses' => 'AccountController@get_ForgotPassword']);
-    Route::post('/account/forgot_password', ['before' => 'guest', 'uses' => 'AccountController@post_ForgotPassword']);
-    Route::get('/account/reset_password', ['as' => 'account_reset_password', 'before' => 'guest', 'uses' => 'AccountController@get_ResetPassword']);
-    Route::post('/account/reset_password', ['before' => 'auth', 'uses' => 'AccountController@post_ResetPassword']);
+    Route::get('/password/forgotten', ['as' => 'password_forgot', 'before' => 'guest', 'uses' => 'AccountController@get_ForgotPassword']);
+    Route::post('/password/forgotten', ['before' => 'guest', 'uses' => 'AccountController@post_ForgotPassword']);
+    Route::get('/password/reset', ['as' => 'password_reset', 'before' => 'guest', 'uses' => 'AccountController@get_ResetPassword']);
+    Route::post('/password/reset', ['uses' => 'AccountController@post_ResetPassword']);
 
     // Edit
     Route::get('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@get_Edit']);

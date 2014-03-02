@@ -15,7 +15,7 @@
             {{ $errors->first('password', '<span class="_msg _error">:message</span>') }}
         </fieldset>
 
-        {{ HTML::linkRoute('account_forgot_password', 'Forgot password ?' ) }}
+        {{ HTML::linkRoute('password_forgot', 'Forgot password ?' ) }}
 
         <div class="action">
             {{ Form::submit('Login') }}

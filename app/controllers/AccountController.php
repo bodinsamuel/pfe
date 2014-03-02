@@ -101,7 +101,7 @@ class AccountController extends BaseController
     public function get_ForgotPassword()
     {
         $data = ['__page_title' => 'Forgot Password'];
-        return View::make('account/forgot_password', $data);
+        return View::make('account/password/forgotten', $data);
     }
 
     public function post_ForgotPassword()
@@ -110,42 +110,92 @@ class AccountController extends BaseController
             Input::all(), [
                 'email' => 'required|email'
             ]);
+        if ($validator->fails())
+            return Redirect::to('/password/forgotten')->withInput()->withErrors($validator);
 
-        if (!$validator->fails())
+        // Get user
+        $user = User::where('email', '=', Input::get('email'))->first();
+        if ($user !== NULL)
         {
-            // Get user
-            $user = User::where('email', '=', Input::get('email'))->first();
-            if ($user !== NULL)
+            // Insert token in database
+            $token = Hash::make($user->email . $user->id . time());
+            $saved = Token::add('reset_password', $token, $user->email);
+
+            // Insertion failed
+            if ($saved !== TRUE)
+                return oops('/password/forgotten');
+
+            // Prepare data for email
+            $data['user'] = (array)$user['original'];
+            $data['token'] = $token;
+
+            // Send mail
+            Mail::send('emails.auth.forgot_password', $data, function($message) use ($user)
             {
-                // Insert token in database
-                $token = Hash::make($user->email . $user->id . time());
-                $saved = Token::set('reset_password', $token, $user->email);
-
-                // Insertion succesfull
-                if ($saved === TRUE)
-                {
-                    $data = (array)$user;
-                    $data['token'] = $token;
-                    // Send mail
-                    Mail::send('emails.auth.forgot_password', $data, function($message) use ($user)
-                    {
-                        $message->from($conf['address'], $conf['name']);
-                        $message->to($user->email);
-                    });
-                }
-                else
-                {
-                    $error = Lang::get('global.error.oops');
-                    return Redirect::to('/account/forgot_password')->withInput()->with('flash.notice.error', $error);
-                }
-            }
-
-            // Return to Home with message
-            $success = Lang::get('account.success.send_forgot_password');
-            return Redirect::to('/')->with('flash.notice.success', $success);
+                $message->to($user->email)
+                        ->subject('Password Reset');
+            });
         }
 
-        return Redirect::to('/account/forgot_password')->withInput()->withErrors($validator);
+        // Return to Home with message
+        // Wether user exist or not, to not give hacker any clue
+        $success = Lang::get('account.success.password.send_forgot');
+        return Redirect::to('/')->with('flash.notice.success', $success);
+    }
+
+    public function get_ResetPassword()
+    {
+        $data = ['__page_title' => 'Reset Password'];
+
+        // Verify paramater
+        $email = Input::get('email');
+        $token = Input::get('token');
+        if ($token === NULL || $email === NULL)
+            return Redirect::to('/');
+
+        // Check if token really exist
+        $exist = Token::exist('reset_password', $token, $email);
+
+        if ($exist <= 0)
+            return Redirect::to('/');
+
+        return View::make('account/password/reset', $data);
+    }
+
+    public function post_ResetPassword()
+    {
+        // Verify paramater
+        $email = Input::get('email');
+        $token = Input::get('token');
+        if ($token === NULL || $email === NULL)
+            return Redirect::to('/');
+
+        // Check if token really exist
+        $get = Token::get('reset_password', $token, $email);
+
+        if ($get === NULL)
+            return Redirect::to('/');
+
+        // Verify new password
+        $validator = User::validatePasswordReset();
+        if ($validator->fails())
+            return Redirect::route('password_reset', $_GET)
+                            ->withInput()
+                            ->withErrors($validator);
+
+        // Get user
+        $user = User::where('email', '=', Input::get('email'))->first();
+        $user->password = Hash::make(Input::get('password'));
+        $saved = $user->save();
+
+        // Insertion succesfull
+        if ($saved !== TRUE)
+            return oops('/password/reset');
+
+        $confirm = Token::confirm('reset_password', $token, $email);
+
+        $success = Lang::get('account.success.password.reseted');
+        return Redirect::to('/')->with('flash.notice.success', $success);
     }
 
     public function get_alert()

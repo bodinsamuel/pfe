@@ -10,7 +10,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var string
 	 */
-	protected $table = 'v1_users';
+	protected $table = 'users';
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -64,8 +64,25 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
         return Validator::make(
             $input, [
-                'email' => 'required|email|unique:v1_users',
+                'email' => 'required|email|unique:users',
                 'password' => 'required|min:8'
+            ]
+        );
+    }
+
+    /**
+     * Validate password reset
+     * @param  array $input
+     * @return array
+     */
+    public static function validatePasswordReset($input = NULL)
+    {
+        $input = is_array($input) ? $input : Input::all();
+
+        return Validator::make(
+            $input, [
+                'password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required'
             ]
         );
     }
