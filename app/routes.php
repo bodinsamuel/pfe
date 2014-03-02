@@ -36,16 +36,18 @@ Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'Accoun
     Route::get('/logout', ['as' => 'logout', 'before' => 'auth', 'uses' => 'AccountController@get_Logout']);
 
     // Deactivate
-    Route::get('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@get_Deactivate']);
+    Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@get_Deactivate']);
     Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
 
-    // Reset Password
-    Route::get('/account/reset_password', ['before' => 'auth', 'uses' => 'AccountController@get_ResetPassword']);
+    // Password
+    Route::get('/account/forgot_password', ['as' => 'account_forgot_password', 'before' => 'guest', 'uses' => 'AccountController@get_ForgotPassword']);
+    Route::post('/account/forgot_password', ['before' => 'guest', 'uses' => 'AccountController@post_ForgotPassword']);
+    Route::get('/account/reset_password', ['as' => 'account_reset_password', 'before' => 'guest', 'uses' => 'AccountController@get_ResetPassword']);
     Route::post('/account/reset_password', ['before' => 'auth', 'uses' => 'AccountController@post_ResetPassword']);
 
     // Edit
     Route::get('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@get_Edit']);
-    Route::post('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@post_Edit']);
+    Route::post('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@post_Edit']);
 
     // Other
     Route::get('/account/alert', ['as' => 'account_alert', 'before' => 'auth', 'uses' =>  'AccountController@get_Alert']);
