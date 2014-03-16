@@ -1,0 +1,27 @@
+@import "conf.scss";
+
+body#__Home_run {
+    #search_main_box {
+        #search_type_selection {
+            li {
+                padding: 15px 15px;
+                span {
+                    vertical-align: bottom;
+                    display: inline-block;
+                    line-height: 70px;
+                    margin: 0 0 0 15px;
+                    color: $color_1_invert;
+                }
+                &.type_select {
+                    background-color: $color_1;
+                }
+                &.type_geo {
+                    background-color: $color_1_variant1;
+                }
+                &.type_classic {
+                    background-color: $color_1_variant2;
+                }
+            }
+        }
+    }
+}

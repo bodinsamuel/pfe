@@ -11,6 +11,7 @@
     {{ HTML::style('assets/css/layouts/master.css') }}
     <!-- Temporaire -->
     {{ HTML::style('assets/css/modules/account/main.css') }}
+    {{ HTML::style('assets/css/modules/home/main.css') }}
 </head>
 <body id="__{{{ $__current_controller }}}_{{{ $__current_method }}}"
       class="_c_{{{ $__current_controller }}} _m_{{{ $__current_method }}}@if(isset($__body_class)) {{{ $__body_class }}}@endif">
