@@ -2,28 +2,22 @@
 -- version 3.4.11.1deb2
 -- http://www.phpmyadmin.net
 --
--- Client: localhost
--- Généré le: Dim 02 Mars 2014 à 09:55
--- Version du serveur: 5.5.35
--- Version de PHP: 5.5.9-1~dotdeb.1
+-- Host: localhost
+-- Generation Time: Mar 16, 2014 at 01:57 PM
+-- Server version: 5.5.35
+-- PHP Version: 5.5.9-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- Base de données: `pfe`
+-- Database: `pfe`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `addresses`
+-- Table structure for table `addresses`
 --
 
 CREATE TABLE IF NOT EXISTS `addresses` (
@@ -36,15 +30,16 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `street_name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `other` text CHARACTER SET utf8 NOT NULL,
   `primary` tinyint(4) NOT NULL,
-  `date_created` int(11) NOT NULL,
-  `date_updated` int(11) NOT NULL,
+  `origin` enum('search','posts') COLLATE utf8_unicode_ci NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `agencies`
+-- Table structure for table `agencies`
 --
 
 CREATE TABLE IF NOT EXISTS `agencies` (
@@ -65,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `agencies` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `agencies_has_posts_type`
+-- Table structure for table `agencies_has_posts_type`
 --
 
 CREATE TABLE IF NOT EXISTS `agencies_has_posts_type` (
@@ -77,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `agencies_has_posts_type` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `agencies_holdings`
+-- Table structure for table `agencies_holdings`
 --
 
 CREATE TABLE IF NOT EXISTS `agencies_holdings` (
@@ -90,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `agencies_holdings` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `alerts`
+-- Table structure for table `alerts`
 --
 
 CREATE TABLE IF NOT EXISTS `alerts` (
@@ -106,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `alerts` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `collabs`
+-- Table structure for table `collabs`
 --
 
 CREATE TABLE IF NOT EXISTS `collabs` (
@@ -119,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `collabs` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `collabs_has_users`
+-- Table structure for table `collabs_has_users`
 --
 
 CREATE TABLE IF NOT EXISTS `collabs_has_users` (
@@ -131,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `collabs_has_users` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `favorites`
+-- Table structure for table `favorites`
 --
 
 CREATE TABLE IF NOT EXISTS `favorites` (
@@ -145,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `favorites` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `galleries`
+-- Table structure for table `galleries`
 --
 
 CREATE TABLE IF NOT EXISTS `galleries` (
@@ -160,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `geo_cities`
+-- Table structure for table `geo_cities`
 --
 
 CREATE TABLE IF NOT EXISTS `geo_cities` (
@@ -177,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `geo_cities` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `geo_cities_districts`
+-- Table structure for table `geo_cities_districts`
 --
 
 CREATE TABLE IF NOT EXISTS `geo_cities_districts` (
@@ -191,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `geo_cities_districts` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `geo_countries`
+-- Table structure for table `geo_countries`
 --
 
 CREATE TABLE IF NOT EXISTS `geo_countries` (
@@ -208,7 +203,7 @@ CREATE TABLE IF NOT EXISTS `geo_countries` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `geo_countries_regions`
+-- Table structure for table `geo_countries_regions`
 --
 
 CREATE TABLE IF NOT EXISTS `geo_countries_regions` (
@@ -222,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `geo_countries_regions` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `geo_streets_type`
+-- Table structure for table `geo_streets_type`
 --
 
 CREATE TABLE IF NOT EXISTS `geo_streets_type` (
@@ -234,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `geo_streets_type` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `media`
+-- Table structure for table `media`
 --
 
 CREATE TABLE IF NOT EXISTS `media` (
@@ -250,7 +245,18 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `posts`
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
 --
 
 CREATE TABLE IF NOT EXISTS `posts` (
@@ -259,6 +265,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id_gallery` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_address` int(11) NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_closed` datetime NOT NULL,
@@ -269,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `posts_details`
+-- Table structure for table `posts_details`
 --
 
 CREATE TABLE IF NOT EXISTS `posts_details` (
@@ -307,7 +314,7 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `posts_property_type`
+-- Table structure for table `posts_property_type`
 --
 
 CREATE TABLE IF NOT EXISTS `posts_property_type` (
@@ -319,23 +326,23 @@ CREATE TABLE IF NOT EXISTS `posts_property_type` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `posts_type`
+-- Table structure for table `posts_type`
 --
 
 CREATE TABLE IF NOT EXISTS `posts_type` (
   `id_post_type` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(15) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_post_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tokens`
+-- Table structure for table `tokens`
 --
 
 CREATE TABLE IF NOT EXISTS `tokens` (
-  `type` enum('reset_password') CHARACTER SET utf8 NOT NULL,
+  `type` enum('reset_password','validate_account') COLLATE utf8_unicode_ci DEFAULT NULL,
   `token` varchar(255) CHARACTER SET utf8 NOT NULL,
   `email` varchar(255) CHARACTER SET utf8 NOT NULL,
   `date_created` datetime NOT NULL,
@@ -346,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -360,9 +367,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
+  `date_validated` datetime NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
