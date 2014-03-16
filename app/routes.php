@@ -81,6 +81,9 @@ Route::post('/alert/{id_alert?}', 'AlertController@save');
 Route::delete('/alert/{id_alert}', 'AlertController@delete');
 
 
+Route::controller('sandbox', 'SandboxController');
+
+
 
 // **********************************************
 // JSON API
