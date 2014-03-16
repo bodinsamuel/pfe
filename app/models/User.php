@@ -23,6 +23,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     public $timestamps = false;
 
+    const VALIDATED = 1;
+
 	/**
 	 * Get the unique identifier for the user.
 	 *
@@ -52,6 +54,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return $this->email;
 	}
+
+    public function isValidated($email = NULL)
+    {
+        return ($this->status === User::VALIDATED) ? TRUE : FALSE;
+    }
 
     /**
      * Validate registering
