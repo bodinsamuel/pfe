@@ -25,6 +25,7 @@ class AccountController extends BaseController
         $user->email = Input::get('email');
         $user->status = 0;
         $user->password = Hash::make(Input::get('password'));
+        $user->date_created = date('Y-m-d H:i:s');
         $inserted = $user->save();
 
         // Insertion failed
@@ -33,14 +34,13 @@ class AccountController extends BaseController
 
         // Insert token in database, for email validation
         $token = Hash::make($user->email . $user->id . time());
-        $saved = Token::set('email_validation', $token, $user->email);
+        $saved = Token::add('validate_account', $token, $user->email);
 
         // Send mail
-        Mail::send('emails.auth.register', $data, function($message) use ($user)
+        Mail::send('emails.account.register', $data, function($message) use ($user)
         {
-            $conf = Config::get('mail.from');
-            $message->from($conf['address'], $conf['name']);
-            $message->to($user->email);
+            $message->to($user->email)
+                    ->subject('Welcome');
         });
 
         $success = Lang::get('account.success.register');
@@ -71,7 +71,7 @@ class AccountController extends BaseController
             else
             {
                 Auth::logout();
-                $error = Lang::get('account.error.email_not_verified');
+                $error = Lang::get('account.error.email_not_verified', ['mail' => $user['email']]);
                 return Redirect::to('login')->with('flash.notice.error', $error);
             }
         }
