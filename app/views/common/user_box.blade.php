@@ -1,4 +1,4 @@
-<div id="__box_user">
+<div id="__box_user" class="@if ($_class){{ $_class }}@endif">
     <ul>
         @if(Auth::check())
             <li>{{ HTML::linkRoute('account', Auth::user()->email ) }}</li>

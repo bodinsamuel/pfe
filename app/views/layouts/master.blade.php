@@ -9,26 +9,56 @@
     </title>
     {{ HTML::style('assets/lib/css/normalize.min.css') }}
     {{ HTML::style('assets/css/layouts/master.css') }}
+    <!-- Temporaire -->
+    {{ HTML::style('assets/css/modules/account/main.css') }}
 </head>
 <body id="__{{{ $__current_controller }}}_{{{ $__current_method }}}"
-      class="_c_{{{ $__current_controller }}} _m_{{{ $__current_method }}}">
+      class="_c_{{{ $__current_controller }}} _m_{{{ $__current_method }}}@if(isset($__body_class)) {{{ $__body_class }}}@endif">
+
     <header id="header">
-        <nav>
-            <a href="/">Home</a>
-        </nav>
-        @include('common/user_box')
+
+        <div class="inner">
+            <div class="logo-self">
+                <a href="/" title="Homepage"><h1>Loge'ici</h1></a>
+            </div>
+            <div class="_flr menus">
+                @include('common/user_box', ['_class' => '_fll'])
+
+                <nav class="_fll">
+                    <a href="/">Catégories</a>
+                </nav>
+
+                <div class="_fll social">
+                    <ul>
+                        <li><a href="http://twitter.com/logeici"><i class="_32 icon_twitter"></i></a></li>
+                        <li><a href="http://facebook.com/logeici"><i class="_32 icon_facebook"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="_fll search">
+                    <form>
+                        <!-- <input type="text" name="q" value="" placeholder="Search" /> -->
+                        <input type="submit" value="" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </header>
-    <div id="container">
+
+    <div id="container" class="_c">
         <div id="content">
             @include('common/notice')
 
             @yield('content')
         </div>
     </div>
+
     <footer id="footer">
         <div class="inner">
             © 2014 -
         </div>
     </footer>
+
 </body>
 </html>
