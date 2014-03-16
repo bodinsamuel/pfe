@@ -35,8 +35,10 @@ Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'Accoun
     Route::post('/login', ['before' => 'csrf', 'uses' => 'AccountController@post_Login']);
     Route::get('/logout', ['as' => 'logout', 'before' => 'auth', 'uses' => 'AccountController@get_Logout']);
 
-    // Deactivate
-    Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@get_Deactivate']);
+    // Active / Deactivate
+    Route::get('/account/validate', ['as' => 'account_validate', 'before' => 'guest', 'uses' => 'AccountController@get_validate']);
+    Route::get('/account/send_validation', [ 'before' => 'guest', 'uses' => 'AccountController@get_sendValidation']);
+    Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
     Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
 
     // Password
