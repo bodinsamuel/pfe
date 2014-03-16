@@ -88,6 +88,58 @@ class AccountController extends BaseController
         return Redirect::to('/')->with('flash.notice.success', $success);
     }
 
+    public function get_validate()
+    {
+        if (Token::ensure('validate_account') === FALSE)
+            return Redirect::To('/');
+
+        // Get user
+        $user = User::where('email', '=', Input::get('email'))->first();
+        if ($user === NULL)
+            return Redirect::To('/');
+
+        $user->date_validated = date('Y-m-d H:i:s');
+        $saved = $user->save();
+
+        // Insertion not succesfull
+        if ($saved !== TRUE)
+            return oops('/');
+
+        $confirm = Token::confirm('validate_account', Input::get('token'), Input::get('email'));
+
+        Auth::attempt($user);
+
+        $success = Lang::get('account.success.validation.done');
+        return Redirect::to('/')->with('flash.notice.success', $success);
+    }
+
+    public function get_sendValidation()
+    {
+        $email = Input::get('email');
+        $user = User::where('email', '=', $email)->first();
+
+        if ($user !== NULL && $user->isValidated() === FALSE)
+        {
+            // Insert token in database, for email validation
+            $token = Hash::make($user->email . $user->id . time());
+            $saved = Token::add('validate_account', $token, $user->email);
+
+            // Prepare data for email
+            $data['user'] = (array)$user['original'];
+            $data['token'] = $token;
+
+            // Send mail
+            Mail::send('emails.account.validate', $data, function($message) use ($user)
+            {
+                $message->to($user->email)
+                        ->subject('Account Validation');
+            });
+        }
+
+        $success = Lang::get('account.success.validation.sent');
+        return Redirect::to('/')->with('flash.notice.success', $success);
+    }
+
     public function get_Deactivate()
     {
         # code...
