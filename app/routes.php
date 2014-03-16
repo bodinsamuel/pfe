@@ -14,15 +14,17 @@
 Route::get('/', 'HomeController@run');
 
 // Post
-Route::get('/renting/{id_post}/{title}', 'PostController@get');
-Route::get('/selling/{id_post}/{title}', 'PostController@get');
-Route::get('/renting/business/{id_post}/{title}', 'PostController@get');
-Route::get('/selling/business/{id_post}/{title}', 'PostController@get');
+Route::get('/renting/{id_post}/{title}', 'PostController@get_one');
+Route::get('/selling/{id_post}/{title}', 'PostController@get_one');
+Route::get('/renting/business/{id_post}/{title}', 'PostController@get_one');
+Route::get('/selling/business/{id_post}/{title}', 'PostController@get_one');
     // Action
-    Route::get('/post/new/', 'PostController@new');
-    Route::post('/post', 'PostController@create');
-    Route::post('/post/{id_post}', 'PostController@edit');
-    Route::delete('/post/{id_post}', 'PostController@delete');
+    Route::get('/post/create/', 'PostController@get_create');
+    Route::post('/post/create/', 'PostController@post_create');
+    Route::get('/post/edit/{id_post}', 'PostController@get_edit');
+    Route::post('/post/edit/{id_post}', 'PostController@post_edit');
+    Route::get('/post/delete/{id_post}', 'PostController@get_delete');
+    Route::delete('/post/delete/{id_post}', 'PostController@delete_delete');
 
 // Account
 Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'AccountController@get_Dashboard']);

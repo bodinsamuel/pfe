@@ -3,27 +3,39 @@
 class PostController extends BaseController
 {
 
-    public function get($id_post = NULL)
+    public function get_one()
     {
         # code...
     }
 
-    public function new()
+    public function get_create()
+    {
+        $data = ['__page_title' => 'Create Post'];
+        Custom\Addresses::test();
+        return View::make('post/create', $data);
+    }
+
+    public function post_create()
     {
         # code...
     }
 
-    public function create()
+    public function get_edit()
     {
         # code...
     }
 
-    public function edit()
+    public function post_edit()
     {
         # code...
     }
 
-    public function delete($id_post)
+    public function get_delete()
+    {
+        # code...
+    }
+
+    public function delete_delete()
     {
         # code...
     }
