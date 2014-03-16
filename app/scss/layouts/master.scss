@@ -1,0 +1,85 @@
+@import "../global.scss";
+@import "all.scss";
+
+// ******************* HEADER
+@import "master/header.scss";
+
+// ******************* CONTAINER
+#container {
+    height: 100%;
+    #content {
+        height: 100%;
+        width: 100%;
+        display: inline-block;
+    }
+}
+
+
+// ******************* FOOTER
+#footer {
+    padding: 30px 15px 15px 15px;
+    background: $color_bg_back_lighter;
+
+}
+
+
+
+
+/***** FULLSCREEN **/
+body.fullscreen {
+    ._fullscreen-box, ._fullscreen-box-vhc {
+        position: relative;
+        .inner {
+            box-shadow: $box_shadow;
+            background-color: $color_bg_front;
+            width: 300px;
+        }
+    }
+    ._fullscreen-box {
+        margin: 30px 0 0 40px;
+        .inner._full_form {
+            form {
+                padding: 15px 15px 0 15px;
+                width: 260px;
+                label, input, textarea {
+                    width: 100%;
+                    padding: 11px 0;
+                    margin: 0;
+                }
+                fieldset {
+                    input, textarea {
+                        padding: 18px 5px;
+                        margin: 0 0 8px 0;
+                    }
+                }
+                .action {
+                    margin: 15px -25px 0 -15px;
+                    input {
+                        padding: 15px;
+                    }
+                }
+            }
+        }
+        .outter_bottom {
+            margin: 3px 0 0 0;
+        }
+    }
+    ._fullscreen-box-vhc {
+        top: 30%;
+        margin: - $header_height auto 0 auto;
+        padding: 15px;
+        .inner {
+        }
+    }
+    #container {
+        height: auto;
+        #content {
+            width: 381px;
+        }
+    }
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+}

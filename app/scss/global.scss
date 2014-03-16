@@ -1,5 +1,16 @@
 @import "conf.scss";
+@import "mixin.scss";
 
+// Float
+._flr {
+    float: right;
+}
+._fll {
+    float: left;
+    display: inline-block;
+}
+
+// Clear
 ._c {
     &:after {
         content: " ";
@@ -8,6 +19,7 @@
     }
 }
 
+// Box
 ._box, ._col {
     display: inline-block;
     float: left;
@@ -16,20 +28,26 @@
     }
 }
 
-._icon {
+// Icon
+i, ._icon {
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center center;
-    &._16 {
-        width: 16px;
-        height: 16px;
-    }
+    width: 16px;
+    height: 16px;
     &._32 {
         width: 32px;
         height: 32px;
     }
+    &.icon_facebook {
+        background-image: url($img_icon_32 + 'facebook.png');
+    }
+    &.icon_twitter {
+        background-image: url($img_icon_32 + 'twitter.png');
+    }
 }
 
+// Msg
 ._msg {
     &._error {
         color: red;

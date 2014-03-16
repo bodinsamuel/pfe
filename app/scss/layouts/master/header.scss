@@ -1,0 +1,41 @@
+@import "../../conf.scss";
+
+#header {
+    height: $header_height;
+    background-color: $color_bg_front;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    .inner {
+        padding: 10px 0 10px $main_padding_lr;
+    }
+    .menus {
+        margin: -30px 0 0 0;
+        nav, #__box_user {
+            a {
+                border-right: 1px solid $color_1;
+                display: inline-block;
+                padding: 8px 20px;
+                color: $color_text_normal_lighter;
+            }
+        }
+    }
+    .social {
+        min-width: 64px;
+        padding: 0 15px;
+        li {
+            float: left;
+        }
+    }
+    #__box_user {
+        li {
+            float: left;
+        }
+    }
+    .search {
+        margin: -10px 0 0 0;
+        input[type="submit"] {
+            height: $header_height;
+            width: $header_height;
+            background: $color_1 url($img_icon_16 + 'loop.png') center center no-repeat;
+        }
+    }
+}

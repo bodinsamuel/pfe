@@ -1,0 +1,91 @@
+@import "conf.scss";
+
+html {
+    height: 100%;
+}
+// Global style
+body {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: $color_text_normal;
+    background-color: $color_bg_back;
+    height: 100%;
+}
+
+
+// Link
+a {
+    color: $color_link_normal;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+        color: $color_1_darker;
+    }
+    &.discret {
+        color: $color_link_discret;
+        &:hover {
+            color: $color_link_discret_hover;
+        }
+    }
+}
+
+// Heading
+h1, h2, h3, h4 {
+
+}
+h1 {
+    font-size: 24px;
+}
+
+// List
+ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+// Form
+// Button
+fieldset {
+    border: none;
+    padding: 0;
+}
+button, input {
+    padding: 5px 8px;
+    border: none;
+    color: $color_text_normal_lighter;
+}
+button, input[type="submit"] {
+    background-color: $color_2;
+    color: $color_2_invert;
+}
+
+
+// Common
+.logo-self {
+    a, a:hover, a:active {
+        text-decoration: none;
+    }
+    h1 {
+        color: $color_1;
+        margin: 0;
+    }
+}
+
+// Notices
+#_notices {
+    margin: 0 auto;
+    padding: 15px 40px 0 40px;
+    .msg._full{
+        padding: 8px;
+        color: #fff;
+        background-color: $color_info;
+        &._error {
+            background-color: $color_error;
+        }
+        &._success {
+            background-color: $color_success;
+        }
+    }
+}
