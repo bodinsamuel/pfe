@@ -1,22 +1,27 @@
-@extends('layouts.master')
+@extends('layouts.master', ['__body_class' => 'fullscreen'])
 
 @section('content')
-    {{ Form::open(array('action' => 'AccountController@post_Register', 'method' => 'post')) }}
+    <div class="_box _fullscreen">
+        <div class="inner _full_form">
+            {{ Form::open(array('action' => 'AccountController@post_Register', 'method' => 'post')) }}
 
-        <fieldset class="{{{ $errors->has('email') ? '_error' : '' }}}">
-            {{ Form::label('email', 'E-Mail') }}
-            {{ Form::text('email', Input::old('email'), array('placeholder' => 'john.doe@example.com')) }}
-            {{ $errors->first('email', '<span class="_msg _error">:message</span>') }}
-        </fieldset>
+                <fieldset class="{{{ $errors->has('email') ? '_error' : '' }}}">
+                    {{ Form::text('email', Input::old('email'), ['placeholder' => 'john.doe@example.com']) }}
+                    {{ $errors->first('email', '<span class="_msg _error">:message</span>') }}
+                </fieldset>
 
-        <fieldset class="{{{ $errors->has('password') ? '_error' : '' }}}">
-            {{ Form::label('password') }}
-            {{ Form::password('password', '', array('placeholder' => 'password')) }}
-            {{ $errors->first('password', '<span class="_msg _error">:message</span>') }}
-        </fieldset>
+                <fieldset class="{{{ $errors->has('password') ? '_error' : '' }}}">
+                    {{ Form::password('password', ['placeholder' => 'password']) }}
+                    {{ $errors->first('password', '<span class="_msg _error">:message</span>') }}
+                </fieldset>
 
-        <div class="action">
-            {{ Form::submit('Register') }}
+                <div class="action">
+                    {{ Form::submit('Register') }}
+                </div>
+            {{ Form::close() }}
         </div>
-    {{ Form::close() }}
+        <div class="outter_bottom">
+            <a href="/login" class="discret">Already have an account? Login !</a>
+        </div>
+    </div>
 @stop

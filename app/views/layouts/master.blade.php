@@ -18,14 +18,19 @@
     <header id="header">
 
         <div class="inner">
-            <div class="logo-self">
-                <a href="/" title="Homepage"><h1>Loge'ici</h1></a>
-            </div>
-            <div class="_flr menus">
+            <div class="_fll">
+                <div id="logo" class="_fll">
+                    <a href="/" title="Homepage">
+                        <i class="_32 logo_self"></i>
+                        <h1>Loge'ici</h1>
+                    </a>
+                </div>
                 @include('common/user_box', ['_class' => '_fll'])
+            </div>
 
+            <div class="_flr menus">
                 <nav class="_fll">
-                    <a href="/">Catégories</a>
+                    <a href="/post/create">Poster une Annonce</a>
                 </nav>
 
                 <div class="_fll social">

@@ -8,7 +8,7 @@ body {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
     font-size: 14px;
-    color: $color_text_normal;
+    color: $color_text_normal_lighter;
     background-color: $color_bg_back;
     height: 100%;
 }
@@ -32,10 +32,13 @@ a {
 
 // Heading
 h1, h2, h3, h4 {
-
+    font-weight: normal;
 }
 h1 {
     font-size: 24px;
+}
+h2 {
+    font-size: 20px;
 }
 
 // List
@@ -63,13 +66,13 @@ button, input[type="submit"] {
 
 
 // Common
-.logo-self {
-    a, a:hover, a:active {
-        text-decoration: none;
-    }
-    h1 {
-        color: $color_1;
-        margin: 0;
+i, ._icon {
+    &.logo_self {
+        background-image: url($img_sprite + "logo.png");
+        background-position: -143px -5px;
+        &._32 { background-position: -169px -5px; }
+        &._64 { background-position: -211px -5px; }
+        &._128 { background-position: -5px -5px; }
     }
 }
 
@@ -88,4 +91,15 @@ button, input[type="submit"] {
             background-color: $color_success;
         }
     }
+}
+
+
+// Avatar
+.avatar {
+    border-radius: 50%;
+    background-color: #333;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    display: inline-block;
 }
