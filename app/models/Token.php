@@ -24,6 +24,23 @@ class Token extends Eloquent {
         return $Token->save();
     }
 
+    public static function ensure($type)
+    {
+        // Verify paramater
+        $email = Input::get('email');
+        $token = Input::get('token');
+        if ($token === NULL || $email === NULL)
+            return FALSE;
+
+        // Check if token really exist
+        $exist = Token::exist($type, $token, $email);
+
+        if ($exist <= 0)
+            return FALSE;
+
+        return TRUE;
+    }
+
     public static function exist($type, $token, $email)
     {
         return (bool)Token::get($type, $token, $email);
