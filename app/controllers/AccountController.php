@@ -182,7 +182,7 @@ class AccountController extends BaseController
             $data['token'] = $token;
 
             // Send mail
-            Mail::send('emails.auth.forgot_password', $data, function($message) use ($user)
+            Mail::send('emails.account.forgot_password', $data, function($message) use ($user)
             {
                 $message->to($user->email)
                         ->subject('Password Reset');
@@ -199,41 +199,25 @@ class AccountController extends BaseController
     {
         $data = ['__page_title' => 'Reset Password'];
 
-        // Verify paramater
-        $email = Input::get('email');
-        $token = Input::get('token');
-        if ($token === NULL || $email === NULL)
-            return Redirect::to('/');
-
-        // Check if token really exist
-        $exist = Token::exist('reset_password', $token, $email);
-
-        if ($exist <= 0)
-            return Redirect::to('/');
+        if (Token::ensure('reset_password') === FALSE)
+            return Redirect::To('/');
 
         return View::make('account/password/reset', $data);
     }
 
     public function post_ResetPassword()
     {
-        // Verify paramater
-        $email = Input::get('email');
-        $token = Input::get('token');
-        if ($token === NULL || $email === NULL)
-            return Redirect::to('/');
-
-        // Check if token really exist
-        $get = Token::get('reset_password', $token, $email);
-
-        if ($get === NULL)
-            return Redirect::to('/');
+        if (Token::ensure('reset_password') === FALSE)
+            return Redirect::To('/');
 
         // Verify new password
         $validator = User::validatePasswordReset();
         if ($validator->fails())
+        {
             return Redirect::route('password_reset', $_GET)
                             ->withInput()
                             ->withErrors($validator);
+        }
 
         // Get user
         $user = User::where('email', '=', Input::get('email'))->first();
@@ -244,7 +228,7 @@ class AccountController extends BaseController
         if ($saved !== TRUE)
             return oops('/password/reset');
 
-        $confirm = Token::confirm('reset_password', $token, $email);
+        $confirm = Token::confirm('reset_password', Input::get('token'), Input::get('email'));
 
         $success = Lang::get('account.success.password.reseted');
         return Redirect::to('/')->with('flash.notice.success', $success);
