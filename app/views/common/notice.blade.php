@@ -1,4 +1,5 @@
 @if (!empty(Session::get('flash.notice')))
+    <div id="_notices">
     @if (Session::has('flash.notice.error'))
         <div class="msg _full _error">
             {{ Session::get('flash.notice.error') }}
@@ -12,4 +13,5 @@
             {{ Session::get('flash.notice.info') }}
         </div>
     @endif
+    </div>
 @endif
