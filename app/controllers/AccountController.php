@@ -90,14 +90,23 @@ class AccountController extends BaseController
 
     public function get_validate()
     {
-        if (Token::ensure('validate_account') === FALSE)
+        $ensure = Token::ensure('validate_account');
+        if ($ensure === FALSE)
+        {
             return Redirect::To('/');
+        }
+        if ($ensure === Token::TOKEN_EXPIRED)
+        {
+            $error = Lang::get('account.error.validation.expired', ['mail' => Input::get('email')]);
+            return Redirect::To('/')->with('flash.notice.error', $error);
+        }
 
         // Get user
         $user = User::where('email', '=', Input::get('email'))->first();
         if ($user === NULL)
             return Redirect::To('/');
 
+        $user->status = 1;
         $user->date_validated = date('Y-m-d H:i:s');
         $saved = $user->save();
 
@@ -107,10 +116,8 @@ class AccountController extends BaseController
 
         $confirm = Token::confirm('validate_account', Input::get('token'), Input::get('email'));
 
-        Auth::attempt($user);
-
         $success = Lang::get('account.success.validation.done');
-        return Redirect::to('/')->with('flash.notice.success', $success);
+        return Redirect::to('/login')->with('flash.notice.success', $success);
     }
 
     public function get_sendValidation()

@@ -22,6 +22,10 @@ return [
 
     'error' => [
         'email_not_verified' => 'Please validate your email before login. <br> Never recieved the mail? <a href="/account/send_validation?email=:mail">Send me another !</a>',
-        'login' => 'Your username/password combination was incorrect'
+        'login' => 'Your username/password combination was incorrect',
+
+        'validation' => [
+            'expired' => 'The link is expired  <a href="/account/send_validation?email=:mail">Send me another !</a>'
+        ]
     ],
 ];

@@ -5,12 +5,15 @@ class Token extends Eloquent {
     protected $table = 'tokens';
     public $timestamps = false;
 
+    const TOKEN_LIFE = 900; # 15minutes
+    const TOKEN_EXPIRED = -1;
+    const TOKEN_USED = FALSE;
+
     public static function get($type, $token, $email)
     {
         return Token::where('type', '=', $type)
                     ->where('token', '=', $token)
-                    ->where('email', '=', $email)
-                     ->where('date_used', '=', '0000-00-00 00:00:00')->first();
+                    ->where('email', '=', $email)->first();
     }
 
     public static function add($type, $token, $email)
@@ -33,10 +36,15 @@ class Token extends Eloquent {
             return FALSE;
 
         // Check if token really exist
-        $exist = Token::exist($type, $token, $email);
-
-        if ($exist <= 0)
+        $exist = Token::get($type, $token, $email);
+        if ($exist === NULL)
             return FALSE;
+
+        if ($exist->date_used !== '0000-00-00 00:00:00')
+            return self::TOKEN_USED;
+
+        if (abs(strtotime($exist->date_created) - time()) > self::TOKEN_LIFE)
+            return self::TOKEN_EXPIRED;
 
         return TRUE;
     }
