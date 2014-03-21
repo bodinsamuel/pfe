@@ -3,12 +3,18 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 21, 2014 at 04:22 PM
+-- Generation Time: Mar 21, 2014 at 06:34 PM
 -- Server version: 5.5.35
 -- PHP Version: 5.5.10-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `pfe`
@@ -169,59 +175,48 @@ CREATE TABLE IF NOT EXISTS `geo_cities` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `geo_cities_districts`
---
-
-CREATE TABLE IF NOT EXISTS `geo_cities_districts` (
-  `id_district` int(11) NOT NULL AUTO_INCREMENT,
-  `id_city` int(11) NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `zipcode` varchar(15) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_district`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `geo_countries`
 --
 
 CREATE TABLE IF NOT EXISTS `geo_countries` (
   `id_country` int(11) NOT NULL AUTO_INCREMENT,
   `id_capital` int(11) NOT NULL,
-  `continent` enum('Europe') CHARACTER SET utf8 NOT NULL,
+  `continent` enum('','EU') CHARACTER SET utf8 NOT NULL,
+  `iso1` int(3) NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
   `name_short` varchar(155) CHARACTER SET utf8 NOT NULL,
   `name_full` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `phone_prefix` varchar(6) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_country`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=242 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `geo_countries_regions`
+-- Table structure for table `geo_provinces`
 --
 
-CREATE TABLE IF NOT EXISTS `geo_countries_regions` (
-  `id_region` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `geo_provinces` (
+  `id_province` int(11) NOT NULL AUTO_INCREMENT,
+  `id_country` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `iso1` varchar(3) NOT NULL,
+  PRIMARY KEY (`id_province`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=128 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `geo_states`
+--
+
+CREATE TABLE IF NOT EXISTS `geo_states` (
+  `id_state` int(11) NOT NULL AUTO_INCREMENT,
   `id_country` int(11) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_region`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `geo_streets_type`
---
-
-CREATE TABLE IF NOT EXISTS `geo_streets_type` (
-  `id_street_type` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(75) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_street_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id_state`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
@@ -355,3 +350,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_validated` datetime NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
