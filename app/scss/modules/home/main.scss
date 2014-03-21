@@ -2,15 +2,21 @@
 
 body#__Home_run {
     #search_main_box {
+        position: relative;
+        z-index: 10;
         #search_type_selection {
             li {
-                padding: 15px 15px;
+                padding: 8px 15px;
                 span {
                     vertical-align: bottom;
                     display: inline-block;
                     line-height: 70px;
                     margin: 0 0 0 15px;
                     color: $color_1_invert;
+                }
+                .avatar {
+                    padding: 15px 0;
+                    height: auto;
                 }
                 &.type_select {
                     background-color: $color_1;
@@ -20,6 +26,17 @@ body#__Home_run {
                 }
                 &.type_classic {
                     background-color: $color_1_variant2;
+                }
+                &.type_search {
+                    position: relative;
+                    padding: 0 0 0 40px;
+                    background-color: $color_bg_dark_lighter;
+                    input[type="text"] {
+                        background-color: transparent;
+                        padding: 15px 0;
+                        width: 100%;
+                        color: #fff;
+                    }
                 }
             }
         }

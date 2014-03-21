@@ -3,16 +3,19 @@
 #header {
     height: $header_height;
     background-color: $color_bg_front;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 5;
     .inner {
         padding: 8px 0 10px $main_padding_lr;
+        position: relative;
     }
     #logo {
         a, a:hover, a:active {
             text-decoration: none;
         }
         h1 {
-            color: $color_1;
+            color: $color_text_normal_lighter;
             margin: 0;
             display: inline-block;
             vertical-align: top;
@@ -21,21 +24,23 @@
     }
     nav, #__box_user {
         a {
-            border-right: 1px solid $color_1;
+            border-left: 1px solid #e5e5e5;
             display: inline-block;
-            padding: 8px 20px;
+            padding: 16px 20px;
             color: $color_text_normal_lighter;
+            font-weight: 400;
+            font-size: 15px;
         }
     }
     #__box_user {
-        margin: 0 0 0 20px;
+        margin: -9px 0 0 25px;
         a {
-            border-right: none!important;
-            border-left: 1px solid $color_1;
+            border-left-color: $color_1;
+            padding: 16px 25px;
         }
     }
     .menus {
-        margin: 10px 0 0 0;
+        margin: 0 0 0 0;
         position: absolute;
         right: 0;
         top: 0;
@@ -53,11 +58,12 @@
         }
     }
     .search {
-        margin: -10px 0 0 0;
+        border-left: 1px solid #e5e5e5;
+        margin: 0 0 0 0;
         input[type="submit"] {
             height: $header_height;
             width: $header_height;
-            background: $color_1 url($img_icon_16 + 'loop.png') center center no-repeat;
+            background: transparent url($img_icon_32 + 'loop.png') center center no-repeat;
         }
     }
 }

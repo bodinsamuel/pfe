@@ -1,25 +1,61 @@
 @import "../global.scss";
 @import "all.scss";
 
+body {
+    min-width: 980px;
+}
 // ******************* HEADER
 @import "master/header.scss";
 
 // ******************* CONTAINER
 #container {
-    height: 100%;
+    min-width: 980px;
+    min-height: 100%;
+    position: relative;
+    //z-index: 3;
     #content {
         height: 100%;
         width: 100%;
         display: inline-block;
+        position: relative;
     }
 }
 
 
 // ******************* FOOTER
 #footer {
-    padding: 30px 15px 15px 15px;
-    background: $color_bg_back_lighter;
+    min-width: 980px;
+    min-height: 170px;
+    background: $color_bg_dark;
+    color: $color_text_invert;
+    position: relative;
+    z-index: 4;
+    h2 {
+        color: #fff;
+        margin-bottom: 15px;
+    }
 
+    #footer-about {
+        padding: 20px 40px 20px 40px;
+        li {
+            float: left;
+            display: inline-block;
+            width: 50%;
+            a {
+                line-height: 30px;
+            }
+        }
+    }
+    #footer-social {
+        font-size: 13px;
+        h2 {
+            margin-bottom: 20px;
+        }
+    }
+    #footer-help {
+        height: 100%;
+        background-color: $color_bg_dark_lighter;
+    }
 }
 
 
@@ -29,7 +65,7 @@
 
 body.fullscreen {
     #container {
-        height: auto;
+        min-height: 0%;
         #content {
             width: 381px;
         }

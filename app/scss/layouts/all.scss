@@ -5,8 +5,8 @@ html {
 }
 // Global style
 body {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
+    font-family: 'Source Sans Pro', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 400;
     font-size: 14px;
     color: $color_text_normal_lighter;
     background-color: $color_bg_back;
@@ -28,17 +28,25 @@ a {
             color: $color_link_discret_hover;
         }
     }
+    &.invert {
+        color: $color_link_invert;
+        &:hover {
+            color: $color_link_invert_hover;
+        }
+    }
 }
 
 // Heading
 h1, h2, h3, h4 {
     font-weight: normal;
+    margin: 0;
 }
 h1 {
     font-size: 24px;
 }
 h2 {
     font-size: 20px;
+    font-weight: 300;
 }
 
 // List
@@ -54,14 +62,21 @@ fieldset {
     border: none;
     padding: 0;
 }
-button, input {
-    padding: 5px 8px;
+button, input, ._btn {
+    padding: 4px 8px;
     border: none;
     color: $color_text_normal_lighter;
+    line-height: 15px;
 }
-button, input[type="submit"] {
+._btn {
+    display: inline-block;
+}
+button, input[type="submit"], ._btn {
     background-color: $color_2;
     color: $color_2_invert;
+    &._bg_dark {
+        background-color: $color_bg_dark_lighter;
+    }
 }
 
 
@@ -80,6 +95,8 @@ i, ._icon {
 #_notices {
     margin: 0 auto;
     padding: 15px 40px 0 40px;
+    position: relative;
+    z-index: 100;
     .msg._full{
         padding: 8px;
         color: #fff;
@@ -97,9 +114,11 @@ i, ._icon {
 // Avatar
 .avatar {
     border-radius: 50%;
-    background-color: #333;
     width: 70px;
     height: 70px;
     text-align: center;
     display: inline-block;
+    &._bg_dark {
+        background-color: $color_bg_dark_lighter;
+    }
 }

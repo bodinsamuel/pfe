@@ -24,7 +24,7 @@
     position: relative;
     display: inline-block;
     float: left;
-    &.inner {
+    .inner {
         margin: 0 5px 5px 0;
     }
 }
@@ -64,7 +64,8 @@
         &._full_form {
             form {
                 padding: 15px 15px 0 15px;
-                label, input, textarea, select {
+                label, input[type="text"], input[type="password"],
+                input[type="submit"], textarea, select {
                     width: 100%;
                     padding: 11px 0;
                     margin: 0;
@@ -88,17 +89,40 @@ i, ._icon {
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center center;
-    width: 16px;
-    height: 16px;
-    &._32 {
-        width: 32px;
-        height: 32px;
+    width: 32px;
+    height: 32px;
+    background-image: url($img_sprite + 'icon.png');
+    &._hvr:hover {
+        background-image: url($img_sprite + 'icon_invert.png');
     }
-    &.icon_facebook {
-        background-image: url($img_icon_32 + 'facebook.png');
+    &._invrt {
+        background-image: url($img_sprite + 'icon_invert.png');
+        &._hvr:hover {
+            background-image: url($img_sprite + 'icon.png');
+        }
     }
-    &.icon_twitter {
-        background-image: url($img_icon_32 + 'twitter.png');
+    &._16 {
+        width: 16px;
+        height: 16px;
+    }
+    &.i_facebook { background-position: -3px -3px; }
+    &.i_twitter  { background-position: -3px -41px; }
+    &.i_loop     { background-position: -41px -3px; }
+    &.i_youtube  { background-position: -41px -41px; }
+    &.i_geo      { background-position: -79px -3px; }
+    &.i_cursor   { background-position: -79px -41px; }
+}
+// Fix button iconed
+._btn._icnd {
+    &:hover {
+        i, ._icon {
+            &._hvr {
+                background-image: url($img_sprite + 'icon_invert.png');
+            }
+            &._invrt._hvr:hover {
+                background-image: url($img_sprite + 'icon.png');
+            }
+        }
     }
 }
 
@@ -114,4 +138,12 @@ fieldset {
     &._error {
 
     }
+}
+
+// Other
+._thisIsBeta:after {
+    content: "beta";
+    font-style: italic;
+    font-size: 16px;
+    margin: 0 0 0 8px;
 }
