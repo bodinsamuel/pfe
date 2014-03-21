@@ -11,21 +11,26 @@
                 <ul class="">
                     <li class="type_select">
                         <div class="avatar">
-                            <i class="icon_cursor"></i>
+                            <i class="i_cursor _invrt"></i>
                         </div>
-                        <span>Séléctionnez votre ville</span>
+                        <span>Séléctionnez la ville sur la carte</span>
                     </li>
                     <li class="type_geo">
                         <div class="avatar">
-                            <i class="icon_geo"></i>
+                            <i class="i_geo _invrt"></i>
                         </div>
                         <span>Me géolocaliser</span>
                     </li>
                     <li class="type_classic">
                         <div class="avatar">
-                            <i class="icon_loop"></i>
+                            <i class="i_loop _invrt"></i>
                         </div>
                         <span>Faire une recherche</span>
+                    </li>
+                    <li class="type_search">
+                        <form method="GET" action="/search">
+                            <input type="text" placeholder="Adresse, ville, arrondissement.." name="q">
+                        </form>
                     </li>
                 </ul>
             </section>
