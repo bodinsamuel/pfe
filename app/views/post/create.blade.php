@@ -6,42 +6,26 @@
         <header>
             <h2>Déposer une annonce</h2>
         </header>
-        <form method="POST" action="">
+        <form method="POST" action="/post/create">
 
             <section id="_f_s_general">
                 <fieldset>
-                    <label for="_f_type">Type</label>
-                    <select id="_f_type" name="type">
-                        <option value="1">Sell</option>
-                        <option value="2">Location</option>
-                    </select>
+                    <label><input type="radio" name="id_post_type" id="_f_type1" checked="checked" value="1">Vente</label>
+                    <label><input type="radio" name="id_post_type" id="_f_type2" value="2">Location</label>
+                </fieldset>
+                <fieldset class="{{{ $errors->has('address1') ? '_error' : '' }}}">
+                    <label for="_f_address1">Adresse ligne 1</label>
+                    <input id="_f_address1" type="text" name="address1" placeholder="Adresse ligne 1" value="{{{ Input::old('address1') }}}" />
+                    {{ $errors->first('address1', '<span class="_msg _error">:message</span>') }}
                 </fieldset>
                 <fieldset>
-                    <label for="_f_street_type">Street Type</label>
-                    <select id="_f_street_type" name="street_type">
-                        <option value="1">Avenue</option>
-                        <option value="2">Street</option>
-                    </select>
+                    <label for="_f_address2">Adresse ligne 2</label>
+                    <input id="_f_address2" type="text" name="address2" placeholder="Adresse ligne 2" value="{{{ Input::old('address2') }}}" />
                 </fieldset>
-                <fieldset>
-                    <label for="_f_street_number">Street Number</label>
-                    <input id="_f_street_number" type="text" name="street_number" placeholder="" value="" />
-                </fieldset>
-                <fieldset>
-                    <label for="_f_street_name">Street Name</label>
-                    <input id="_f_street_name" type="text" name="street_name" placeholder="" value="" />
-                </fieldset>
-                <fieldset>
-                    <label for="_f_other">Other</label>
-                    <input id="_f_other" type="text" name="other" placeholder="" value="" />
-                </fieldset>
-                <fieldset>
-                    <label for="_f_zipcode">Zipcode</label>
-                    <input id="_f_zipcode" type="text" name="zipcode" placeholder="" value="" />
-                </fieldset>
-                <fieldset>
-                    <label for="_f_city">City</label>
-                    <input id="_f_city" type="" name="city" placeholder="" value="" />
+                <fieldset class="{{{ $errors->has('id_city') ? '_error' : '' }}}">
+                    <label for="_f_city">Ville</label>
+                    <input id="_f_city" type="text" name="city" placeholder="Ville" value="{{{ Input::old('city') }}}" />
+                    {{ $errors->first('id_city', '<span class="_msg _error">:message</span>') }}
                 </fieldset>
 
                 <footer class="action">
@@ -52,6 +36,9 @@
             <section id="_f_s_sell">
 
                 <footer class="action">
+                    <input type="hidden" name="id_city" value="20657" />
+                    <input type="hidden" name="origin" value="post" />
+                    <input type="hidden" name="primary" value="0" />
                     <input type="submit" value="One more step" />
                 </footer>
             </section>
