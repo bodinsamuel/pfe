@@ -60,6 +60,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return ($this->status === User::VALIDATED) ? TRUE : FALSE;
     }
 
+    public static function getIdOrZero()
+    {
+        return (\Auth::user() === NULL) ? 0 : Auth::user()->id_user;
+    }
+
     /**
      * Validate registering
      * @param  array $input
