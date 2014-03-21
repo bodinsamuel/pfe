@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 16, 2014 at 01:57 PM
+-- Generation Time: Mar 21, 2014 at 04:22 PM
 -- Server version: 5.5.35
--- PHP Version: 5.5.9-1~dotdeb.1
+-- PHP Version: 5.5.10-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -24,17 +24,14 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `id_address` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
   `id_city` int(11) NOT NULL,
-  `id_district` int(11) NOT NULL,
-  `id_street_type` int(11) NOT NULL,
-  `street_number` tinyint(4) NOT NULL,
-  `street_name` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `other` text CHARACTER SET utf8 NOT NULL,
+  `address1` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `address2` varchar(255) CHARACTER SET utf8 NOT NULL,
   `primary` tinyint(4) NOT NULL,
-  `origin` enum('search','posts') COLLATE utf8_unicode_ci NOT NULL,
+  `origin` enum('search','post') COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -261,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `id_post` int(11) NOT NULL AUTO_INCREMENT,
-  `id_details` int(11) NOT NULL,
+  `id_post_detail` int(11) NOT NULL,
   `id_gallery` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_address` int(11) NOT NULL,
@@ -271,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `date_closed` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_post`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -309,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `renting_date_start` datetime DEFAULT NULL,
   `renting_date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`id_post_detail`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -322,18 +319,6 @@ CREATE TABLE IF NOT EXISTS `posts_property_type` (
   `value` varchar(15) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_post_property_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `posts_type`
---
-
-CREATE TABLE IF NOT EXISTS `posts_type` (
-  `id_post_type` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(15) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_post_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -369,4 +354,4 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_updated` datetime NOT NULL,
   `date_validated` datetime NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
