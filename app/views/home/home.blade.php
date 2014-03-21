@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+
     <div id="search_main_box" class="_col _col_fixed1 _box _fullscreen">
         <div class="inner">
             <header>
