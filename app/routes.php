@@ -14,17 +14,22 @@
 Route::get('/', 'HomeController@run');
 
 // Post
+Route::get('/post/{id_post}/{title}', 'PostController@get_one');
 Route::get('/renting/{id_post}/{title}', 'PostController@get_one');
 Route::get('/selling/{id_post}/{title}', 'PostController@get_one');
 Route::get('/renting/business/{id_post}/{title}', 'PostController@get_one');
 Route::get('/selling/business/{id_post}/{title}', 'PostController@get_one');
+
     // Action
-    Route::get('/post/create/', 'PostController@get_create');
-    Route::post('/post/create/', 'PostController@post_create');
-    Route::get('/post/edit/{id_post}', 'PostController@get_edit');
-    Route::post('/post/edit/{id_post}', 'PostController@post_edit');
-    Route::get('/post/delete/{id_post}', 'PostController@get_delete');
-    Route::delete('/post/delete/{id_post}', 'PostController@delete_delete');
+    Route::group(['before' => 'auth'], function()
+    {
+        Route::get('/post/create/', ['as' => 'post_create', 'uses' => 'PostController@get_create']);
+        Route::post('/post/create/', 'PostController@post_create');
+        Route::get('/post/edit/{id_post}', ['as' => 'post_edit', 'uses' => 'PostController@get_edit']);
+        Route::post('/post/edit/{id_post}', 'PostController@post_edit');
+        Route::get('/post/delete/{id_post}',['as' => 'post_delete', 'uses' => 'PostController@get_delete']);
+        Route::delete('/post/delete/{id_post}', 'PostController@delete_delete');
+    });
 
 // Account
 Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'AccountController@get_Dashboard']);
@@ -66,9 +71,10 @@ Route::post('/agency/{id_agency}', 'AgencyController@edit');
 Route::delete('/agency/{id_agency}', 'AgencyController@delete');
 
 // Search
-Route::get('/search/{id_search?}', 'SearchController@run');
-Route::post('/search/{id_search?}', 'SearchController@save');
-Route::delete('/search/{id_search}', 'SearchController@delete');
+Route::get('/search/', 'SearchController@get_Run');
+Route::get('/search/{id_search?}', 'SearchController@get_One');
+Route::post('/search/{id_search?}', 'SearchController@post_Save');
+Route::delete('/search/{id_search}', 'SearchController@delete_Delete');
 
 // Favorites
 Route::get('/favorite/{id_favorite?}', 'FavoriteController@get');
