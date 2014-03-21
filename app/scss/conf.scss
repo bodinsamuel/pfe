@@ -16,17 +16,22 @@ $color_error: #FDBE84;
 
 // text
 $color_text_normal : #000;
-$color_text_normal_lighter : #333;
+$color_text_normal_lighter : #25292d;
 $color_text_light : #777;
+$color_text_invert : #999;
 
 $color_link_normal : $color_1;
-$color_link_hover : #333;
+$color_link_hover : #25292d;
 $color_link_discret : $color_text_light;
 $color_link_discret_hover : $color_text_normal_lighter;
+$color_link_invert : $color_text_invert;
+$color_link_invert_hover : #fff;
 
 // background
 $color_bg_back : #ececec;
 $color_bg_back_lighter : #f2f2f2;
+$color_bg_dark : $color_text_normal_lighter;
+$color_bg_dark_lighter: #333a40;
 $color_bg_front : #fff;
 
 // other
