@@ -2,7 +2,7 @@
 
 class SearchController extends BaseController
 {
-    public function run($id_search = NULL)
+    public function get_Run()
     {
         # code...
     }
