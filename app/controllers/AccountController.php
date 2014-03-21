@@ -36,6 +36,10 @@ class AccountController extends BaseController
         $token = Hash::make($user->email . $user->id . time());
         $saved = Token::add('validate_account', $token, $user->email);
 
+        // Prepare data for email
+        $data['user'] = (array)$user['original'];
+        $data['token'] = $token;
+
         // Send mail
         Mail::send('emails.account.register', $data, function($message) use ($user)
         {
