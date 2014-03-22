@@ -4,7 +4,10 @@ class SearchController extends BaseController
 {
     public function get_Run()
     {
-        # code...
+        $data = ['__with_bg_map' => TRUE,
+                 'map_config' => ['locate' => TRUE]];
+
+        return View::make('modules/search/main', $data);
     }
 
     public function save($id_search = NULL)
