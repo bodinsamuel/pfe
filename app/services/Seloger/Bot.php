@@ -29,12 +29,18 @@ class Seloger_Bot extends BaseController
             $ids[] = $annonce->idAnnonce;
 
             $galery = [];
-            foreach ($annonce->photos as $photo)
+            if (isset($annonce->photos->photo))
             {
-                $galery[] = [
-                    'order' = $photo->ordre
-                    'url' => $photo->stdUrl
-                ]
+                foreach ($annonce->photos->photo as $photo)
+                {
+                    if (!isset($photo->ordre))
+                        continue;
+
+                    $galery[] = [
+                        'order' => $photo->ordre,
+                        'url' => $photo->stdUrl
+                    ];
+                }
             }
 
             $list[$annonce->idAnnonce] = [
