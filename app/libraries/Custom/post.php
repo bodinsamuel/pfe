@@ -83,4 +83,20 @@ class Post
             ]
         );
     }
+
+    public static function search($search)
+    {
+        $query = 'SELECT *
+                   FROM posts
+                   JOIN addresses
+                        ON posts.id_address = addresses.id_address
+                   JOIN geo_cities
+                        ON addresses.id_city = geo_cities.id_city
+                   JOIN geo_countries
+                        ON geo_cities.id_country = geo_countries.id_country
+                  WHERE zipcode = :search
+               ORDER BY posts.date_created DESC';
+
+        return \DB::select($query, ['search' => $search]);
+    }
 }

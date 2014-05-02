@@ -84,10 +84,10 @@ button, input[type="submit"], ._btn {
 i, ._icon {
     &.logo_self {
         background-image: url($img_sprite + "logo.png");
-        background-position: -143px -5px;
-        &._32 { background-position: -169px -5px; }
-        &._64 { background-position: -211px -5px; }
-        &._128 { background-position: -5px -5px; }
+        background-position: -143px -2px;
+        &._32 { background-position: -160px -2px; }
+        &._64 { background-position: -211px -2px; }
+        &._128 { background-position: -5px -2px; }
     }
 }
 

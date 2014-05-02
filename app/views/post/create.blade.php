@@ -27,6 +27,10 @@
                     <input id="_f_city" type="text" name="city" placeholder="Ville" value="{{{ Input::old('city') }}}" />
                     {{ $errors->first('id_city', '<span class="_msg _error">:message</span>') }}
                 </fieldset>
+                <fieldset>
+                    <label for="_f_content">Description</label>
+                    <textarea id="_f_content" name="content" placeholder="Description"></textarea>
+                </fieldset>
 
                 <footer class="action">
                     <input type="submit" value="Next" />
@@ -36,7 +40,7 @@
             <section id="_f_s_sell">
 
                 <footer class="action">
-                    <input type="hidden" name="id_city" value="20657" />
+                    <input type="hidden" name="id_city" value="30840" />
                     <input type="hidden" name="origin" value="post" />
                     <input type="hidden" name="primary" value="0" />
                     <input type="submit" value="One more step" />

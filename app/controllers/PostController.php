@@ -51,7 +51,6 @@ class PostController extends BaseController
 
                 // post
                 $inputs['id_gallery'] = 0;
-                $inputs['content'] = 'a';
                 $validation = \Custom\Post::validate($inputs);
                 if ($validation->fails())
                     throw new Exception("[POST CREATE] failed validating post");

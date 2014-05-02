@@ -9,7 +9,7 @@ class Geo
      */
     public static function search_provinces($search)
     {
-        $query = 'SELECT name
+        $query = 'SELECT id_province AS id, name
                     FROM geo_provinces
                    WHERE name LIKE "' . $search . '%"
                    LIMIT 0, 5';
@@ -23,7 +23,7 @@ class Geo
      */
     public static function search_cities($search)
     {
-        $query = 'SELECT name, zipcode
+        $query = 'SELECT zipcode AS id, name, zipcode
                     FROM geo_cities
                    WHERE name LIKE "' . $search . '%"
                          OR zipcode LIKE "' . $search . '%"

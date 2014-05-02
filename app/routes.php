@@ -100,6 +100,14 @@ Route::group(['prefix' => 'api/v0'], function()
 
 
 // **********************************************
+// Services
+Route::group(['prefix' => 'services'], function()
+{
+    Route::controller('seloger', 'Seloger_Bot');
+});
+
+
+// **********************************************
 // On matche
 Route::matched(function() {
     $method = $controller = '';

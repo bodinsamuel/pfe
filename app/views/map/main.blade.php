@@ -36,7 +36,7 @@
     <div id='mapbox-screen-map'></div>
     <script>
         var map = L.mapbox.map('mapbox-screen-map', 'bodinsamuel.hj2ocb3b');
-        map.setView([48.85, 2.30], 13);
+        map.setView([48.855, 2.32], 13);
         L.control.locate().addTo(map).setPosition('topright');
         map.zoomControl.setPosition('topright');
     </script>

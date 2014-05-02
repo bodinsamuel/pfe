@@ -7,12 +7,22 @@
         @if (isset($__page_title)) {{{ $__page_title }}} | @endif
         {{{ $__meta_title }}}
     </title>
-    {{ HTML::style('assets/lib/css/normalize.min.css') }}
-    {{ HTML::style('assets/css/layouts/master.css') }}
-    <!-- Temporaire -->
-    {{ HTML::style('assets/css/modules/account/main.css') }}
-    {{ HTML::style('assets/css/modules/home/main.css') }}
+    <link href="/assets/lib/css/normalize.min.css" rel="stylesheet"/>
+    <link href="/assets/css/layouts/master.css" rel="stylesheet"/>
 
+    <!-- Temporaire -->
+    <link href="/assets/css/modules/account/main.css" rel="stylesheet"/>
+    <link href="/assets/css/modules/home/main.css" rel="stylesheet"/>
+
+    <!-- LIB -->
+    <script src="/assets/lib/jquery/jquery.1.11.js"></script>
+    <link href="/assets/lib/select2/select2.css" rel="stylesheet"/>
+    <script src="/assets/lib/select2/select2.js"></script>
+
+    <!-- JS -->
+    <script src="/assets/js/main.js"></script>
+
+    <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic' rel='stylesheet' type='text/css'>
 </head>
 <body id="__{{{ $__current_controller }}}_{{{ $__current_method }}}"
