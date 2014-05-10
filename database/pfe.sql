@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 21, 2014 at 06:34 PM
--- Server version: 5.5.35
--- PHP Version: 5.5.10-1~dotdeb.1
+-- Generation Time: May 10, 2014 at 06:12 PM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `pfe`
@@ -32,12 +26,14 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `id_city` int(11) NOT NULL,
   `address1` varchar(255) CHARACTER SET utf8 NOT NULL,
   `address2` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `longitude` double NOT NULL,
+  `latitude` double NOT NULL,
   `primary` tinyint(4) NOT NULL,
   `origin` enum('search','post') COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -148,12 +144,13 @@ CREATE TABLE IF NOT EXISTS `favorites` (
 
 CREATE TABLE IF NOT EXISTS `galleries` (
   `id_gallery` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
   `media_count` tinyint(4) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_gallery`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -164,13 +161,14 @@ CREATE TABLE IF NOT EXISTS `galleries` (
 CREATE TABLE IF NOT EXISTS `geo_cities` (
   `id_city` int(11) NOT NULL AUTO_INCREMENT,
   `id_country` int(11) NOT NULL,
-  `id_region` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
+  `id_province` int(11) NOT NULL,
   `latitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `longitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `zipcode` varchar(15) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_city`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=36728 ;
 
 -- --------------------------------------------------------
 
@@ -202,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `geo_provinces` (
   `name` varchar(255) NOT NULL,
   `iso1` varchar(3) NOT NULL,
   PRIMARY KEY (`id_province`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=128 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
 
 -- --------------------------------------------------------
 
@@ -228,6 +226,7 @@ CREATE TABLE IF NOT EXISTS `media` (
   `id_media` int(11) NOT NULL AUTO_INCREMENT,
   `id_gallery` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
+  `hash` varchar(35) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
@@ -253,17 +252,19 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `id_post` int(11) NOT NULL AUTO_INCREMENT,
+  `id_post_type` int(11) NOT NULL,
   `id_post_detail` int(11) NOT NULL,
   `id_gallery` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_address` int(11) NOT NULL,
+  `exclusivity` tinyint(1) NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_closed` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_post`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -273,10 +274,10 @@ CREATE TABLE IF NOT EXISTS `posts` (
 
 CREATE TABLE IF NOT EXISTS `posts_details` (
   `id_post_detail` int(11) NOT NULL AUTO_INCREMENT,
-  `id_post_type` int(11) NOT NULL,
   `id_post_property_type` int(11) NOT NULL,
   `id_heating_type` int(11) NOT NULL,
   `id_kitchen_type` int(11) NOT NULL,
+  `condition` tinyint(1) NOT NULL,
   `gaz` tinyint(1) NOT NULL,
   `perf_energy` tinyint(4) DEFAULT NULL,
   `perf_climat` tinyint(4) DEFAULT NULL,
@@ -284,6 +285,9 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `surface_living` tinyint(4) DEFAULT NULL,
   `surface_ground` tinyint(4) DEFAULT NULL,
   `story` tinyint(2) NOT NULL,
+  `room` tinyint(4) NOT NULL,
+  `bathroom` tinyint(2) NOT NULL,
+  `wc` tinyint(1) NOT NULL,
   `attic` tinyint(1) NOT NULL,
   `lift` tinyint(1) NOT NULL,
   `caretaker` tinyint(1) NOT NULL,
@@ -301,7 +305,20 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `renting_date_start` datetime DEFAULT NULL,
   `renting_date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`id_post_detail`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts_has_source`
+--
+
+CREATE TABLE IF NOT EXISTS `posts_has_source` (
+  `id_post` int(11) NOT NULL,
+  `id_source` varchar(25) NOT NULL,
+  `name` tinyint(2) NOT NULL,
+  PRIMARY KEY (`id_post`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -351,6 +368,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `posts_has_source`
+--
+ALTER TABLE `posts_has_source`
+  ADD CONSTRAINT `posts_has_source_ibfk_1` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id_post`) ON DELETE CASCADE ON UPDATE NO ACTION;
