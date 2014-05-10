@@ -50,23 +50,27 @@ class Address
      */
     public static function upsert($inputs, $id_address = NULL)
     {
-        $inputs = array_only($inputs, [
-            'id_city', 'address1', 'address2', 'primary', 'origin'
-        ]);
+        $inputs = array_fill_base([
+            'id_city', 'address1', 'address2', 'longitude', 'latitude', 'primary', 'origin'
+        ], $inputs);
+
         $inputs['id_address'] = ($id_address === NULL) ? NULL : $id_address;
         $inputs['id_user'] = \User::getIdOrZero();
 
         // Query
         $query = 'INSERT INTO addresses
                               (id_address, id_user, id_city, address1,
-                               `address2`, `primary`, `origin`, date_created,
-                               date_updated)
+                               `address2`, `longitude`, `latitude`, `primary`,
+                               `origin`, date_created, date_updated)
                        VALUES (:id_address, :id_user, :id_city, :address1,
-                               :address2, :primary, :origin, NOW(), NOW())
+                               :address2, :longitude, :latitude, :primary,
+                               :origin, NOW(), NOW())
              ON DUPLICATE KEY
                        UPDATE `id_city`      = VALUES(`id_city`),
                               `address1`     = VALUES(`address1`),
                               `address2`     = VALUES(`address2`),
+                              `longitude`    = VALUES(`longitude`),
+                              `latitude`     = VALUES(`latitude`),
                               `primary`      = VALUES(`primary`),
                               `date_updated` = VALUES(`date_updated`)';
 
@@ -82,9 +86,10 @@ class Address
         return \Validator::make(
             $inputs, [
                 'id_address'  => 'integer',
-                'id_user'     => 'required|integer',
                 'id_city'     => 'required|integer|min:1',
                 'address1'    => 'required',
+                'longitude'   => 'required|numeric',
+                'latitude'    => 'required|numeric',
                 'origin'      => 'required'
             ]
         );
