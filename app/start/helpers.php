@@ -10,3 +10,11 @@ function oops($route, $msg = 'global.error.oops')
     $error = $msg !== NULL ? Lang::get($msg) : NULL;
     return Redirect::to($route)->withInput()->with('flash.notice.error', $error);
 }
+
+function array_fill_base($base = [], $array)
+{
+    $_base = array_flip($base);
+    $match = array_intersect_key($array, $_base);
+    $base = array_fill_keys($base, '');
+    return array_merge($base, $match);
+}
