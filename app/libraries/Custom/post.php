@@ -10,6 +10,91 @@ class Post
     const POST_TYPE_LOCATION = 2;
 
     /**
+     * Full process for creating a Post
+     * @param  array $inputs array of input
+     * @return {[type]}         [description]
+     */
+    public static function create($inputs)
+    {
+        $return = ['errors' => []];
+
+        $return['inputs'] = &$inputs;
+
+        // Validate all fields before insert
+        $validation = Post::validate_all($inputs);
+
+        if ($validation['failed'] === TRUE)
+        {
+            $return['errors'] = $validation['errors'];
+            return $return;
+        }
+        else
+        {
+
+            try {
+                // Begin inserting everything
+                \DB::beginTransaction();
+
+                // address
+                $id_address = Address::upsert($inputs['address']);
+                if ($id_address === -1)
+                    throw new \Exception("[POST CREATE] failed inserting address");
+
+                $inputs['post']['id_address'] = $id_address;
+
+                // post details
+                $id_post_detail = Post\Details::insert($inputs['details']);
+                if ($id_post_detail === -1)
+                    throw new \Exception("[POST CREATE] failed inserting details");
+
+                $inputs['post']['id_post_detail'] = $id_post_detail;
+
+                // Gallery
+                $id_gallery = Gallery::create();
+                if ($id_gallery === -1)
+                    throw new \Exception("[POST CREATE] failed inserting gallery");
+
+                $inputs['post']['id_gallery'] = $id_gallery;
+
+                // post validate
+                $validation = Post::validate($inputs['post']);
+                if ($validation->fails())
+                    throw new \Exception("[POST CREATE] failed validating post");
+
+                // post insert
+                $id_post = Post::insert($inputs['post']);
+                if ($id_post === -1)
+                    throw new \Exception("[POST CREATE] failed inserting post");
+
+                $inputs['id_post'] = $id_post;
+
+                if (isset($inputs['source']))
+                {
+                    $sourced = Post\Source::upsert($id_post, $inputs['source']['name'], $inputs['source']['id']);
+                    if ($id_post === -1)
+                        throw new \Exception("[POST CREATE] failed inserting source");
+
+                    $inputs['sourced'] = TRUE;
+                }
+
+                // Everything went well, so good to go
+                \DB::commit();
+
+            } catch (Exception $e) {
+                \DB::rollback();
+
+                if (\App::environment('dev'))
+                    throw $e;
+
+                $return['errors'][] = Lang::get('global.error.oops');
+                return $return;
+            }
+
+            return $return;
+        }
+    }
+
+    /**
      * Full process for validating a post
      * @param  array $inputs
      * @return array
@@ -19,12 +104,12 @@ class Post
         $return = ['failed' => FALSE, 'errors' => FALSE];
 
         // Validate address
-        $val_address = \Custom\Address::validate($inputs);
+        $val_address = Address::validate($inputs['address']);
         if ($val_address->fails())
             $return['failed'] = TRUE;
 
         // Validate details
-        $val_details = \Custom\PostDetails::validate($inputs);
+        $val_details = Post\Details::validate($inputs['details']);
         if ($val_details->fails())
             $return['failed'] = TRUE;
 
@@ -41,23 +126,23 @@ class Post
     /**
      * Insert new post
      * @param  array $inputs
-     * @return [type]
+     * @return uint
      */
     public static function insert($inputs)
     {
         $inputs = array_only($inputs, [
-            'id_post_detail', 'id_gallery', 'id_address', 'content'
+            'id_post_type', 'id_post_detail', 'id_gallery', 'id_address', 'content'
         ]);
         $inputs['status'] = self::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
 
         // Query
         $query = 'INSERT INTO posts
-                              (id_post_detail, id_gallery, id_user, id_address,
-                               content, date_created, date_updated, date_closed,
-                               status)
-                       VALUES (:id_post_detail, :id_gallery, :id_user, :id_address,
-                               :content, NOW(), NOW(), "NULL", :status)';
+                              (id_post_type, id_post_detail, id_gallery, id_user,
+                               id_address, content, date_created, date_updated,
+                               date_closed, status)
+                       VALUES (:id_post_type, :id_post_detail, :id_gallery, :id_user,
+                               :id_address, :content, NOW(), NOW(), "NULL", :status)';
 
         $stmt = \DB::statement($query, $inputs);
         if ($stmt === FALSE)
@@ -75,9 +160,9 @@ class Post
     {
         return \Validator::make(
             $inputs, [
+                'id_post_type' => 'required|integer',
                 'id_post_detail' => 'required|integer',
                 'id_gallery' => 'required|integer',
-                'id_user'    => 'required|integer',
                 'id_address' => 'required|integer',
                 'content'    => 'required'
             ]
