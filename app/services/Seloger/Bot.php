@@ -70,7 +70,7 @@ class Seloger_Bot extends BaseController
                     'name' => 'seloger',
                     'id' => $annonce->idAnnonce
                 ],
-                'gallery' => $gallery
+                'medias' => $gallery
             ];
         }
 

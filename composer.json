@@ -15,11 +15,24 @@
                     "reference": "7bc59df4c20a2672ce0f1e3eee75ee315ae780f0"
                 }
             }
+        },
+        "pap-php": {
+            "type": "package",
+            "package": {
+                "name": "bodinsamuel/PAP-php",
+                "version": "1.0.0",
+                "source": {
+                    "url": "https://github.com/bodinsamuel/PAP-php",
+                    "type": "git",
+                    "reference": "d7f3b1f8dfd2fbe28923284935f4917cdc581cdd"
+                }
+            }
         }
     },
 	"require": {
 		"laravel/framework": "4.1.*",
-        "bodinsamuel/seloger-php": "1.0.*"
+        "bodinsamuel/seloger-php": "1.0.*",
+        "bodinsamuel/PAP-php": "1.0.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -34,7 +47,8 @@
         "psr-0": {
             "Custom": "app/libraries",
             "Services": "app/services",
-            "Seloger": "vendor/bodinsamuel/seloger-php/src"
+            "Seloger": "vendor/bodinsamuel/seloger-php/src",
+            "PAP": "vendor/bodinsamuel/PAP-php/src"
         }
 	},
 	"scripts": {
