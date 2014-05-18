@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 10, 2014 at 06:12 PM
--- Server version: 5.6.17
--- PHP Version: 5.5.12-1~dotdeb.1
+-- Generation Time: May 18, 2014 at 03:53 PM
+-- Server version: 5.5.35
+-- PHP Version: 5.5.10-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=37 ;
 
 -- --------------------------------------------------------
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_gallery`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -226,12 +226,14 @@ CREATE TABLE IF NOT EXISTS `media` (
   `id_media` int(11) NOT NULL AUTO_INCREMENT,
   `id_gallery` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `mime` varchar(35) NOT NULL,
   `hash` varchar(35) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_media`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -252,19 +254,20 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `id_post` int(11) NOT NULL AUTO_INCREMENT,
-  `id_post_type` int(11) NOT NULL,
-  `id_post_detail` int(11) NOT NULL,
-  `id_gallery` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_address` int(11) NOT NULL,
-  `exclusivity` tinyint(1) NOT NULL,
+  `id_post_type` int(11) unsigned NOT NULL,
+  `id_post_detail` int(11) unsigned NOT NULL,
+  `id_gallery` int(11) unsigned NOT NULL,
+  `id_user` int(11) unsigned NOT NULL,
+  `id_address` int(11) unsigned NOT NULL,
+  `exclusivity` tinyint(1) unsigned NOT NULL,
+  `price` double(11,3) unsigned NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_closed` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_post`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
 
 -- --------------------------------------------------------
 
@@ -305,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `renting_date_start` datetime DEFAULT NULL,
   `renting_date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`id_post_detail`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=37 ;
 
 -- --------------------------------------------------------
 
@@ -318,6 +321,20 @@ CREATE TABLE IF NOT EXISTS `posts_has_source` (
   `id_source` varchar(25) NOT NULL,
   `name` tinyint(2) NOT NULL,
   PRIMARY KEY (`id_post`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts_price_history`
+--
+
+CREATE TABLE IF NOT EXISTS `posts_price_history` (
+  `id_post` int(10) unsigned NOT NULL,
+  `price` double(11,3) unsigned NOT NULL,
+  `trend` tinyint(1) NOT NULL,
+  `date_created` datetime NOT NULL,
+  KEY `id_post` (`id_post`,`date_created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
