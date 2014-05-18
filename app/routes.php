@@ -104,6 +104,7 @@ Route::group(['prefix' => 'api/v0'], function()
 Route::group(['prefix' => 'services'], function()
 {
     Route::controller('seloger', 'Seloger_Bot');
+    Route::controller('pap', 'Pap_Bot');
 });
 
 
