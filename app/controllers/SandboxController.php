@@ -4,6 +4,24 @@ class SandboxController extends BaseController
 {
     protected $layout = NULL;
 
+    public function postUpload()
+    {
+        print_r(Input::all());
+        die();
+        $manager = new Custom\Media\Uploader();
+        $manager->setAllowed(['image/jpeg', 'image/png']);
+        $manager->setDir('/var/www/pfe.dev/media');
+        $manager->setMaxFileSize(1024 * 1024 * 10);
+
+
+        $upload = $manager->handleUrl('http://8.visuels.poliris.com/2d/8/a/0/4/8a04b624-21d9.jpg');
+        var_dump($infos);
+
+        $inputs = Input::all();
+        $infos = $manager->handle($inputs['file']->getPathname());
+        var_dump($infos);
+    }
+
     public function getTest()
     {
 
