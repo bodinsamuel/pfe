@@ -64,6 +64,12 @@ class Post
 
                 $inputs['id_post'] = $id_post;
 
+                // Pricing
+                $price = Post\Price::insert($id_post, $inputs['price']);
+                if ($price === -1)
+                    throw new \Exception("[POST CREATE] failed inserting post");
+
+
                 if (isset($inputs['source']))
                 {
                     $sourced = Post\Source::upsert($id_post, $inputs['source']['name'], $inputs['source']['id']);
@@ -75,6 +81,15 @@ class Post
 
                 // Everything went well, so good to go
                 \DB::commit();
+
+                if ($inputs['medias'])
+                {
+                    $batch = Media::upload($inputs['post']['id_gallery'], $inputs['medias']);
+                    if ($batch['failed'] === TRUE)
+                        throw new \Exception("[POST CREATE] failed uploading");
+
+                    $inputs['upload'] = $batch['data'];
+                }
 
             } catch (Exception $e) {
                 \DB::rollback();
