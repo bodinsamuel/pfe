@@ -2,10 +2,6 @@
 
 class Post
 {
-    const NEED_VALIDATION = 0;
-    const VALIDATED = 1;
-    const DELETED = -1;
-
     const POST_TYPE_SELL = 1;
     const POST_TYPE_LOCATION = 2;
 
@@ -133,7 +129,7 @@ class Post
         $inputs = array_only($inputs, [
             'id_post_type', 'id_post_detail', 'id_gallery', 'id_address', 'content'
         ]);
-        $inputs['status'] = self::NEED_VALIDATION;
+        $inputs['status'] = Cnst::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
 
         // Query
