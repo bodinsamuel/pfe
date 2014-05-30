@@ -220,6 +220,9 @@ class Post
         $select = \DB::select($query, ['search' => $search,
                                        'validated' => Cnst::VALIDATED]);
 
+        if (empty($select))
+            return [];
+
         $final = [];
         $ids_galleries = [];
         foreach ($select as $k => &$value)
@@ -237,6 +240,6 @@ class Post
                 $value->gallery = ['count' => 0, 'media' => []];
         }
 
-        return $select;
+        return $final;
     }
 }

@@ -80,10 +80,10 @@ class Gallery
                    FROM galleries
               LEFT JOIN media
                         ON media.id_gallery = galleries.id_gallery
-                  WHERE galleries.id_gallery = ? AND media.status = ?
+                  WHERE galleries.id_gallery = ? AND media.status >= ?
                GROUP BY galleries.id_gallery
                ORDER BY media.date_created ASC';
-        $id_cover = \DB::select($query, [$id_gallery, Cnst::VALIDATED]);
+        $id_cover = \DB::select($query, [$id_gallery, Cnst::NEED_VALIDATION]);
         $id_cover = (empty($id_cover)) ? 'NULL' : $id_cover[0]->id_cover;
 
         // PDO is the shit

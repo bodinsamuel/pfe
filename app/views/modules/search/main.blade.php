@@ -21,7 +21,7 @@
                         @endif
                     @else
                         <div class="big">
-                            <img src="/assets/img/404.jpg" alt="" class="" />
+                            <img src="http://media.pfe.dev/404-original-0-not-found.jpg" width="200" alt="" class="" />
                         </div>
                     @endif
                 </div>

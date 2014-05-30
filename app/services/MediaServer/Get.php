@@ -34,6 +34,13 @@ class MediaServer_Get extends BaseController
             $ratio = explode('x', $size);
         }
 
+        if ($hash === '404' && $title === 'not-found' && $id_media === 0
+            && $extension === 'jpg')
+        {
+            $path = Custom\Media::UPLOAD_DIR . '/404.jpg';
+            return self::response(404, 'image/jpeg', $path, TRUE);
+        }
+
         $media = Custom\Media::select($id_media);
         if (empty($media))
             return self::response(404);
@@ -74,10 +81,17 @@ class MediaServer_Get extends BaseController
         }
     }
 
-    private static function response($status, $mime = NULL, $path = NULL)
+    private static function response($status, $mime = NULL, $path = NULL, $force_404 = FALSE)
     {
+        if ($force_404 === TRUE)
+        {
+            $response = Response::make(file_get_contents($path), $status);
+            $response->header('Content-Type', $mime);
+            return $response;
+        }
+
         $internal = '/media_server';
-        if ($status === 404)
+        if ($force_404 === FALSE && $status === 404)
             $internal .= '_404';
 
         $accel_redirect = str_replace(Custom\Media::UPLOAD_DIR, $internal, $path);
@@ -95,11 +109,5 @@ class MediaServer_Get extends BaseController
     {
         $query = $media->hash . '-' . $ratio . '-' . $media->id_media  . '-' . $media->title . '.' . $extension;
         return Redirect::to($query, 302);
-    }
-
-    public function getError()
-    {
-        var_dump('prout');
-        return;
     }
 }
