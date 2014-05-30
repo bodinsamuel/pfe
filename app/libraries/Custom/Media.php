@@ -25,6 +25,8 @@ class Media
         if ($stmt === FALSE)
             return -1;
 
+        $update_gallery = Gallery::update_media_count();
+
         return \DB::getPdo()->lastInsertId();
     }
 
