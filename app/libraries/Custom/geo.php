@@ -21,12 +21,28 @@ class Geo
      * @param  string $search
      * @return array
      */
-    public static function search_cities($search)
+    public static function search_cities($search, $countries = NULL, $type = NULL)
     {
-        $query = 'SELECT zipcode AS id, name, zipcode
+        $where = [];
+
+        if ($countries !== NULL)
+            $where[] = 'iso2 IN ' . implode(', ', (array)$countries);
+
+        $whereor = [];
+        if ($type === NULL || $type === 'name')
+            $whereor[] = 'name LIKE "' . $search . '%"';
+        if ($type === NULL || $type === 'zipcode')
+            $whereor[] = 'zipcode LIKE "' . $search . '%"';
+
+        if (!empty($whereor))
+            $where[] = '(' . implode(' OR ', $whereor) . ')';
+
+        $query = 'SELECT zipcode AS id, CONCAT(name, ", ", zipcode) AS name,
+                         zipcode, id_city, geo_countries.id_country
                     FROM geo_cities
-                   WHERE name LIKE "' . $search . '%"
-                         OR zipcode LIKE "' . $search . '%"
+               LEFT JOIN geo_countries
+                         ON geo_cities.id_country = geo_countries.id_country
+                   WHERE ' . implode(' AND ', $where) . '
                    LIMIT 0, 10';
 
         return \DB::select($query);
