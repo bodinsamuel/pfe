@@ -8,14 +8,22 @@
         @foreach($posts AS $post)
             <li class="_c" style="margin: 10px 10px 0px;padding: 10px 0 10px 0;">
                 <div class="galerie mini">
-                    <div class="big">
-                        <img src="/assets/img/test/thumbnail.jpg" alt="" class="" />
-                    </div>
-                    <div class="thumbnails">
-                        <img src="/assets/img/test/thumbnail_1.jpg" alt="" />
-                        <img src="/assets/img/test/thumbnail_2.jpg" alt="" />
-                        <img src="/assets/img/test/thumbnail_3.jpg" alt="" />
-                    </div>
+                    @if ($post->gallery['count'] > 0)
+                        <div class="big">
+                            <img src="{{{ Custom\Media::url($post->gallery['cover'], "original") }}}" width="200" alt="" class="" />
+                        </div>
+                        @if ($post->gallery['count'] > 1)
+                        <div class="thumbnails">
+                            @foreach($post->gallery['media'] AS $media)
+                                <img src="{{{ Custom\Media::url($media, "original") }}}" alt="" height="50" />
+                            @endforeach
+                        </div>
+                        @endif
+                    @else
+                        <div class="big">
+                            <img src="/assets/img/404.jpg" alt="" class="" />
+                        </div>
+                    @endif
                 </div>
                 {{{ $post->name }}} - {{{ $post->name_full }}}<br>
                 {{{ $post->date_created }}} <br>

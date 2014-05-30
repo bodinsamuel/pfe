@@ -38,7 +38,8 @@ class Seloger_Bot extends BaseController
 
                     $gallery[] = [
                         'order' => $photo->ordre,
-                        'url' => $photo->stdUrl
+                        'url' => $photo->stdUrl,
+                        'title' => 'location appartement Paris - 15ème arrondissement - 75015'
                     ];
                 }
             }
