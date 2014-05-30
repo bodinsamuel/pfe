@@ -236,8 +236,7 @@ class Post
             else
                 $value->gallery = ['count' => 0, 'media' => []];
         }
-        print_r($final);
-        die();
+
         return $select;
     }
 }

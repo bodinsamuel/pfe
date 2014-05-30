@@ -16,7 +16,7 @@ class Uploader
     private $max_file_size = FALSE;
     private $dir = '/tmp';
 
-    private $mime_ext = [
+    static public $mime_ext = [
         'image/jpeg' => 'jpg',
         'image/png' => 'png',
     ];
@@ -106,11 +106,14 @@ class Uploader
     {
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $mime = $finfo->file($file);
+        $size = getimagesize($file);
 
         return [
             'mime' => $mime,
             'type' => $this->getTypeFromMime($mime),
             'size' => filesize($file),
+            'width' => $size[0],
+            'height' => $size[1],
             'ext_given' => substr_replace($file, '', 0, strrpos($file, '.') +1),
             'ext_safe' => $this->getExtFromMime($mime)
         ];
@@ -136,7 +139,7 @@ class Uploader
 
     public function getExtFromMime($mime)
     {
-        return isset($this->mime_ext[$mime]) ? $this->mime_ext[$mime] : FALSE;
+        return isset(self::$mime_ext[$mime]) ? self::$mime_ext[$mime] : FALSE;
     }
 
     public function getHash($file)
