@@ -10,7 +10,14 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+// SUBDOMAIN FIRST
+Route::group(['domain' => 'media.pfe.dev'], function()
+{
+    Route::controller('/', 'MediaServer_Get');
+});
 
+
+// HOME PAGE
 Route::get('/', 'HomeController@run');
 
 // Post
@@ -106,7 +113,6 @@ Route::group(['prefix' => 'services'], function()
     Route::controller('seloger', 'Seloger_Bot');
     Route::controller('pap', 'Pap_Bot');
 });
-
 
 // **********************************************
 // On matche
