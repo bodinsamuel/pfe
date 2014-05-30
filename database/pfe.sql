@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2014 at 03:53 PM
--- Server version: 5.5.35
--- PHP Version: 5.5.10-1~dotdeb.1
+-- Generation Time: May 30, 2014 at 02:10 PM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -21,9 +21,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `addresses` (
-  `id_address` int(11) NOT NULL AUTO_INCREMENT,
-  `id_user` int(11) NOT NULL,
-  `id_city` int(11) NOT NULL,
+  `id_address` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) unsigned NOT NULL,
+  `id_city` int(11) unsigned NOT NULL,
   `address1` varchar(255) CHARACTER SET utf8 NOT NULL,
   `address2` varchar(255) CHARACTER SET utf8 NOT NULL,
   `longitude` double NOT NULL,
@@ -42,9 +42,9 @@ CREATE TABLE IF NOT EXISTS `addresses` (
 --
 
 CREATE TABLE IF NOT EXISTS `agencies` (
-  `id_agency` int(11) NOT NULL AUTO_INCREMENT,
-  `id_agency_holding` int(11) NOT NULL,
-  `id_address` int(11) NOT NULL,
+  `id_agency` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_agency_holding` int(11) unsigned NOT NULL,
+  `id_address` int(11) unsigned NOT NULL,
   `name` varchar(125) CHARACTER SET utf8 NOT NULL,
   `phone_office` varchar(15) CHARACTER SET utf8 NOT NULL,
   `fax` varchar(15) CHARACTER SET utf8 NOT NULL,
@@ -143,14 +143,15 @@ CREATE TABLE IF NOT EXISTS `favorites` (
 --
 
 CREATE TABLE IF NOT EXISTS `galleries` (
-  `id_gallery` int(11) NOT NULL AUTO_INCREMENT,
-  `id_user` int(11) NOT NULL,
-  `media_count` tinyint(4) NOT NULL,
+  `id_gallery` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) unsigned NOT NULL,
+  `id_cover` int(10) unsigned NOT NULL,
+  `media_count` tinyint(4) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_gallery`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -159,10 +160,10 @@ CREATE TABLE IF NOT EXISTS `galleries` (
 --
 
 CREATE TABLE IF NOT EXISTS `geo_cities` (
-  `id_city` int(11) NOT NULL AUTO_INCREMENT,
-  `id_country` int(11) NOT NULL,
-  `id_state` int(11) NOT NULL,
-  `id_province` int(11) NOT NULL,
+  `id_city` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_country` int(11) unsigned NOT NULL,
+  `id_state` int(11) unsigned NOT NULL,
+  `id_province` int(11) unsigned NOT NULL,
   `latitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `longitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -177,8 +178,8 @@ CREATE TABLE IF NOT EXISTS `geo_cities` (
 --
 
 CREATE TABLE IF NOT EXISTS `geo_countries` (
-  `id_country` int(11) NOT NULL AUTO_INCREMENT,
-  `id_capital` int(11) NOT NULL,
+  `id_country` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_capital` int(11) unsigned NOT NULL,
   `continent` enum('','EU') CHARACTER SET utf8 NOT NULL,
   `iso1` int(3) NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
@@ -194,9 +195,9 @@ CREATE TABLE IF NOT EXISTS `geo_countries` (
 --
 
 CREATE TABLE IF NOT EXISTS `geo_provinces` (
-  `id_province` int(11) NOT NULL AUTO_INCREMENT,
-  `id_country` int(11) NOT NULL,
-  `id_state` int(11) NOT NULL,
+  `id_province` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_country` int(11) unsigned NOT NULL,
+  `id_state` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   `iso1` varchar(3) NOT NULL,
   PRIMARY KEY (`id_province`)
@@ -209,8 +210,8 @@ CREATE TABLE IF NOT EXISTS `geo_provinces` (
 --
 
 CREATE TABLE IF NOT EXISTS `geo_states` (
-  `id_state` int(11) NOT NULL AUTO_INCREMENT,
-  `id_country` int(11) NOT NULL,
+  `id_state` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_country` int(11) unsigned NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_state`)
@@ -223,17 +224,17 @@ CREATE TABLE IF NOT EXISTS `geo_states` (
 --
 
 CREATE TABLE IF NOT EXISTS `media` (
-  `id_media` int(11) NOT NULL AUTO_INCREMENT,
-  `id_gallery` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
+  `id_media` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_gallery` int(11) unsigned NOT NULL,
+  `id_user` int(11) unsigned NOT NULL,
   `type` tinyint(1) NOT NULL,
-  `mime` varchar(35) NOT NULL,
+  `mime` varchar(25) NOT NULL,
   `hash` varchar(35) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_media`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -371,7 +372,7 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(255) CHARACTER SET utf8 NOT NULL,
   `password` varchar(64) CHARACTER SET utf8 NOT NULL,
   `first_name` varchar(75) CHARACTER SET utf8 NOT NULL,
