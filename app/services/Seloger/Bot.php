@@ -60,7 +60,7 @@ class Seloger_Bot extends BaseController
                 ],
                 'price' => $annonce->prix,
                 'address' => [
-                    'address1' => 'test',
+                    'address1' => 'NULL',
                     'id_city' => 30840,
                     'origin' => 'post',
                     'longitude' => (double)$annonce->longitude,

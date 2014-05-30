@@ -182,7 +182,29 @@ class Post
 
     public static function search($search)
     {
-        $query = 'SELECT *
+        $query = 'SELECT posts.id_post,
+                         posts.id_post_type,
+                         posts.id_post_detail,
+                         posts.id_gallery,
+                         posts.id_user,
+                         posts.exclusivity,
+                         posts.price,
+                         posts.content,
+                         posts.date_created,
+                         posts.date_updated,
+                         posts.date_closed,
+                         posts.status,
+
+                         addresses.id_address,
+                         addresses.id_user,
+                         addresses.id_city,
+                         addresses.longitude,
+                         addresses.latitude,
+
+                         geo_cities.name,
+                         geo_cities.zipcode,
+
+                         geo_countries.name_full
                    FROM posts
                    JOIN addresses
                         ON posts.id_address = addresses.id_address
@@ -191,8 +213,31 @@ class Post
                    JOIN geo_countries
                         ON geo_cities.id_country = geo_countries.id_country
                   WHERE zipcode = :search
+                        AND posts.status = :validated
+                        AND posts.date_closed < NOW()
                ORDER BY posts.date_created DESC';
 
-        return \DB::select($query, ['search' => $search]);
+        $select = \DB::select($query, ['search' => $search,
+                                       'validated' => Cnst::VALIDATED]);
+
+        $final = [];
+        $ids_galleries = [];
+        foreach ($select as $k => &$value)
+        {
+            $final[$value->id_post] = $value;
+            $ids_galleries[] = $value->id_gallery;
+        }
+
+        $galleries = Gallery::select($ids_galleries);
+        foreach ($final as $key => &$value)
+        {
+            if (isset($galleries[$value->id_gallery]))
+                $value->gallery = $galleries[$value->id_gallery];
+            else
+                $value->gallery = ['count' => 0, 'media' => []];
+        }
+        print_r($final);
+        die();
+        return $select;
     }
 }
