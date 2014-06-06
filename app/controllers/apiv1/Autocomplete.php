@@ -1,13 +1,13 @@
-<?php
+<?php namespace ApiV1;
 
-class Api_Autocomplete extends BaseController
+class Autocomplete extends \BaseController
 {
     public function getLocation()
     {
-        $q = Input::get('q');
+        $q = \Input::get('q');
         if (!$q)
         {
-            return Response::json([
+            return \Response::json([
                 'time' => time(),
                 'error' => 'bad_request',
                 'data' => []
@@ -18,7 +18,7 @@ class Api_Autocomplete extends BaseController
         $cities = \Custom\Geo::search_cities($q);
         $provinces = \Custom\Geo::search_provinces($q);
 
-        return Response::json([
+        return \Response::json([
             'time' => time(),
             'error' => FALSE,
             'data' => [
