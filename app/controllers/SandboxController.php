@@ -4,6 +4,55 @@ class SandboxController extends BaseController
 {
     protected $layout = NULL;
 
+    public function getElastic()
+    {
+
+        $elastic = new Custom\Elastic\Post();
+        // $elastic->create_index();
+        // die();
+        // $elastic->delete_index();
+        // die();
+        // $elastic->mapping();
+        // die();
+        // $post = Custom\Post::select([20], ['galleries' => FALSE]);
+        // $elastic->insert($post['posts']);
+        // die();
+
+
+        $elastic = new Custom\Elastic\Search();
+        $elastic->setLimit(0, 5);
+        // $elastic->addSort('_score', 'asc');
+        // $elastic->addFilter('and', ['post.id_property_type' => 1]);
+        $elastic->addFilter('and', [
+            'range' => [
+                'price.current' => [
+                    'gte' => 500,
+                    'lte' => 2000
+                ]
+            ]
+        ]);
+        $elastic->addFilter('and', [
+            'terms' => [
+                'post.id_property_type' => [
+                    1, 2
+                ]
+            ]
+        ]);
+        $elastic->addFilter('and', [
+            'geo_distance' => [
+                'distance' => '90km',
+                'location' => [
+                    'lat' => 48,
+                    'lon' => 2
+                ]
+            ]
+        ]);
+
+        $search = $elastic->run();
+        print_r($search);
+        die();
+    }
+
     public function postUpload()
     {
         print_r(Input::all());
