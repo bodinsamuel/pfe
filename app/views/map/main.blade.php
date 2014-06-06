@@ -37,7 +37,30 @@
     <script>
         var map = L.mapbox.map('mapbox-screen-map', 'bodinsamuel.hj2ocb3b');
         map.setView([48.855, 2.32], 13);
+        mapLayer = L.mapbox.featureLayer().addTo(map);
         L.control.locate().addTo(map).setPosition('topright');
         map.zoomControl.setPosition('topright');
+        var features = [];
+
+        @if (isset($__map_markers))
+            @foreach($__map_markers AS $point)
+                features.push({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [{{{ $point['x'] }}}, {{{ $point['y'] }}}]
+                    },
+                    properties: {
+                        'marker-color': '#000',
+                        title: "{{{ $point['title'] }}}"
+                    }
+                })
+            @endforeach
+
+            mapLayer.setGeoJSON({
+                type: 'FeatureCollection',
+                features: features
+            });
+        @endif
     </script>
 </div>
