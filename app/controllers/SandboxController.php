@@ -40,7 +40,7 @@ class SandboxController extends BaseController
         ]);
         $elastic->addFilter('and', [
             'geo_distance' => [
-                'distance' => '90km',
+                'distance' => '100km',
                 'location' => [
                     'lat' => 48,
                     'lon' => 2

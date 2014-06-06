@@ -15,12 +15,11 @@ class Post extends Base
         foreach ($posts as $id => $post)
         {
             $body = [
-                'post' => [
-                    'id_post_type' => $post->id_post_type,
-                    'id_property_type' => $post->id_property_type,
-                    'date_updated' => $post->date_updated,
-                    'exclusivity' => $post->exclusivity
-                ],
+                'id_post_type' => $post->id_post_type,
+                'id_property_type' => $post->id_property_type,
+                'date_updated' => $post->date_updated,
+                'exclusivity' => $post->exclusivity,
+                'price' => $post->price,
                 'location' => [
                     'lat' => (double)$post->latitude,
                     'lon' => (double)$post->longitude
@@ -28,9 +27,6 @@ class Post extends Base
                 'details' => [
                     'surface_living' => $post->surface_living,
                     'room' => $post->room
-                ],
-                'price' => [
-                    'current' => $post->price
                 ],
             ];
 
@@ -48,21 +44,44 @@ class Post extends Base
         return $this->bulk($params);
     }
 
-    public function mapping()
+    public function create_index()
     {
+        // Delete index just in case
+        $params['index'] = $this->index;
+        $this->client->indices()->delete($params);
+
+        // prepare mapping
         $mapping = [
             '_source' => [
                 'enable' => TRUE
             ],
             'properties' => [
+                'id_post_type' => [ 'type' => 'integer' ],
+                'id_property_type' => [ 'type' => 'integer' ],
+                'last_updated' => [
+                    'type' => 'date',
+                    'format' => 'YYYY-MM-dd HH:mm:ss'
+                ],
+                'exclusivity' => [ 'type' => 'boolean' ],
+                'price' => [ 'type' => 'integer' ],
                 'location' => [
                     'type' => 'geo_point'
+                ],
+                'details' => [
+                    'properties' => [
+                    ]
                 ]
             ]
         ];
-        $params['body'][$this->index_type] = $mapping;
-        $this->fill_params($params);
-        $this->client->indices()->putMapping($params);
+
+        $params = [];
+        $params['index'] = $this->index;
+        $params['body'] = [
+            'mappings' => [
+                $this->index_type => $mapping
+            ]
+        ];
+        $this->client->indices()->create($params);
     }
 
 }
