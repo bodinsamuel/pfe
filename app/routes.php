@@ -100,9 +100,10 @@ Route::controller('sandbox', 'SandboxController');
 
 // **********************************************
 // JSON API
-Route::group(['prefix' => 'api/v0'], function()
+Route::group(['prefix' => 'api/v1'], function()
 {
-    Route::controller('autocomplete', 'Api_Autocomplete');
+    Route::controller('autocomplete', 'ApiV1\Autocomplete');
+    Route::controller('search', 'ApiV1\Search');
 });
 
 

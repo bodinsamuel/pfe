@@ -66,6 +66,10 @@ class Search extends Base
     {
         $this->from = $offset;
         $this->size = $limit;
+        $this->page = round($this->from/$this->size)+1;
+
+        $this->page_prev = $this->page > 1 ? $this->page-1 : $this->page;
+        $this->page_next = $this->page+1;
     }
 
     public function addSort($name, $order = 'desc')
@@ -96,7 +100,7 @@ class Search extends Base
             unset($this->sort['_geo_distance']);
     }
 
-    public function run()
+    public function run($debug = FALSE)
     {
         if (empty($this->queries) && empty($this->filters))
             throw new \Exception('[Elastic] empty query');
@@ -127,6 +131,23 @@ class Search extends Base
         if (!empty($this->sort))
             $params['body']['sort'] = $this->sort;
 
-        return parent::search($params);
+        if ($debug === TRUE)
+        {
+            print_r($params);
+            die();
+        }
+
+        $search = parent::search($params);
+        $data['meta'] = [
+            'total' => $search['hits']['total'],
+            'count' => count($search['hits']['hits']),
+            'limit' => $this->size,
+            'offset' => $this->from,
+            'page_prev' => $this->page_prev,
+            'page_current' => $this->page,
+            'page_next' => $this->page_next
+        ];
+        $data['results'] = $search['hits']['hits'];
+        return $data;
     }
 }

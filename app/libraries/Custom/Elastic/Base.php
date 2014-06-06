@@ -25,6 +25,11 @@ class Base
 
     public function search($params)
     {
+        if (is_string($params))
+        {
+            $t['body'] = $params;
+            $params = $t;
+        }
         $params = $this->fill_params($params);
 
         // print_r($params);

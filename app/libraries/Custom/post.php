@@ -214,6 +214,10 @@ class Post
 
             $return['gallery'] = Gallery::delete($id_gallery);
 
+            $elastic = new Custom\Elastic\Post();
+            $deletion = $elatic->delete($id_post);
+            print_r($deletion);
+
 
         } catch (Exception $e) {
             \DB::rollback();
@@ -252,12 +256,14 @@ class Post
                          addresses.longitude,
                          addresses.latitude,
 
-                         geo_cities.name,
+                         geo_cities.name AS city_name,
                          geo_cities.zipcode,
 
-                         geo_countries.name_full,
+                         geo_countries.id_country,
+                         geo_countries.name_full AS country_name,
 
-                         galleries.media_count AS has_photo
+                         galleries.media_count AS has_photo,
+                         galleries.id_cover
                    FROM posts
                    JOIN addresses
                         ON posts.id_address = addresses.id_address

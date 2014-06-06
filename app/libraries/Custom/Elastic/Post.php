@@ -4,6 +4,10 @@ class Post extends Base
 {
     public $index_type = 'posts';
 
+    // Errors
+    const E_MISSING_POS = -1;
+
+
     public function insert($posts, $upsert = FALSE)
     {
         $params = [];
@@ -15,18 +19,24 @@ class Post extends Base
         foreach ($posts as $id => $post)
         {
             $body = [
-                'id_post_type' => $post->id_post_type,
-                'id_property_type' => $post->id_property_type,
+                'id_post_type' => (int)$post->id_post_type,
+                'id_property_type' => (int)$post->id_property_type,
                 'date_updated' => $post->date_updated,
-                'exclusivity' => $post->exclusivity,
-                'price' => $post->price,
+                'exclusivity' => (bool)$post->exclusivity,
+                'price' => (int)$post->price,
+                'has_photo' => (int)$post->has_photo,
+                'id_cover' => (int)$post->id_cover,
+                'address' => [
+                    'zipcode' => (int)$post->zipcode,
+                    'country' => (int)$post->id_country
+                ],
                 'location' => [
                     'lat' => (double)$post->latitude,
                     'lon' => (double)$post->longitude
                 ],
                 'details' => [
-                    'surface_living' => $post->surface_living,
-                    'room' => $post->room
+                    'surface_living' => (int)$post->surface_living,
+                    'room' => (int)$post->room,
                 ],
             ];
 
@@ -44,11 +54,15 @@ class Post extends Base
         return $this->bulk($params);
     }
 
-    public function create_index()
+    public function put_mapping($reset = FALSE)
     {
-        // Delete index just in case
-        $params['index'] = $this->index;
-        $this->client->indices()->delete($params);
+        if ($reset === TRUE)
+        {
+            parent::delete_index();
+            sleep(1);
+            parent::create_index();
+            sleep(1);
+        }
 
         // prepare mapping
         $mapping = [
@@ -64,11 +78,21 @@ class Post extends Base
                 ],
                 'exclusivity' => [ 'type' => 'boolean' ],
                 'price' => [ 'type' => 'integer' ],
+                'has_photo' => [ 'type' => 'integer' ],
+                'id_cover' => [ 'type' => 'integer' ],
+                'address' => [
+                    'properties' => [
+                        'zipcode' => [ 'type' => 'integer' ],
+                        'country' => [ 'type' => 'integer' ]
+                    ]
+                ],
                 'location' => [
                     'type' => 'geo_point'
                 ],
                 'details' => [
                     'properties' => [
+                        'surface_living' => [ 'type' => 'integer' ],
+                        'room' => [ 'type' => 'integer' ]
                     ]
                 ]
             ]
@@ -76,12 +100,77 @@ class Post extends Base
 
         $params = [];
         $params['index'] = $this->index;
+        $params['type'] = $this->index_type;
         $params['body'] = [
-            'mappings' => [
-                $this->index_type => $mapping
-            ]
+            $this->index_type => $mapping
         ];
-        $this->client->indices()->create($params);
+        $this->client->indices()->putMapping($params);
+    }
+
+    public function search($opts = [])
+    {
+        // initial check
+        if ((!isset($opts['ids']) && !isset($opts['coord'])) || empty($opts['ids']))
+        {
+            return self::E_MISSING_POS;
+        }
+
+        $elastic = new Search();
+
+        // limit [0, 100]
+        $offset = isset($opts['offset']) && $opts['offset'] > 0 ? (int)$opts['offset'] : 0;
+        $limit = isset($opts['limit']) && $opts['limit'] < 100 && $opts['limit'] > 0 ? (int)$opts['limit'] : 20;
+        $elastic->setLimit($offset, $limit);
+
+        // ids
+        if (isset($opts['ids']))
+        {
+            if (isset($opts['ids']['zipcode']))
+            {
+                $t = [];
+                $t['terms']['address.zipcode'] = (array)$opts['ids']['zipcode'];
+                $elastic->addFilter('and', $t);
+            }
+            if (isset($opts['ids']['country']))
+            {
+
+            }
+        }
+
+        // Geo dist
+        if (isset($opts['coord']))
+        {
+
+        }
+
+        // Price
+        if (isset($opts['price']))
+        {
+            $t = [];
+            if (isset($opts['price']['min']))
+                $t['range']['price']['gte'] =  $opts['price']['min'] < 0 ? 0 : (int)$opts['price']['min'];
+
+            if (isset($opts['price']['max']))
+                $t['range']['price']['lte'] = (int)$opts['price']['max'];
+
+            if (!empty($t))
+                $elastic->addFilter('and', $t);
+        }
+
+        // Exclu
+        if (isset($opts['exclusivity']))
+        {
+
+        }
+
+        // Room
+        if (isset($opts['room']))
+        {
+
+        }
+
+        // Run search
+        return $elastic->run();
     }
 
 }
