@@ -5,10 +5,15 @@ class Post
     const POST_TYPE_SELL = 1;
     const POST_TYPE_LOCATION = 2;
 
+    public static $property_type = [
+        1 => 'appartemment',
+        2 => 'maison'
+    ];
+
     /**
      * Full process for creating a Post
      * @param  array $inputs array of input
-     * @return {[type]}         [description]
+     * @return array
      */
     public static function create($inputs)
     {
@@ -142,18 +147,22 @@ class Post
     public static function insert($inputs)
     {
         $inputs = array_only($inputs, [
-            'id_post_type', 'id_post_detail', 'id_gallery', 'id_address', 'content'
+            'id_post_type', 'id_property_type', 'id_post_detail', 'id_gallery',
+            'id_address', 'surface_living', 'room', 'content'
         ]);
         $inputs['status'] = Cnst::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
 
         // Query
         $query = 'INSERT INTO posts
-                              (id_post_type, id_post_detail, id_gallery, id_user,
-                               id_address, content, date_created, date_updated,
-                               date_closed, status)
-                       VALUES (:id_post_type, :id_post_detail, :id_gallery, :id_user,
-                               :id_address, :content, NOW(), NOW(), "NULL", :status)';
+                              (id_post_type, id_property_type, id_post_detail,
+                               id_gallery, id_user, id_address, surface_living,
+                               room, content,
+                               date_created, date_updated, date_closed, status)
+                       VALUES (:id_post_type, :id_property_type, :id_post_detail,
+                               :id_gallery, :id_user, :id_address, :surface_living,
+                               :room, :content,
+                               NOW(), NOW(), "NULL", :status)';
 
         $stmt = \DB::statement($query, $inputs);
         if ($stmt === FALSE)
@@ -172,23 +181,65 @@ class Post
         return \Validator::make(
             $inputs, [
                 'id_post_type' => 'required|integer',
+                'id_property_type' => 'required|integer',
                 'id_post_detail' => 'required|integer',
                 'id_gallery' => 'required|integer',
                 'id_address' => 'required|integer',
+                'surface_living' => 'required|integer',
+                'room' => 'required|integer',
                 'content'    => 'required'
             ]
         );
     }
 
-    public static function search($search)
+    public function delete($id_post)
     {
+        $return = [
+            'post'    => FALSE,
+            'gallery' => FALSE
+        ];
+
+        try {
+            // Begin inserting everything
+            \DB::beginTransaction();
+            $query = 'UPDATE posts
+                         SET status = ' . Cnst::DELETED . '
+                       WHERE id_post = ' . (int)$id_post;
+
+            $post = \DB::statement($query, $inputs);
+            if ($post === FALSE)
+                return -1;
+
+            $return['post'] = $post;
+
+            $return['gallery'] = Gallery::delete($id_gallery);
+
+
+        } catch (Exception $e) {
+            \DB::rollback();
+
+            if (\App::environment('dev'))
+                throw $e;
+
+            $return['errors'][] = Lang::get('global.error.oops');
+        }
+
+        return $return;
+    }
+
+    public static function select($ids_posts, $opts = [])
+    {
+        // Query
         $query = 'SELECT posts.id_post,
                          posts.id_post_type,
+                         posts.id_property_type,
                          posts.id_post_detail,
                          posts.id_gallery,
                          posts.id_user,
                          posts.exclusivity,
                          posts.price,
+                         posts.surface_living,
+                         posts.room,
                          posts.content,
                          posts.date_created,
                          posts.date_updated,
@@ -204,7 +255,9 @@ class Post
                          geo_cities.name,
                          geo_cities.zipcode,
 
-                         geo_countries.name_full
+                         geo_countries.name_full,
+
+                         galleries.media_count AS has_photo
                    FROM posts
                    JOIN addresses
                         ON posts.id_address = addresses.id_address
@@ -212,34 +265,56 @@ class Post
                         ON addresses.id_city = geo_cities.id_city
                    JOIN geo_countries
                         ON geo_cities.id_country = geo_countries.id_country
-                  WHERE zipcode = :search
-                        AND posts.status = :validated
+                   JOIN galleries
+                        ON galleries.id_gallery = posts.id_gallery
+                  WHERE posts.id_post IN (' . implode(",", $ids_posts) . ')
+                        AND posts.status = ' . Cnst::VALIDATED . '
                         AND posts.date_closed < NOW()
                ORDER BY posts.date_created DESC';
 
-        $select = \DB::select($query, ['search' => $search,
-                                       'validated' => Cnst::VALIDATED]);
+        $select = \DB::select($query);
 
+        $final = ['markers' => [], 'posts' => [], 'count' => 0];
         if (empty($select))
-            return [];
+            return $final;
 
-        $final = [];
         $ids_galleries = [];
+        $final['count'] = count($select);
         foreach ($select as $k => &$value)
         {
-            $final[$value->id_post] = $value;
+            $value->title = self::make_title($value->id_property_type, $value->surface_living);
+            $final['posts'][$value->id_post] = $value;
             $ids_galleries[] = $value->id_gallery;
+            $final['markers'][] = [
+                'x'     => $value->longitude,
+                'y'     => $value->latitude,
+                'title' => $value->title,
+                'price'  => $value->price,
+                'link'  => ''
+            ];
         }
 
-        $galleries = Gallery::select($ids_galleries);
-        foreach ($final as $key => &$value)
+        if (!isset($opts['galleries']) || (isset($opts['galleries']) && $opts['galleries'] === TRUE))
         {
-            if (isset($galleries[$value->id_gallery]))
-                $value->gallery = $galleries[$value->id_gallery];
-            else
-                $value->gallery = ['count' => 0, 'media' => []];
+            $galleries = Gallery::select($ids_galleries);
+            foreach ($final['posts'] as $key => &$value)
+            {
+                if (isset($galleries[$value->id_gallery]))
+                    $value->gallery = $galleries[$value->id_gallery];
+                else
+                    $value->gallery = ['count' => 0, 'media' => []];
+            }
         }
 
         return $final;
+    }
+
+    private static function make_title($id_property_type, $surface_living, $room = NULL, $zipcode = NULL)
+    {
+        $title = self::$property_type[$id_property_type];
+        if ($surface_living > 0)
+            $title .= $surface_living . 'm²';
+
+        return $title;
     }
 }

@@ -49,11 +49,12 @@ class Seloger_Bot extends BaseController
                     'id_post_type' => $annonce->idTypeTransaction == 1 ? 2 : 1,
                     'content' => $annonce->descriptif,
                     'date_created' => $annonce->dtCreation,
-                    'status' => TRUE
+                    'status' => TRUE,
+                    'id_property_type' => 1,
+                    'surface_living' => isset($annonce->surface) ? $annonce->surface : 0,
+                    'room' => 0
                 ],
                 'details' => [
-                    'id_post_property_type' => 1,
-                    'surface_living' => isset($annonce->surface) ? $annonce->surface : 0,
                     'bathroom' => $annonce->nbsallesdebain,
                     'wc' => (bool)$annonce->nbtoilettes,
                     'garage' => (bool)$annonce->nbparkings,

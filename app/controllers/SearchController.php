@@ -7,7 +7,9 @@ class SearchController extends BaseController
         $data = ['__with_bg_map' => TRUE,
                  'map_config' => ['locate' => TRUE]];
 
-        $data['posts'] = \Custom\Post::search(Input::get('q'));
+        $search = \Custom\Post::search(Input::get('q'));
+        $data['posts'] = $search['posts'];
+        $data['__map_markers'] = $search['markers'];
 
         return View::make('modules/search/main', $data);
     }

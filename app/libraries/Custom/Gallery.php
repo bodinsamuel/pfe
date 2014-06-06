@@ -2,10 +2,10 @@
 
 class Gallery
 {
-    public static function create($status = 0)
+    public static function create()
     {
         $inputs['id_user'] = \User::getIdOrZero();
-        $inputs['status'] = (int)$status;
+        $inputs['status'] = Cnst::NEED_VALIDATION;
 
         $query = 'INSERT INTO galleries
                               (`id_user`, media_count, `status`, date_created, date_updated)
@@ -71,6 +71,11 @@ class Gallery
             }
         }
         return $final;
+    }
+
+    public static function delete()
+    {
+        # code...
     }
 
     public static function auto_update($id_gallery)
