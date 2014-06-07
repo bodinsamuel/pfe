@@ -292,16 +292,6 @@ class Post
             $value->title = self::make_title($value->id_property_type, $value->surface_living);
             $final['posts'][$value->id_post] = $value;
             $ids_galleries[] = $value->id_gallery;
-            if (!isset($opts['markers']) || (isset($opts['markers']) && $opts['markers'] === TRUE))
-            {
-                $final['markers'][] = [
-                    'x'     => $value->longitude,
-                    'y'     => $value->latitude,
-                    'title' => $value->title,
-                    'price'  => $value->price,
-                    'link'  => ''
-                ];
-            }
         }
 
         if (!isset($opts['galleries']) || (isset($opts['galleries']) && $opts['galleries'] === TRUE))

@@ -10,6 +10,9 @@ class Post extends Base
 
     public function insert($posts, $upsert = FALSE)
     {
+        if (!empty($posts))
+            return FALSE;
+
         $params = [];
         $params1 = [];
         $params1 = [
@@ -185,17 +188,27 @@ class Post extends Base
 
         // Run search
         $run = $elastic->run();
+        $run['markers'] = [];
         if (empty($run['results']))
             return $run;
 
         $results = [];
+        $markers = [];
         foreach ($run['results'] as $data)
         {
             $results[$data['_id']] = $data['_source'];
             $results[$data['_id']]['_score'] = $data['_score'];
+
+            $markers[$data['_id']] = [
+                'x'     => $data['_source']['location']['lon'],
+                'y'     => $data['_source']['location']['lat'],
+                'title' => '',
+                'link'  => ''
+            ];
         }
 
         $run['results'] = $results;
+        $run['markers'] = $markers;
         return $run;
     }
 

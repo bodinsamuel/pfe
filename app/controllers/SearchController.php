@@ -10,7 +10,7 @@ class SearchController extends BaseController
         $elastic = new \Custom\Elastic\Post;
         $results = $elastic->search(['zipcode' => Input::get('zipcode')]);
         $data['posts'] = $results['results'];
-        // $data['__map_markers'] = $search['markers'];
+        $data['__map_markers'] = $results['markers'];
 
         return View::make('modules/search/main', $data);
     }
