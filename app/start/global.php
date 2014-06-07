@@ -67,6 +67,11 @@ App::down(function()
 	return Response::make("Be right back!", 503);
 });
 
+DB::listen(function($sql, $bindings, $time)
+{
+    // print_r($sql);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Require The Filters File
