@@ -10,3 +10,4 @@ Thumbs.db
 *.css
 /public/assets/css
 css/
+/media/
