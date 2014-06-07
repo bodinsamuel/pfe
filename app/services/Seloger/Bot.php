@@ -1,12 +1,12 @@
-<?php
+<?php namespace Services\Seloger;
 
-class Seloger_Bot extends BaseController
+class Bot extends \BaseController
 {
     protected $layout = NULL;
 
     public function getFilldatabase()
     {
-        $search = new Seloger\Search();
+        $search = new \Seloger\Search();
 
         $search->type('rent');
         $search->order('date_desc');
@@ -76,7 +76,7 @@ class Seloger_Bot extends BaseController
             ];
         }
 
-        $has = Custom\Post\Source::has($ids, 'seloger');
+        $has = \Custom\Post\Source::has($ids, 'seloger');
 
         $stats = [
             'total' => count($ids),
@@ -89,7 +89,7 @@ class Seloger_Bot extends BaseController
             if ($bool === FALSE)
             {
                 $stats['new']++;
-                $stats['done'][$id] = Custom\Post::create($list[$id]);
+                $stats['done'][$id] = \Custom\Post::create($list[$id]);
                 print_r($stats);
                 die();
             }

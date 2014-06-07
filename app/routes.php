@@ -13,7 +13,7 @@
 // SUBDOMAIN FIRST
 Route::group(['domain' => 'media.pfe.dev'], function()
 {
-    Route::controller('/', 'MediaServer_Get');
+    Route::controller('/', 'Services\Mediaserver\Get');
 });
 
 
@@ -111,7 +111,7 @@ Route::group(['prefix' => 'api/v1'], function()
 // Services
 Route::group(['prefix' => 'services'], function()
 {
-    Route::controller('seloger', 'Seloger_Bot');
+    Route::controller('seloger', 'Services\Seloger\Bot');
     Route::controller('pap', 'Pap_Bot');
 });
 

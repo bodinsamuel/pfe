@@ -1,6 +1,6 @@
-<?php
+<?php namespace Services\Mediaserver;
 
-class MediaServer_Get extends BaseController
+class Get extends \BaseController
 {
     static public $allowed_ratio = [
         '50x50',
@@ -10,13 +10,13 @@ class MediaServer_Get extends BaseController
     public function get($inputs = NULL)
     {
         if ($inputs === NULL)
-            App::abort(403, 'Unauthorized action.');
+            \App::abort(403, 'Unauthorized action.');
 
         $url_regex = '/([A-z0-9]+)-(original|[0-9]+x[0-9]+)-([0-9]+)-([A-z0-9-]+).([a-z0-9]{2,5})/i';
         $matched = preg_match($url_regex, $inputs, $matchs);
 
         if ($matched === 0 || count($matchs) != 6)
-            App::abort(404);
+            \App::abort(404);
 
         // Prepare arguments
         $ratio = NULL;
@@ -29,7 +29,7 @@ class MediaServer_Get extends BaseController
         if ($size !== 'original')
         {
             if (!in_array($size, self::$allowed_ratio))
-                App::abort(404);
+                \App::abort(404);
 
             $ratio = explode('x', $size);
         }
@@ -37,16 +37,16 @@ class MediaServer_Get extends BaseController
         if ($hash === '404' && $title === 'not-found' && $id_media === 0
             && $extension === 'jpg')
         {
-            $path = Custom\Media::UPLOAD_DIR . '/404.jpg';
+            $path = \Custom\Media::UPLOAD_DIR . '/404.jpg';
             return self::response(404, 'image/jpeg', $path, TRUE);
         }
 
-        $media = Custom\Media::select($id_media);
+        $media = \Custom\Media::select($id_media);
         if (empty($media))
             return self::response(404);
 
         $media = $media[0];
-        if ($media->status <= Custom\Cnst::DELETED)
+        if ($media->status <= \Custom\Cnst::DELETED)
             return self::response(404, $media->mime);
 
         // Wrong url
@@ -61,7 +61,7 @@ class MediaServer_Get extends BaseController
         $dir1 = substr($hash, 0, 3);
         $dir2 = substr($hash, 3, 3);
         $dir3 = substr($hash, 6, 3);
-        $dir = Custom\Media::UPLOAD_DIR . '/' . $dir1  . '/' . $dir2 . '/' . $dir3 . '/' . $hash;
+        $dir = \Custom\Media::UPLOAD_DIR . '/' . $dir1  . '/' . $dir2 . '/' . $dir3 . '/' . $hash;
 
         // Display
         $path = $dir . '/' . $size . '.' . $extension;
@@ -85,7 +85,7 @@ class MediaServer_Get extends BaseController
     {
         if ($force_404 === TRUE)
         {
-            $response = Response::make(file_get_contents($path), $status);
+            $response = \Response::make(file_get_contents($path), $status);
             $response->header('Content-Type', $mime);
             return $response;
         }
@@ -94,10 +94,10 @@ class MediaServer_Get extends BaseController
         if ($force_404 === FALSE && $status === 404)
             $internal .= '_404';
 
-        $accel_redirect = str_replace(Custom\Media::UPLOAD_DIR, $internal, $path);
+        $accel_redirect = str_replace(\Custom\Media::UPLOAD_DIR, $internal, $path);
 
         // Make response
-        $response = Response::make('', $status);
+        $response = \Response::make('', $status);
         $response->header('X-Accel-Redirect', $accel_redirect);
         if ($mime != NULL)
             $response->header('Content-Type', $mime);
@@ -108,6 +108,6 @@ class MediaServer_Get extends BaseController
     private static function redirect($media, $ratio, $extension)
     {
         $query = $media->hash . '-' . $ratio . '-' . $media->id_media  . '-' . $media->title . '.' . $extension;
-        return Redirect::to($query, 302);
+        return \Redirect::to($query, 302);
     }
 }
