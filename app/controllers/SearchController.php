@@ -7,9 +7,10 @@ class SearchController extends BaseController
         $data = ['__with_bg_map' => TRUE,
                  'map_config' => ['locate' => TRUE]];
 
-        $search = \Custom\Post::search(Input::get('q'));
-        $data['posts'] = $search['posts'];
-        $data['__map_markers'] = $search['markers'];
+        $elastic = new \Custom\Elastic\Post;
+        $results = $elastic->search(['zipcode' => Input::get('zipcode')]);
+        $data['posts'] = $results['results'];
+        // $data['__map_markers'] = $search['markers'];
 
         return View::make('modules/search/main', $data);
     }

@@ -6,7 +6,7 @@ $(document).ready(function() {
         multiple: true,
         minimumInputLength: 2,
         ajax: {
-            url: "/api/v0/autocomplete/location",
+            url: "/api/v1/autocomplete/location",
             dataType: 'json',
             quietMillis: 100,
             cache: true,
@@ -27,7 +27,7 @@ $(document).ready(function() {
                 return;
             } else {
                 $.ajax({
-                    url: "/api/v0/autocomplete/location",
+                    url: "/api/v1/autocomplete/location",
                     data: { q : query.term },
                     dataType: 'json',
                     type: 'GET',

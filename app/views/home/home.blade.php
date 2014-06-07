@@ -11,7 +11,7 @@
                 <ul class="">
                     <li class="type_search">
                         <form method="GET" action="/search">
-                            <div><input type="hidden" id="main_search_input" placeholder="Adresse, ville, arrondissement.." name="q"  style="width:250px;height: 70px;" /></div>
+                            <div><input type="hidden" id="main_search_input" placeholder="Adresse, ville, arrondissement.." name="zipcode"  style="width:250px;height: 70px;" /></div>
                             <input type="submit" value="go" style="float: right;" />
                         </form>
                     </li>
