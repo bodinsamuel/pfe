@@ -5,13 +5,13 @@ class Details
     public static function insert($inputs)
     {
         $inputs = array_only($inputs, [
-            'surface_living'
+            'bathroom'
         ]);
 
         // Query
         $query = 'INSERT INTO posts_details
-                              (surface_living)
-                       VALUES (:surface_living)';
+                              (bathroom)
+                       VALUES (:bathroom)';
 
         $stmt = \DB::statement($query, $inputs);
         if ($stmt === FALSE)

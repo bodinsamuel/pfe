@@ -47,12 +47,12 @@ class Bot extends \BaseController
             $list[$annonce->idAnnonce] = [
                 'post' => [
                     'id_post_type' => $annonce->idTypeTransaction == 1 ? 2 : 1,
+                    'id_property_type' => 1,
+                    'surface_living' => isset($annonce->surface) ? (int)$annonce->surface : 0,
+                    'room' => 0,
                     'content' => $annonce->descriptif,
                     'date_created' => $annonce->dtCreation,
-                    'status' => TRUE,
-                    'id_property_type' => 1,
-                    'surface_living' => isset($annonce->surface) ? $annonce->surface : 0,
-                    'room' => 0
+                    'status' => TRUE
                 ],
                 'details' => [
                     'bathroom' => $annonce->nbsallesdebain,
@@ -90,8 +90,6 @@ class Bot extends \BaseController
             {
                 $stats['new']++;
                 $stats['done'][$id] = \Custom\Post::create($list[$id]);
-                print_r($stats);
-                die();
             }
             else
             {
