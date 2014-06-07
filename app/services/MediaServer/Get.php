@@ -37,7 +37,7 @@ class Get extends \BaseController
         if ($hash === '404' && $title === 'not-found' && $id_media === 0
             && $extension === 'jpg')
         {
-            $path = \Custom\Media::UPLOAD_DIR . '/404.jpg';
+            $path = \Custom\Media::UPLOAD_DIR . '/../public/assets/img/404.jpg';
             return self::response(404, 'image/jpeg', $path, TRUE);
         }
 
