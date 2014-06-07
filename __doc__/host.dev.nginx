@@ -1,0 +1,37 @@
+server {
+        listen   *:80;
+
+        server_name           pfe.dev media.pfe.dev;
+        access_log            /var/log/nginx/pfe.dev.access.log;
+        error_log             /var/log/nginx/pfe.dev.error.log;
+
+
+        root /var/www/pfe.dev/public;
+        index index.php index.html index.htm;
+
+        location /media_server {
+                 internal;
+                 alias /var/www/pfe.dev/media/;
+        }
+
+        location /media_server_404 {
+                 internal;
+                 alias /var/www/pfe.dev/media/;
+                 return 404;
+        }
+
+        location / {
+             try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+        # pass the PHP scripts to FastCGI server listening on /var/run/php5-fpm.sock
+        location ~ \.php$ {
+                try_files $uri /index.php =404;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+        }
+
+        sendfile off;
+}
