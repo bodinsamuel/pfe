@@ -64,24 +64,26 @@ class AccountController extends BaseController
             'password' => Input::get('password')
         ];
 
-        // Logged
-        if (Auth::attempt($user))
+        $login = \Custom\Account::login($user);
+
+        // not logged
+        if ($login < 0)
         {
-            if (Auth::user()->status === 1)
+            if ($login === \Custom\Account::LOGIN_NOT_ACTIVATED)
             {
-                $success = Lang::get('account.success.login');
-                return Redirect::to('/')->with('flash.notice.success', $success);
-            }
-            else
-            {
-                Auth::logout();
                 $error = Lang::get('account.error.email_not_verified', ['mail' => $user['email']]);
                 return Redirect::to('login')->with('flash.notice.error', $error);
             }
-        }
 
-        $error = Lang::get('account.error.login');
-        return Redirect::to('login')->withInput()->with('flash.notice.error', $error);
+            $error = Lang::get('account.error.login');
+            return Redirect::to('login')->withInput()->with('flash.notice.error', $error);
+        }
+        // logged
+        else
+        {
+            $success = Lang::get('account.success.login');
+            return Redirect::to('/')->with('flash.notice.success', $success);
+        }
     }
 
     public function get_Logout()
