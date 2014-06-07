@@ -77,7 +77,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     public static function getIdOrZero()
     {
-        return (\Auth::user() === NULL) ? 0 : Auth::user()->id_user;
+        return (!\Custom\Account::check()) ? 0 : \Session::get('id_user');
     }
 
     /**
