@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 30, 2014 at 02:10 PM
+-- Generation Time: Jun 07, 2014 at 11:52 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12-1~dotdeb.1
 
@@ -13,6 +13,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `pfe`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl`
+--
+
+CREATE TABLE IF NOT EXISTS `acl` (
+  `id_acl` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL,
+  PRIMARY KEY (`id_acl`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -33,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -151,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_gallery`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
 -- --------------------------------------------------------
 
@@ -228,13 +241,17 @@ CREATE TABLE IF NOT EXISTS `media` (
   `id_gallery` int(11) unsigned NOT NULL,
   `id_user` int(11) unsigned NOT NULL,
   `type` tinyint(1) NOT NULL,
+  `extension` varchar(5) NOT NULL,
   `mime` varchar(25) NOT NULL,
   `hash` varchar(35) NOT NULL,
+  `width` tinyint(5) unsigned NOT NULL,
+  `height` tinyint(5) unsigned NOT NULL,
+  `title` varchar(75) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_media`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=227 ;
 
 -- --------------------------------------------------------
 
@@ -256,19 +273,22 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 CREATE TABLE IF NOT EXISTS `posts` (
   `id_post` int(11) NOT NULL AUTO_INCREMENT,
   `id_post_type` int(11) unsigned NOT NULL,
+  `id_property_type` int(10) unsigned NOT NULL,
   `id_post_detail` int(11) unsigned NOT NULL,
   `id_gallery` int(11) unsigned NOT NULL,
   `id_user` int(11) unsigned NOT NULL,
   `id_address` int(11) unsigned NOT NULL,
-  `exclusivity` tinyint(1) unsigned NOT NULL,
-  `price` double(11,3) unsigned NOT NULL,
+  `exclusivity` tinyint(1) NOT NULL,
+  `price` double(11,3) NOT NULL,
+  `surface_living` int(4) unsigned NOT NULL,
+  `room` tinyint(4) unsigned NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_closed` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_post`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=69 ;
 
 -- --------------------------------------------------------
 
@@ -278,7 +298,6 @@ CREATE TABLE IF NOT EXISTS `posts` (
 
 CREATE TABLE IF NOT EXISTS `posts_details` (
   `id_post_detail` int(11) NOT NULL AUTO_INCREMENT,
-  `id_post_property_type` int(11) NOT NULL,
   `id_heating_type` int(11) NOT NULL,
   `id_kitchen_type` int(11) NOT NULL,
   `condition` tinyint(1) NOT NULL,
@@ -286,10 +305,8 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `perf_energy` tinyint(4) DEFAULT NULL,
   `perf_climat` tinyint(4) DEFAULT NULL,
   `orientation` varchar(2) CHARACTER SET utf8 DEFAULT NULL,
-  `surface_living` tinyint(4) DEFAULT NULL,
   `surface_ground` tinyint(4) DEFAULT NULL,
   `story` tinyint(2) NOT NULL,
-  `room` tinyint(4) NOT NULL,
   `bathroom` tinyint(2) NOT NULL,
   `wc` tinyint(1) NOT NULL,
   `attic` tinyint(1) NOT NULL,
@@ -309,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `renting_date_start` datetime DEFAULT NULL,
   `renting_date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`id_post_detail`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=44 ;
 
 -- --------------------------------------------------------
 
@@ -337,18 +354,6 @@ CREATE TABLE IF NOT EXISTS `posts_price_history` (
   `date_created` datetime NOT NULL,
   KEY `id_post` (`id_post`,`date_created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `posts_property_type`
---
-
-CREATE TABLE IF NOT EXISTS `posts_property_type` (
-  `id_post_property_type` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(15) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_post_property_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -383,8 +388,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_validated` datetime NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_has_acl`
+--
+
+CREATE TABLE IF NOT EXISTS `users_has_acl` (
+  `id_user` int(11) NOT NULL,
+  `id_acl` int(11) NOT NULL,
+  PRIMARY KEY (`id_user`,`id_acl`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Constraints for dumped tables
