@@ -18,6 +18,9 @@ class Post extends Base
         ];
         foreach ($posts as $id => $post)
         {
+            $cover = \Custom\Media::select($post->id_cover);
+            $cover = empty($cover) ? [] : (array)$cover[0];
+
             $body = [
                 'id_post_type' => (int)$post->id_post_type,
                 'id_property_type' => (int)$post->id_property_type,
@@ -25,10 +28,13 @@ class Post extends Base
                 'exclusivity' => (bool)$post->exclusivity,
                 'price' => (int)$post->price,
                 'has_photo' => (int)$post->has_photo,
-                'id_cover' => (int)$post->id_cover,
+                'cover' => [
+                    'id_media' => (int)$post->id_cover,
+                    'url' => \Custom\Media::url($cover, 'original')
+                ],
                 'address' => [
                     'zipcode' => (int)$post->zipcode,
-                    'country' => (int)$post->id_country
+                    'country' => (string)$post->country_code
                 ],
                 'location' => [
                     'lat' => (double)$post->latitude,
@@ -76,14 +82,21 @@ class Post extends Base
                     'type' => 'date',
                     'format' => 'YYYY-MM-dd HH:mm:ss'
                 ],
-                'exclusivity' => [ 'type' => 'boolean' ],
+                'exclusivity' => [ 'type' => 'boolean'],
                 'price' => [ 'type' => 'integer' ],
                 'has_photo' => [ 'type' => 'integer' ],
-                'id_cover' => [ 'type' => 'integer' ],
+                'cover' => [
+                    'properties' => [
+                        'id_media' => [ 'type' => 'integer'],
+                        'mime' => [ 'type' => 'string'],
+                        'url' => [ 'type' => 'string']
+                    ],
+                    'index' => 'no'
+                ],
                 'address' => [
                     'properties' => [
                         'zipcode' => [ 'type' => 'integer' ],
-                        'country' => [ 'type' => 'integer' ]
+                        'country' => [ 'type' => 'string', 'index' => 'not_analyzed' ]
                     ]
                 ],
                 'location' => [
@@ -110,7 +123,8 @@ class Post extends Base
     public function search($opts = [])
     {
         // initial check
-        if ((!isset($opts['ids']) && !isset($opts['coord'])) || empty($opts['ids']))
+        if (!isset($opts['zipcode']) && !isset($opts['coord'])
+            && !isset($opts['country']))
         {
             return self::E_MISSING_POS;
         }
@@ -123,19 +137,15 @@ class Post extends Base
         $elastic->setLimit($offset, $limit);
 
         // ids
-        if (isset($opts['ids']))
-        {
-            if (isset($opts['ids']['zipcode']))
-            {
-                $t = [];
-                $t['terms']['address.zipcode'] = (array)$opts['ids']['zipcode'];
-                $elastic->addFilter('and', $t);
-            }
-            if (isset($opts['ids']['country']))
-            {
+        $t = [];
+        if (isset($opts['zipcode']))
+            $t['terms']['address.zipcode'] = (array)$opts['zipcode'];
+        if (isset($opts['country']))
+            $t['terms']['address.country'] = (array)$opts['country'];
 
-            }
-        }
+        if (!empty($t))
+            $elastic->addFilter('and', $t);
+
 
         // Geo dist
         if (isset($opts['coord']))
@@ -160,7 +170,11 @@ class Post extends Base
         // Exclu
         if (isset($opts['exclusivity']))
         {
-
+            $elastic->addFilter('and', [
+                'term' => [
+                    'exclusivity' => true
+                ]
+            ]);
         }
 
         // Room
@@ -170,7 +184,19 @@ class Post extends Base
         }
 
         // Run search
-        return $elastic->run();
+        $run = $elastic->run();
+        if (empty($run['results']))
+            return $run;
+
+        $results = [];
+        foreach ($run['results'] as $data)
+        {
+            $results[$data['_id']] = $data['_source'];
+            $results[$data['_id']]['_score'] = $data['_score'];
+        }
+
+        $run['results'] = $results;
+        return $run;
     }
 
 }

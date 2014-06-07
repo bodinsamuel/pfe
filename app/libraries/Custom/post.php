@@ -260,6 +260,7 @@ class Post
                          geo_cities.zipcode,
 
                          geo_countries.id_country,
+                         geo_countries.iso2 AS country_code,
                          geo_countries.name_full AS country_name,
 
                          galleries.media_count AS has_photo,
@@ -291,13 +292,16 @@ class Post
             $value->title = self::make_title($value->id_property_type, $value->surface_living);
             $final['posts'][$value->id_post] = $value;
             $ids_galleries[] = $value->id_gallery;
-            $final['markers'][] = [
-                'x'     => $value->longitude,
-                'y'     => $value->latitude,
-                'title' => $value->title,
-                'price'  => $value->price,
-                'link'  => ''
-            ];
+            if (!isset($opts['markers']) || (isset($opts['markers']) && $opts['markers'] === TRUE))
+            {
+                $final['markers'][] = [
+                    'x'     => $value->longitude,
+                    'y'     => $value->latitude,
+                    'title' => $value->title,
+                    'price'  => $value->price,
+                    'link'  => ''
+                ];
+            }
         }
 
         if (!isset($opts['galleries']) || (isset($opts['galleries']) && $opts['galleries'] === TRUE))

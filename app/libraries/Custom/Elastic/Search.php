@@ -68,7 +68,7 @@ class Search extends Base
         $this->size = $limit;
         $this->page = round($this->from/$this->size)+1;
 
-        $this->page_prev = $this->page > 1 ? $this->page-1 : $this->page;
+        $this->page_prev = $this->page > 1 ? $this->page-1 : FALSE;
         $this->page_next = $this->page+1;
     }
 
@@ -142,11 +142,9 @@ class Search extends Base
             'total' => $search['hits']['total'],
             'count' => count($search['hits']['hits']),
             'limit' => $this->size,
-            'offset' => $this->from,
-            'page_prev' => $this->page_prev,
-            'page_current' => $this->page,
-            'page_next' => $this->page_next
+            'offset' => $this->from
         ];
+
         $data['results'] = $search['hits']['hits'];
         return $data;
     }

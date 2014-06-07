@@ -8,67 +8,47 @@ class SandboxController extends BaseController
     {
 
         $elastic = new Custom\Elastic\Post();
-        // $elastic->put_mapping(TRUE);
-        // die();
-        $post = Custom\Post::select([20, 21, 22], ['galleries' => FALSE]);
+        $elastic->put_mapping(TRUE);
+        $post = Custom\Post::select([20, 21, 22], ['galleries' => FALSE, 'markers' => FALSE]);
         $elastic->insert($post['posts']);
         die();
 
 
         $elastic = new Custom\Elastic\Search();
-        // $res = $elastic->search('{
-        //     "query": {
-        //         "filtered": {
-        //             "query": {},
-        //             "filter": {
-        //                 "range": {
-        //                     "price": {
-        //                         "gte": 800,
-        //                         "lte": 2000
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }');
-        // print_r($res);
-        // die();
         $elastic->setLimit(0, 5);
-        // $elastic->addSort('_score', 'asc');
-        // $elastic->addFilter('and', ['post.id_property_type' => 1]);
         $elastic->addQuery('bool', ['should' => [
             'range' => [
                 'price' => [
-                    'gte' => 1300,
-                    'lte' => 2000,
+                    'gte' => 0,
+                    'lte' => 3000,
                     'boost' => 1.5
                 ]
             ]
         ]]);
-        $elastic->addFilter('and', [
-            'terms' => [
-                'id_property_type' => [
-                    1
-                ]
-            ]
-        ]);
-        $elastic->addFilter('and', [
-            'geo_distance' => [
-                'distance' => '120km',
-                'location' => [
-                    'lat' => 48,
-                    'lon' => 2
-                ]
-            ]
-        ]);
-        $elastic->addSort('_geo_distance', [
-            'order' => 'desc',
-            'unit' => 'km',
-            'location' => [
-                'lat' => 48,
-                'lon' => 2
-            ]
-        ]);
+        // $elastic->addFilter('and', [
+        //     'terms' => [
+        //         'id_property_type' => [
+        //             1
+        //         ]
+        //     ]
+        // ]);
+        // $elastic->addFilter('and', [
+        //     'geo_distance' => [
+        //         'distance' => '120km',
+        //         'location' => [
+        //             'lat' => 48,
+        //             'lon' => 2
+        //         ]
+        //     ]
+        // ]);
+        // $elastic->addSort('_geo_distance', [
+        //     'order' => 'desc',
+        //     'unit' => 'km',
+        //     'location' => [
+        //         'lat' => 48,
+        //         'lon' => 2
+        //     ]
+        // ]);
 
         $search = $elastic->run();
         print_r($search);
