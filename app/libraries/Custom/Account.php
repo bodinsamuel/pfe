@@ -19,8 +19,6 @@ class Account
             if ($user->status === 1)
             {
                 \Session::put('id_user', $user->id_user);
-                \Session::put('id_acl', $user->id_acl);
-                \Session::put('acl_name', $user->acl_name);
 
                 return self::LOGIN_SUCCESS;
             }
@@ -93,6 +91,12 @@ class Account
         $user = \DB::select($query);
         if (!empty($user))
             $user = $user[0];
+
+        if (\Session::get('acl_name') || $user->acl_name)
+        {
+            \Session::put('id_acl', $user->id_acl);
+            \Session::put('acl_name', $user->acl_name);
+        }
 
         return $user;
     }
