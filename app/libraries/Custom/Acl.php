@@ -12,12 +12,12 @@ class Acl
 
     public static function isAtLeast($name)
     {
-        $current =  Session::get('acl_name');
-        if ($current === FALSE)
+        $current = \Session::get('acl_name');
+        if ($current === NULL || $current === FALSE)
             return FALSE;
 
         if ($name === $current || isset(self::$tree[$name]))
-            return TRUE
+            return TRUE;
 
         return FALSE;
     }
