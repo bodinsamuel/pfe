@@ -2,6 +2,8 @@
 
 class Get extends \BaseController
 {
+    protected $layout = NULL;
+
     static public $allowed_ratio = [
         '50x50',
         '100x100'
