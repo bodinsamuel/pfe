@@ -16,7 +16,7 @@ class Media
             'id_gallery', 'type', 'extension', 'mime', 'hash', 'title',
             'width', 'height'
         ], $inputs);
-        $inputs['status'] = Cnst::NEED_VALIDATION;
+        $inputs['status'] = Acl::isAtLeast('root') ? Cnst::Validated : Cnst::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
         $inputs['title'] = \Str::slug($inputs['title']);
 

@@ -5,7 +5,7 @@ class Gallery
     public static function create()
     {
         $inputs['id_user'] = \User::getIdOrZero();
-        $inputs['status'] = Cnst::NEED_VALIDATION;
+        $inputs['status'] = Acl::isAtLeast('root') ? Cnst::Validated : Cnst::NEED_VALIDATION;
 
         $query = 'INSERT INTO galleries
                               (`id_user`, media_count, `status`, date_created, date_updated)

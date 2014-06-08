@@ -150,7 +150,7 @@ class Post
             'id_post_type', 'id_property_type', 'id_post_detail', 'id_gallery',
             'id_address', 'surface_living', 'room', 'content'
         ]);
-        $inputs['status'] = Cnst::NEED_VALIDATION;
+        $inputs['status'] = Acl::isAtLeast('root') ? Cnst::Validated : Cnst::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
 
         // Query
