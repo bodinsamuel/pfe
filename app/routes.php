@@ -33,19 +33,19 @@ Route::get('/selling/{id_post}/{title}', 'PostController@get_one');
 Route::get('/renting/business/{id_post}/{title}', 'PostController@get_one');
 Route::get('/selling/business/{id_post}/{title}', 'PostController@get_one');
 
-    // Action
-    Route::group(['before' => 'auth'], function()
-    {
-        Route::get('/post/create/', ['as' => 'post_create', 'uses' => 'PostController@get_create']);
-        Route::post('/post/create/', 'PostController@post_create');
-        Route::get('/post/edit/{id_post}', ['as' => 'post_edit', 'uses' => 'PostController@get_edit']);
-        Route::post('/post/edit/{id_post}', 'PostController@post_edit');
-        Route::get('/post/delete/{id_post}',['as' => 'post_delete', 'uses' => 'PostController@get_delete']);
-        Route::delete('/post/delete/{id_post}', 'PostController@delete_delete');
-    });
+// Action
+Route::group(['before' => 'auth'], function()
+{
+    Route::get('/post/create/', ['as' => 'post_create', 'uses' => 'PostController@get_create']);
+    Route::post('/post/create/', 'PostController@post_create');
+    Route::get('/post/edit/{id_post}', ['as' => 'post_edit', 'uses' => 'PostController@get_edit']);
+    Route::post('/post/edit/{id_post}', 'PostController@post_edit');
+    Route::get('/post/delete/{id_post}',['as' => 'post_delete', 'uses' => 'PostController@get_delete']);
+    Route::delete('/post/delete/{id_post}', 'PostController@delete_delete');
+});
 
 // Account
-Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'AccountController@get_Dashboard']);
+// Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'AccountController@get_Dashboard']);
     // Register
     Route::get('/register', ['before' => 'guest', 'uses' => 'AccountController@get_Register']);
     Route::post('/register', ['before' => 'csrf', 'uses' => 'AccountController@post_Register']);
@@ -53,13 +53,12 @@ Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'Accoun
     // Login
     Route::get('/login', ['as' => 'login', 'before' => 'guest', 'uses' => 'AccountController@get_Login']);
     Route::post('/login', ['before' => 'csrf', 'uses' => 'AccountController@post_Login']);
-    Route::get('/logout', ['as' => 'logout', 'before' => 'auth', 'uses' => 'AccountController@get_Logout']);
 
     // Active / Deactivate
-    Route::get('/account/validate', ['as' => 'account_validate', 'before' => 'guest', 'uses' => 'AccountController@get_validate']);
-    Route::get('/account/send_validation', [ 'before' => 'guest', 'uses' => 'AccountController@get_sendValidation']);
-    Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
-    Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
+    // Route::get('/account/validate', ['as' => 'account_validate', 'before' => 'guest', 'uses' => 'AccountController@get_validate']);
+    // Route::get('/account/send_validation', [ 'before' => 'guest', 'uses' => 'AccountController@get_sendValidation']);
+    // Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
+    // Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
 
     // Password
     Route::get('/password/forgotten', ['as' => 'password_forgot', 'before' => 'guest', 'uses' => 'AccountController@get_ForgotPassword']);
@@ -68,13 +67,21 @@ Route::get('/account', ['as' => 'account', 'before' => 'auth', 'uses' => 'Accoun
     Route::post('/password/reset', ['uses' => 'AccountController@post_ResetPassword']);
 
     // Edit
-    Route::get('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@get_Edit']);
-    Route::post('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@post_Edit']);
+    // Route::get('/account/edit', ['as' => 'account_edit', 'before' => 'auth', 'uses' => 'AccountController@get_Edit']);
+    // Route::post('/account/edit', ['before' => 'auth', 'uses' => 'AccountController@post_Edit']);
 
     // Other
-    Route::get('/account/alert', ['as' => 'account_alert', 'before' => 'auth', 'uses' =>  'AccountController@get_Alert']);
-    Route::get('/account/favorite', ['as' => 'account_favorite', 'before' => 'auth', 'uses' =>  'AccountController@get_Favorite']);
-    Route::get('/account/address', ['as' => 'account_address', 'before' => 'auth', 'uses' =>  'AccountController@get_Address']);
+    // Route::get('/account/alert', ['as' => 'account_alert', 'before' => 'auth', 'uses' =>  'AccountController@get_Alert']);
+    // Route::get('/account/favorite', ['as' => 'account_favorite', 'before' => 'auth', 'uses' =>  'AccountController@get_Favorite']);
+    // Route::get('/account/address', ['as' => 'account_address', 'before' => 'auth', 'uses' =>  'AccountController@get_Address']);
+
+Route::group(['before' => 'auth'], function()
+{
+    Route::get('/account', 'UserDashboardController@get');
+    Route::controller('account', 'UserDashboardController');
+
+    Route::get('/logout', ['as' => 'logout', 'uses' => 'AccountController@get_Logout']);
+});
 
 // Agencies
 Route::get('/agency/{id_agency}/{title}', 'AgencyController@get');
@@ -85,9 +92,9 @@ Route::delete('/agency/{id_agency}', 'AgencyController@delete');
 
 // Search
 Route::get('/search/', 'SearchController@get_Run');
-Route::get('/search/{id_search?}', 'SearchController@get_One');
-Route::post('/search/{id_search?}', 'SearchController@post_Save');
-Route::delete('/search/{id_search}', 'SearchController@delete_Delete');
+// Route::get('/search/id/{id_search?}', 'SearchController@get_One');
+// Route::post('/search/id/{id_search?}', 'SearchController@post_Save');
+// Route::delete('/search/id/{id_search}', 'SearchController@delete_Delete');
 
 // Favorites
 Route::get('/favorite/{id_favorite?}', 'FavoriteController@get');
