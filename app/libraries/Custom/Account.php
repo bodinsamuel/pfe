@@ -34,6 +34,14 @@ class Account
         }
     }
 
+    public static function logout()
+    {
+        \Session::forget('id_user');
+        \Session::forget('id_acl');
+        \Session::forget('acl_name');
+        \Auth::logout();
+    }
+
     public static function auth(array $inputs)
     {
         $query = 'SELECT id_user, password

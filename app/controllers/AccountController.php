@@ -82,7 +82,7 @@ class AccountController extends BaseController
 
     public function get_Logout()
     {
-        Auth::logout();
+        \Custom\Account::logout();
 
         $success = Lang::get('account.success.logout');
         return Redirect::to('/')->with('flash.notice.success', $success);
