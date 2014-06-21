@@ -11,10 +11,16 @@ class Bot extends \BaseController
         $search->type('rent');
         $search->order('date_desc');
         $search->property('appartement');
-        $search->zipcode(['750115']);
-        $search->price(800, 2500);
+        $search->zipcode([
+            '750101', '750102', '750103', '750104', '750105', '750106', '750107',
+            '750108', '750109', '750110', '750111', '750112', '750113', '750114',
+            '750115', '750116', '750117', '750118', '750119', '750120'
+        ]);
+        $search->price(700, 5500);
 
         $results = $search->run();
+        // print_r($results);
+        // die();
 
         if ($results->nbTrouvees == 0)
         {
@@ -48,22 +54,25 @@ class Bot extends \BaseController
                 'post' => [
                     'id_post_type' => $annonce->idTypeTransaction == 1 ? 2 : 1,
                     'id_property_type' => 1,
-                    'surface_living' => isset($annonce->surface) ? (int)$annonce->surface : 0,
-                    'room' => 0,
                     'content' => $annonce->descriptif,
-                    'date_created' => $annonce->dtCreation,
-                    'status' => TRUE
+                    'date_created' => $annonce->dtCreation
                 ],
                 'details' => [
-                    'bathroom' => $annonce->nbsallesdebain,
+                    'condition' => $annonce->siLotNeuf === 'false' ? \Custom\Post\Details::CONDITION_USED : CONDITION_NEW,
+                    'bathroom' => empty((array)$annonce->nbsallesdebain) ? 0 : $annonce->nbsallesdebain,
                     'wc' => (bool)$annonce->nbtoilettes,
                     'garage' => (bool)$annonce->nbparkings,
-                    'balcony' => $annonce->siterrasse == 'False' ? false : true,
+                    'balcony' => ($annonce->siterrasse == 'False' ? false : true),
+                    'surface_living' => isset($annonce->surface) ? (int)$annonce->surface : 0,
+                    'room' => (int)$annonce->nbPiece,
                 ],
-                'price' => $annonce->prix,
+                'price' => [
+                    'value' => $annonce->prix,
+                    'type' => ($annonce->prixUnite == '€cc*' ? \Custom\Post\Price::ALL_INCLUSIVE : \Custom\Post\Price::NOT_INCLUDED)
+                ],
                 'address' => [
                     'address1' => 'NULL',
-                    'id_city' => 30840,
+                    'id_city' => \Custom\Geo::get_id_city_from_zipcode($annonce->cp),
                     'origin' => 'post',
                     'longitude' => (double)$annonce->longitude,
                     'latitude' => (double)$annonce->latitude
@@ -75,6 +84,9 @@ class Bot extends \BaseController
                 'medias' => $gallery
             ];
         }
+
+        // print_r($list);
+        // die();
 
         $has = \Custom\Post\Source::has($ids, 'seloger');
 
