@@ -10,7 +10,7 @@ class Post extends Base
 
     public function insert($posts, $upsert = FALSE)
     {
-        if (!empty($posts))
+        if (empty($posts))
             return FALSE;
 
         $params = [];
@@ -31,13 +31,16 @@ class Post extends Base
                 'exclusivity' => (bool)$post->exclusivity,
                 'price' => (int)$post->price,
                 'has_photo' => (int)$post->has_photo,
+                'content' => $post->content,
                 'cover' => [
                     'id_media' => (int)$post->id_cover,
                     'url' => \Custom\Media::url($cover, 'original')
                 ],
                 'address' => [
-                    'zipcode' => (int)$post->zipcode,
-                    'country' => (string)$post->country_code
+                    'country' => (int)$post->country_code,
+                    'id_state' => (string)$post->admin1_id,
+                    'id_province' => (int)$post->admin2_id,
+                    'id_city' => (int)$post->city_id
                 ],
                 'location' => [
                     'lat' => (double)$post->latitude,
@@ -88,6 +91,7 @@ class Post extends Base
                 'exclusivity' => [ 'type' => 'boolean'],
                 'price' => [ 'type' => 'integer' ],
                 'has_photo' => [ 'type' => 'integer' ],
+                'content' => [ 'type' => 'string', 'index' => 'no' ],
                 'cover' => [
                     'properties' => [
                         'id_media' => [ 'type' => 'integer'],
@@ -98,8 +102,10 @@ class Post extends Base
                 ],
                 'address' => [
                     'properties' => [
-                        'zipcode' => [ 'type' => 'integer' ],
-                        'country' => [ 'type' => 'string', 'index' => 'not_analyzed' ]
+                        'country' => [ 'type' => 'string', 'index' => 'not_analyzed' ],
+                        'id_state' => [ 'type' => 'integer' ],
+                        'id_province' => [ 'type' => 'integer' ],
+                        'id_city' => [ 'type' => 'integer' ],
                     ]
                 ],
                 'location' => [
@@ -126,8 +132,8 @@ class Post extends Base
     public function search($opts = [])
     {
         // initial check
-        if (!isset($opts['zipcode']) && !isset($opts['coord'])
-            && !isset($opts['country']))
+        if (!isset($opts['id_city']) && !isset($opts['coord'])
+            && !isset($opts['country']) && !isset($opts['_id']))
         {
             return self::E_MISSING_POS;
         }
@@ -141,10 +147,16 @@ class Post extends Base
 
         // ids
         $t = [];
-        if (isset($opts['zipcode']))
-            $t['terms']['address.zipcode'] = (array)$opts['zipcode'];
+        if (isset($opts['id_city']) && !empty($opts['id_city']))
+            $t['terms']['address.id_city'] = (array)$opts['id_city'];
+        if (isset($opts['id_province']) && !empty($opts['id_province']))
+            $t['terms']['address.id_province'] = (array)$opts['id_province'];
+        if (isset($opts['id_state']) && !empty($opts['id_state']))
+            $t['terms']['address.id_state'] = (array)$opts['id_state'];
         if (isset($opts['country']))
             $t['terms']['address.country'] = (array)$opts['country'];
+        if (isset($opts['_id']))
+            $t['terms']['_id'] = (array)$opts['_id'];
 
         if (!empty($t))
             $elastic->addFilter('and', $t);
