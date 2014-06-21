@@ -263,6 +263,9 @@ class Post
 
                          galleries.media_count AS has_photo,
                          galleries.id_cover,
+                         media.hash AS cover_hash,
+                         media.title AS cover_title,
+                         media.extension AS cover_extension,
 
                          geo_cities.id_city AS city_id,
                          geo_cities.name AS city_name,
@@ -290,6 +293,9 @@ class Post
                         ON geo_cities.id_country = geo_countries.id_country
                    JOIN galleries
                         ON galleries.id_gallery = posts.id_gallery
+
+              LEFT JOIN media
+                        ON media.id_media = galleries.id_cover
 
               LEFT JOIN geo_states AS admin1
                         ON admin1.id_state = geo_cities.admin1_id

@@ -8,14 +8,7 @@
             <ul>
             @foreach($posts AS $id_post => $post)
                 <li id="post_id_{{{ $id_post }}}" class="_c" style="margin: 10px 10px 0px;padding: 10px 0 10px 0;">
-                    <div class="galerie mini">
-                        <div class="big">
-                            <img src="{{{ $post['cover']['url'] }}}" width="200" alt="" class="" />
-                        </div>
-                    </div>
-                    <div class="content">
-                        {{{ $post['content'] }}}
-                    </div>
+                    @include('modules/post/one')
                 </li>
             @endforeach
             </ul>

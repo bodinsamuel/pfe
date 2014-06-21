@@ -5,8 +5,9 @@ class Get extends \BaseController
     protected $layout = NULL;
 
     static public $allowed_ratio = [
-        '50x50',
-        '100x100'
+        '50x50' => ['50', '50', '1'],
+        '100x100' => ['100', '100', '1'],
+        '250x175' => ['250', '175', '1']
     ];
 
     public function get($inputs = NULL)
@@ -14,10 +15,10 @@ class Get extends \BaseController
         if ($inputs === NULL)
             \App::abort(403, 'Unauthorized action.');
 
-        $url_regex = '/([A-z0-9]+)-(original|[0-9]+x[0-9]+)-([0-9]+)-([A-z0-9-]+).([a-z0-9]{2,5})/i';
+        $url_regex = '/([A-z0-9]+)-(original|[0-9]+x[0-9]+)-([0-9]+)(-([A-z0-9-]+))?.([a-z0-9]{2,5})/i';
         $matched = preg_match($url_regex, $inputs, $matchs);
 
-        if ($matched === 0 || count($matchs) != 6)
+        if ($matched === 0 || count($matchs) < 6)
             \App::abort(404);
 
         // Prepare arguments
@@ -25,15 +26,15 @@ class Get extends \BaseController
         $hash = $matchs[1];
         $size = $matchs[2];
         $id_media = (int)$matchs[3];
-        $title = $matchs[4];
-        $extension = $matchs[5];
+        $title = $matchs[5];
+        $extension = $matchs[6];
 
         if ($size !== 'original')
         {
-            if (!in_array($size, self::$allowed_ratio))
+            if (!isset(self::$allowed_ratio[$size]))
                 \App::abort(404);
 
-            $ratio = explode('x', $size);
+            $ratio = self::$allowed_ratio[$size];
         }
 
         if ($hash === '404' && $title === 'not-found' && $id_media === 0
@@ -65,6 +66,7 @@ class Get extends \BaseController
         $dir3 = substr($hash, 6, 3);
         $dir = \Custom\Media::UPLOAD_DIR . '/' . $dir1  . '/' . $dir2 . '/' . $dir3 . '/' . $hash;
 
+
         // Display
         $path = $dir . '/' . $size . '.' . $extension;
         $is_file = is_file($path);
@@ -73,9 +75,14 @@ class Get extends \BaseController
         {
             return self::response(404, $media->mime);
         }
-        elseif ($size !== 'original' && !$is_file)
+        elseif ($size !== 'original' && !$is_file && $media->type == \Custom\Media::TYPE_IMAGE)
         {
-            die('need to create a ratio');
+            $resizer = new \Custom\Media\Resizer;
+            $resizer->setSource($dir . '/original.' . $extension);
+            $resizer->setExtension($extension);
+            $resizer->filler($ratio[0], $ratio[1]);
+
+            return self::response(200, $media->mime, $path);
         }
         else
         {
