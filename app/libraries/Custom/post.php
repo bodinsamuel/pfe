@@ -236,8 +236,19 @@ class Post
         return $return;
     }
 
-    public static function select($ids_posts, $opts = [])
+    public static function select($ids_posts = NULL, $opts = [])
     {
+        $where = [];
+
+        if (!empty($ids_posts))
+            $where[] = 'posts.id_post IN (' . implode(",", $ids_posts) . ')';
+
+        if (isset($opts['status']))
+            $where[] = 'posts.status = ' . $opts['status'];
+        else
+            $where[] = 'posts.status = ' . Cnst::VALIDATED;
+
+        $where[] = 'posts.date_closed < NOW()';
         // Query
         $query = 'SELECT posts.id_post,
                          posts.id_post_type,
@@ -302,10 +313,14 @@ class Post
               LEFT JOIN geo_provinces AS admin2
                         ON admin2.id_province = geo_cities.admin2_id
 
-                  WHERE posts.id_post IN (' . implode(",", $ids_posts) . ')
-                        AND posts.status = ' . Cnst::VALIDATED . '
-                        AND posts.date_closed < NOW()
+                  WHERE ' . implode(' AND ', $where) . '
                ORDER BY posts.date_created DESC';
+
+        if (isset($opts['limit']))
+            $query .= ' LIMIT ' . (int)$opts['limit'];
+
+        if (isset($opts['offset']))
+            $query .= ' OFFSET ' . (int)$opts['offset'];
 
         $select = \DB::select($query);
 
