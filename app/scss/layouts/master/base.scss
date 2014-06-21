@@ -29,17 +29,24 @@ body {
         width: 100%;
         display: inline-block;
         position: relative;
+        &._centered {
+            position: absolute;
+            top: 50%;
+            height: 240px;
+            margin-top: -120px;
+        }
     }
 }
 
 
 // ******************* FOOTER
 #footer {
-    min-width: 980px;
+    position: absolute;
+    min-width: 100%;
     min-height: 170px;
+    bottom: -200px;
     background: $color_bg_dark;
     color: $color_text_invert;
-    position: relative;
     z-index: 4;
     h2 {
         color: #fff;

@@ -21,24 +21,22 @@ body#__Home_run {
                     padding: 15px 0;
                     height: auto;
                 }
-                &.type_select {
-                    background-color: $color_1;
-                }
-                &.type_geo {
-                    background-color: $color_1_variant1;
-                }
-                &.type_classic {
-                    background-color: $color_1_variant2;
-                }
                 &.type_search {
+                    height: 59px;
                     position: relative;
                     padding: 0 0 0 30px;
                     background-color: $color_bg_dark_lighter;
-                    input[type="text"] {
-                        background-color: transparent;
-                        width: 100%;
+                    input {
+                        width: 300px;
                         color: #fff;
                         font-size: 15px;
+                    }
+                    input[type="submit"] {
+                        height: 59px;
+                        width: 100px;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
                     }
                 }
             }
@@ -50,12 +48,19 @@ body#__Home_run {
                 border: none;
                 box-shadow: none;
                 font-size: 17px;
-                padding: 22px 0;
+                padding: 15px 0;
                 .select2-search-choice-close {
                     display: none;
 
                 }
             }
+            .select2-search-choice {
+                padding: 22px 0;
+            }
+        }
+        .select2-wrapper, .select2-choices, .select2-container, .select2-search-field {
+            position: relative;
+            width: 300px;
         }
     }
 }

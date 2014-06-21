@@ -1,31 +1,6 @@
-
-<style type="text/css">
-    #mapbox-screen {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 50px;
-        left: 0;
-        /*z-index: 1;*/
-    }
-/*    #mapbox-screen:before {
-        content: " ";
-        background: rgba(0,0,0,0.2);
-        width: 100%;
-        height: 100%;
-        display: block;
-        position: absolute;
-        z-index: 2;
-    }*/
-    #mapbox-screen-map {
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
-</style>
 <div id="mapbox-screen">
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
 
     @if (isset($map_config['locate']))
         <!-- Auto geolocation plugin -->
@@ -33,34 +8,30 @@
         <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css' rel='stylesheet' />
     @endif
 
+    @if (isset($map_config['cluster']))
+        <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+        <link href='https:////api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+        <script src="https://www.mapbox.com/mapbox.js/assets/data/realworld.388.js"></script>
+
+    @endif
+
     <div id='mapbox-screen-map'></div>
     <script>
-        var map = L.mapbox.map('mapbox-screen-map', 'bodinsamuel.hj2ocb3b');
-        map.setView([48.855, 2.32], 13);
-        mapLayer = L.mapbox.featureLayer().addTo(map);
-        L.control.locate().addTo(map).setPosition('topright');
-        map.zoomControl.setPosition('topright');
-        var features = [];
+        mm = new Map();
+        mm.init();
 
         @if (isset($__map_markers))
-            @foreach($__map_markers AS $point)
-                features.push({
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [{{{ $point['x'] }}}, {{{ $point['y'] }}}]
-                    },
-                    properties: {
-                        'marker-color': '#000',
-                        title: "{{{ $point['title'] }}}"
-                    }
-                })
-            @endforeach
-
-            mapLayer.setGeoJSON({
-                type: 'FeatureCollection',
-                features: features
-            });
+            var raw_markers = {{ json_encode($__map_markers) }};
+            mm.parseMarkers(raw_markers);
         @endif
+
+        @if (isset($__map_markers_center))
+            mm.map.setView([{{{ $__map_markers_center['lat'] }}}, {{{ $__map_markers_center['lon'] }}}], 13);
+            mm.map.fitBounds(featureLayer.getBounds());
+        @else
+            mm.map.fitBounds(featureLayer.getBounds());
+        @endif
+
     </script>
 </div>

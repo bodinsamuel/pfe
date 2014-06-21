@@ -13,6 +13,7 @@
     <!-- Temporaire -->
     <link href="/assets/css/modules/account/main.css" rel="stylesheet"/>
     <link href="/assets/css/modules/home/main.css" rel="stylesheet"/>
+    <link href="/assets/css/modules/map.css" rel="stylesheet"/>
 
     <!-- LIB -->
     <script src="/assets/lib/jquery/jquery.1.11.js"></script>
@@ -21,6 +22,7 @@
 
     <!-- JS -->
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/map.js"></script>
 
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic' rel='stylesheet' type='text/css'>
@@ -31,7 +33,7 @@
     @include('layouts/master/header')
 
     <div id="container" class="_c @if (isset($_container_cls)) {{{ $_container_cls }}} @endif">
-        <div id="content">
+        <div id="content" class="_c @if (isset($_content_cls)) {{{ $_content_cls }}} @endif">
             @include('common/notice')
 
             @yield('content')
