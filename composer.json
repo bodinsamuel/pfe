@@ -33,7 +33,9 @@
 		"laravel/framework": "4.1.*",
         "bodinsamuel/seloger-php": "1.0.*",
         "bodinsamuel/PAP-php": "1.0.*",
-        "elasticsearch/elasticsearch": "~1.0"
+        "elasticsearch/elasticsearch": "~1.0",
+        "videlalvaro/php-amqplib": "2.2.*",
+		"pda/pheanstalk": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -42,7 +44,6 @@
 			"app/models",
 			"app/database/migrations",
 			"app/database/seeds",
-			"app/tests/TestCase.php",
             "app/services"
 		],
         "psr-0": {
