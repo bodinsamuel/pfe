@@ -3,12 +3,6 @@
 class AccountController extends BaseController
 {
 
-    public function get_Dashboard()
-    {
-        $data = ['__page_title' => 'Dashboard'];
-        return View::make('account/dashboard', $data);
-    }
-
     public function get_Register()
     {
         $data = ['__page_title' => 'Register'];
@@ -153,16 +147,6 @@ class AccountController extends BaseController
         return Redirect::to('/')->with('flash.notice.success', $success);
     }
 
-    public function get_Deactivate()
-    {
-        # code...
-    }
-
-    public function post_Deactivate()
-    {
-        # code...
-    }
-
     public function get_ForgotPassword()
     {
         $data = ['__page_title' => 'Forgot Password'];
@@ -245,20 +229,5 @@ class AccountController extends BaseController
 
         $success = Lang::get('account.success.password.reseted');
         return Redirect::to('/')->with('flash.notice.success', $success);
-    }
-
-    public function get_alert()
-    {
-        # code...
-    }
-
-    public function get_Edit()
-    {
-        # code...
-    }
-
-    public function post_Edit()
-    {
-        # code...
     }
 }
