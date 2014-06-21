@@ -34,7 +34,9 @@ class Post extends Base
                 'content' => $post->content,
                 'cover' => [
                     'id_media' => (int)$post->id_cover,
-                    'url' => \Custom\Media::url($cover, 'original')
+                    'hash' => $post->cover_hash,
+                    'title' => $post->cover_title,
+                    'extension' => $post->cover_extension
                 ],
                 'address' => [
                     'country' => (int)$post->country_code,
@@ -95,8 +97,9 @@ class Post extends Base
                 'cover' => [
                     'properties' => [
                         'id_media' => [ 'type' => 'integer'],
-                        'mime' => [ 'type' => 'string'],
-                        'url' => [ 'type' => 'string']
+                        'hash' => [ 'type' => 'string'],
+                        'title' => [ 'type' => 'string'],
+                        'extension' => [ 'type' => 'string']
                     ],
                     'index' => 'no'
                 ],
