@@ -4,6 +4,19 @@ class SandboxController extends BaseController
 {
     protected $layout = NULL;
 
+    public function getResize()
+    {
+        $resizer = new Custom\Media\Resizer;
+        $resizer->setSource('/var/www/pfe.dev/media\0a9\64b\f71\0a964bf7165f6dff3f0e6190d8f7583a/original.jpg');
+        $resizer->setExtension('jpg');
+        $resizer->filler(100, 100);
+
+        $resizer = new Custom\Media\Resizer;
+        $resizer->setSource('/var/www/pfe.dev/media\0af\24a\b84\0af24ab8488da29ecd0de6bdd0068da1/original.jpg');
+        $resizer->setExtension('jpg');
+        $resizer->filler(100, 100);
+    }
+
     public function getRabbit()
     {
         $bean = Custom\Singleton::getBeanstalkd();
