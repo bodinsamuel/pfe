@@ -70,7 +70,7 @@ class Post
                 $inputs['id_post'] = $id_post;
 
                 // Pricing
-                $price = Post\Price::insert($id_post, $inputs['price']);
+                $price = Post\Price::insert($id_post, $inputs['price']['value'], $inputs['price']['type']);
                 if ($price === -1)
                     throw new \Exception("[POST CREATE] failed inserting post");
 
@@ -148,27 +148,34 @@ class Post
     {
         $inputs = array_only($inputs, [
             'id_post_type', 'id_property_type', 'id_post_detail', 'id_gallery',
-            'id_address', 'surface_living', 'room', 'content'
+            'id_address', 'content'
         ]);
-        $inputs['status'] = Acl::isAtLeast('root') ? Cnst::Validated : Cnst::NEED_VALIDATION;
+        $inputs['status'] = Acl::isAtLeast('root') ? Cnst::VALIDATED : Cnst::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
 
         // Query
         $query = 'INSERT INTO posts
                               (id_post_type, id_property_type, id_post_detail,
-                               id_gallery, id_user, id_address, surface_living,
-                               room, content,
+                               id_gallery, id_user, id_address, content,
                                date_created, date_updated, date_closed, status)
                        VALUES (:id_post_type, :id_property_type, :id_post_detail,
-                               :id_gallery, :id_user, :id_address, :surface_living,
-                               :room, :content,
+                               :id_gallery, :id_user, :id_address, :content,
                                NOW(), NOW(), "NULL", :status)';
 
         $stmt = \DB::statement($query, $inputs);
         if ($stmt === FALSE)
             return -1;
 
-        return \DB::getPdo()->lastInsertId();
+        $lid = \DB::getPdo()->lastInsertId();
+
+        // Publish to RabbitMQ that this post need to be inserted in elastic
+        if ($inputs['status'] == Cnst::VALIDATED)
+        {
+            $rabbit = Singleton::getRabbit();
+            $rabbit->post_elastic_upsert($lid);
+        }
+
+        return $lid;
     }
 
     /**
@@ -185,8 +192,6 @@ class Post
                 'id_post_detail' => 'required|integer',
                 'id_gallery' => 'required|integer',
                 'id_address' => 'required|integer',
-                'surface_living' => 'required|integer',
-                'room' => 'required|integer',
                 'content'    => 'required'
             ]
         );
@@ -212,12 +217,12 @@ class Post
 
             $return['post'] = $post;
 
+            // delete gallery
             $return['gallery'] = Gallery::delete($id_gallery);
 
+            // Delete from elastic search
             $elastic = new Custom\Elastic\Post();
             $deletion = $elatic->delete($id_post);
-            print_r($deletion);
-
 
         } catch (Exception $e) {
             \DB::rollback();
