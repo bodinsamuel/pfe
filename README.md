@@ -30,10 +30,14 @@ if you are not using the box, or for the prod environnement
   * sudo apt-get install memcached
 
 * elasticsearch
+  * sudo apt-get install elasticsearch
 
-* RabbitMQ
-  * not used yet but soon to be
+* Beanstalkd
+  * sudo apt-get install beanstalkd
+  * composer require pda/pheanstalk:dev-master
 
+* Supervisor
+  * sudo apt-get install supervisor
 
 Nginx and laravel
 -----------------
