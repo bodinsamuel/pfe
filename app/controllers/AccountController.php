@@ -6,7 +6,7 @@ class AccountController extends BaseController
     public function get_Register()
     {
         $data = ['__page_title' => 'Register'];
-        return View::make('account/register', $data);
+        return View::make('default/account/register', $data);
     }
 
     public function post_Register()
@@ -48,7 +48,7 @@ class AccountController extends BaseController
     public function get_Login()
     {
         $data = ['__page_title' => 'Login'];
-        return View::make('account/login', $data);
+        return View::make('default/account/login', $data);
     }
 
     public function post_Login()
@@ -150,7 +150,7 @@ class AccountController extends BaseController
     public function get_ForgotPassword()
     {
         $data = ['__page_title' => 'Forgot Password'];
-        return View::make('account/password/forgotten', $data);
+        return View::make('default/account/password/forgotten', $data);
     }
 
     public function post_ForgotPassword()
@@ -199,7 +199,7 @@ class AccountController extends BaseController
         if (Token::ensure('reset_password') === FALSE)
             return Redirect::To('/');
 
-        return View::make('account/password/reset', $data);
+        return View::make('default/account/password/reset', $data);
     }
 
     public function post_ResetPassword()

@@ -11,7 +11,7 @@ class HomeController extends BaseController
         $data = ['__with_bg_map' => TRUE,
                  'map_config' => ['locate' => TRUE]];
 
-        return View::make('home/home', $data);
+        return View::make('default/home/home', $data);
     }
 
 }

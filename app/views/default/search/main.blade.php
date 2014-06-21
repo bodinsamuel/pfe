@@ -11,7 +11,7 @@
             <ul>
             @foreach($posts AS $id_post => $post)
                 <li id="post_id_{{{ $id_post }}}" class="_c" style="margin: 10px 10px 0px;padding: 10px 0 10px 0;">
-                    @include('modules/post/one')
+                    @include('default/post/one')
                 </li>
             @endforeach
             </ul>

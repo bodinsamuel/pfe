@@ -1,7 +1,7 @@
 @extends('layouts.master', ['__body_class' => 'fixed'])
 
 @section('content')
-    @include('account/inc/menu')
+    @include('default/account/inc/menu')
 
     <section  class="_col _col5">
         <h3>Informations</h3>

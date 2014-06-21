@@ -11,9 +11,9 @@
     <link href="/assets/css/layouts/master/base.css" rel="stylesheet"/>
 
     <!-- Temporaire -->
-    <link href="/assets/css/modules/account/main.css" rel="stylesheet"/>
-    <link href="/assets/css/modules/home/main.css" rel="stylesheet"/>
-    <link href="/assets/css/modules/map.css" rel="stylesheet"/>
+    <link href="/assets/css/default/account/main.css" rel="stylesheet"/>
+    <link href="/assets/css/default/home/main.css" rel="stylesheet"/>
+    <link href="/assets/css/default/map.css" rel="stylesheet"/>
 
     <!-- LIB -->
     <script src="/assets/lib/jquery/jquery.1.11.js"></script>
@@ -41,7 +41,7 @@
     </div>
 
     @if (isset($__with_bg_map))
-        @include('map/main', ['map_config' => $map_config])
+        @include('default/map/main', ['map_config' => $map_config])
     @endif
 
     @include('layouts/master/footer')

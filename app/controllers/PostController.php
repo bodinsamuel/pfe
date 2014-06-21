@@ -12,7 +12,7 @@ class PostController extends BaseController
     {
         $data = ['__page_title' => 'Create Post'];
 
-        return View::make('post/create', $data);
+        return View::make('default/post/create', $data);
     }
 
     public function post_create()

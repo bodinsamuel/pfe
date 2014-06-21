@@ -5,7 +5,7 @@ class UserDashboardController extends BaseController
     public function get()
     {
         $data = ['__page_title' => 'Account Dashboard'];
-        return View::make('account/dashboard', $data);
+        return View::make('default/account/dashboard', $data);
     }
 
     public function getAlert()
@@ -19,13 +19,13 @@ class UserDashboardController extends BaseController
 
         $data['favorites'] = \Custom\Favorite::select(['id_user' => Session::get('id_user')]);
 
-        return View::make('account/favorite', $data);
+        return View::make('default/account/favorite', $data);
     }
 
     public function getEdit()
     {
         $data = ['__page_title' => 'Account Settings'];
-        return View::make('account/edit', $data);
+        return View::make('default/account/edit', $data);
     }
 
     public function postEdit()
@@ -54,7 +54,7 @@ class UserDashboardController extends BaseController
     public function getChangepassword()
     {
         $data = ['__page_title' => 'Account Settings'];
-        return View::make('account/edit', $data);
+        return View::make('default/account/edit', $data);
     }
 
     public function postChangepassword()

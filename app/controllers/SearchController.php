@@ -5,7 +5,10 @@ class SearchController extends BaseController
     public function get_Run()
     {
         $data = ['__with_bg_map' => TRUE,
-                 'map_config' => ['locate' => TRUE]];
+                 'map_config' => [
+                    'locate' => TRUE,
+                    'cluster' => TRUE
+                ]];
 
         $queries = [
             'cities' => Input::get('cities'),
@@ -32,7 +35,7 @@ class SearchController extends BaseController
         $data['__map_markers'] = $results['markers'];
         // $data['__map_markers_center'] = $results['markers_center'];
 
-        return View::make('modules/search/main', $data);
+        return View::make('default/search/main', $data);
     }
 
     public function save($id_search = NULL)
