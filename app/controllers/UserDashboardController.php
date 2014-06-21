@@ -18,8 +18,7 @@ class UserDashboardController extends BaseController
         $data = ['__page_title' => 'Account Settings'];
 
         $data['favorites'] = \Custom\Favorite::select(['id_user' => Session::get('id_user')]);
-        // print_r($data);
-        // die();
+
         return View::make('account/favorite', $data);
     }
 
@@ -31,7 +30,15 @@ class UserDashboardController extends BaseController
 
     public function postEdit()
     {
-        # code...
+        $update = \Custom\User\Dashboard::updateInformations(Input::all());
+
+        if (!is_array($update) || !empty($update['errors']))
+        {
+            return Redirect::to('/account/edit')->withInput()
+                            ->withErrors($update['errors']);
+
+        }
+        return Redirect::to('/account/edit');
     }
 
     public function getDeactivate()
@@ -52,6 +59,14 @@ class UserDashboardController extends BaseController
 
     public function postChangepassword()
     {
-        # code...
+        $update = \Custom\User\Dashboard::updatePassword(Input::all());
+
+        if (!is_array($update) || !empty($update['errors']))
+        {
+            return Redirect::to('/account/edit')->withInput()
+                            ->withErrors($update['errors']);
+
+        }
+        return Redirect::to('/account/edit');
     }
 }

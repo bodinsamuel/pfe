@@ -10,22 +10,22 @@
 
             <fieldset class="{{{ $errors->has('email') ? '_error' : '' }}}">
                 <label>Email</label>
-                <input type="text" name="email" value="{{ \Custom\Account::user()->email }}" />
+                <input type="text" name="email" value="@if(Input::old('email')){{{ Input::old('email') }}}@else{{ \Custom\Account::user()->email }}@endif" />
             </fieldset>
 
             <fieldset class="{{{ $errors->has('last_name') ? '_error' : '' }}}">
                 <label>Last Name</label>
-                <input type="text" name="last_name" value="{{ \Custom\Account::user()->last_name }}" />
+                <input type="text" name="last_name" value="@if(Input::old('last_name')){{{ Input::old('last_name') }}}@else{{ \Custom\Account::user()->last_name }}@endif" />
             </fieldset>
 
             <fieldset class="{{{ $errors->has('first_name') ? '_error' : '' }}}">
                 <label>First Name</label>
-                <input type="text" name="first_name" value="{{ \Custom\Account::user()->first_name }}" />
+                <input type="text" name="first_name" value="@if(Input::old('first_name')){{{ Input::old('first_name') }}}@else{{ \Custom\Account::user()->first_name }}@endif" />
             </fieldset>
 
             <fieldset class="{{{ $errors->has('phone_mobile') ? '_error' : '' }}}">
                 <label>Mobile Phone Number</label>
-                <input type="text" name="phone_mobile" value="{{ \Custom\Account::user()->phone_mobile }}" />
+                <input type="text" name="phone_mobile" value="@if(Input::old('phone_mobile')){{{ Input::old('phone_mobile') }}}@else{{ \Custom\Account::user()->phone_mobile }}@endif" />
             </fieldset>
 
             <fieldset>
@@ -49,9 +49,9 @@
                 <input type="text" name="new_pwd" value="" />
             </fieldset>
 
-            <fieldset class="{{{ $errors->has('new_pwd_confirm') ? '_error' : '' }}}">
+            <fieldset class="{{{ $errors->has('new_pwd_confirmation') ? '_error' : '' }}}">
                 <label>Confirmation</label>
-                <input type="text" name="new_pwd_confirm" value="" />
+                <input type="text" name="new_pwd_confirmation" value="" />
             </fieldset>
 
             <fieldset>
