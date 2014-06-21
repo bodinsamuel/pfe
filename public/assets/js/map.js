@@ -9,8 +9,11 @@ Map = (function() {
 
     Map.prototype.init = function()
     {
-        this.map = L.mapbox.map('mapbox-screen-map', 'bodinsamuel.hj2ocb3b')
-                        .setView([48.855, 2.32], 12);
+        this.map = L.mapbox.map('mapbox-screen-map', 'bodinsamuel.hj2ocb3b', { 
+            maxZoom: 17,
+            zoom: 12,
+            center: [48.855, 2.32]
+        })
 
         this.featureLayer = L.mapbox.featureLayer().addTo(this.map);
 
@@ -22,13 +25,18 @@ Map = (function() {
 
     Map.prototype.parseMarkers = function(json)
     {
-        var markers = new L.MarkerClusterGroup();
+        var markers = new L.MarkerClusterGroup({
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            maxClusterRadius: 50,
+            spiderfyDistanceMultiplier: 1.5
+        });
 
         for (var i in json)
         {
             marker = json[i];
             var marker = L.marker(new L.LatLng(json[i].y, json[i].x), {
-                icon: this.icons.test1,
                 title: json[i].title
             });
             marker.bindPopup(json[i].title);

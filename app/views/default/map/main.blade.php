@@ -9,10 +9,8 @@
     @endif
 
     @if (isset($map_config['cluster']))
-        <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-        <link href='https:////api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
-        <script src="https://www.mapbox.com/mapbox.js/assets/data/realworld.388.js"></script>
+        <script src='/assets/lib/map/markercluster/leaflet.markercluster.js'></script>
+        <link href='/assets/lib/map/markercluster/default.css' rel='stylesheet' />
 
     @endif
 
@@ -28,9 +26,9 @@
 
         @if (isset($__map_markers_center))
             mm.map.setView([{{{ $__map_markers_center['lat'] }}}, {{{ $__map_markers_center['lon'] }}}], 13);
-            mm.map.fitBounds(featureLayer.getBounds());
+            mm.map.fitBounds(mm.featureLayer.getBounds());
         @else
-            mm.map.fitBounds(featureLayer.getBounds());
+            mm.map.fitBounds(mm.featureLayer.getBounds());
         @endif
 
     </script>
