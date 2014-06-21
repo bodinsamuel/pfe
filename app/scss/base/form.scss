@@ -19,11 +19,19 @@ input {
 
 }
 
-._btn {
+.btn {
     display: inline-block;
+    text-decoration: none;
+    &.success {
+        background-color: $color_success;
+    }
+    &:hover {
+        color: #fff;
+        text-decoration: none;
+    }
 }
 
-button, input[type="submit"], ._btn {
+button, input[type="submit"], .btn {
     font-size: 16px;
     padding: 8px 20px;
     width: auto;
@@ -31,6 +39,7 @@ button, input[type="submit"], ._btn {
     border: none;
     background-color: $color_2;
     color: $color_2_invert;
+    margin: 1px;
     &._bg_dark {
         background-color: $color_bg_dark_lighter;
     }
