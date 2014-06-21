@@ -4,12 +4,39 @@ class SandboxController extends BaseController
 {
     protected $layout = NULL;
 
+    public function getRabbit()
+    {
+        $bean = Custom\Singleton::getBeanstalkd();
+        $bean->sendEvents([
+            'action' => 'PostElasticUpsert',
+            'data' => [
+                'id_post' => 156
+            ]
+        ]);
+        die();
+
+        echo 'test';
+        $connection = new PhpAmqpLib\Connection\AMQPConnection('localhost', 5672, 'guest', 'guest');
+        $channel = $connection->channel();
+
+        $channel->queue_declare('elastic_upsert', false, true, false, false);
+
+        $message = 'Hello World!';
+        $properties = ['delivery_mode' => 2];
+        $msg = new PhpAmqpLib\Message\AMQPMessage($message, $properties);
+        $channel->basic_publish($msg, '', 'elastic_upsert');
+
+        $channel->close();
+        $connection->close();
+    }
+
     public function getElastic()
     {
 
         $elastic = new Custom\Elastic\Post();
-        $elastic->put_mapping(TRUE);
-        $post = Custom\Post::select([20, 21, 22], ['galleries' => FALSE, 'markers' => FALSE]);
+        // $elastic->put_mapping(TRUE);
+        // die();
+        $post = Custom\Post::select([156,157,158,159,160,162,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197], ['galleries' => FALSE, 'markers' => FALSE]);
         $elastic->insert($post['posts']);
         die();
 
@@ -19,8 +46,8 @@ class SandboxController extends BaseController
         $elastic->addQuery('bool', ['should' => [
             'range' => [
                 'price' => [
-                    'gte' => 0,
-                    'lte' => 3000,
+                    'gte' => 1200,
+                    'lte' => 1210,
                     'boost' => 1.5
                 ]
             ]
@@ -150,5 +177,88 @@ class SandboxController extends BaseController
         }
         $end = microtime(TRUE);
         var_dump(round($end - $start, 6));
+    }
+
+    public function getAddsafenametocities()
+    {
+        $query = 'SELECT id_city, name
+                    FROM geo_cities';
+        $results = \DB::select($query);
+
+        foreach ($results as $value)
+        {
+            $q2 = 'UPDATE geo_cities
+                      SET safe = "' . str_replace('-arrondissement', '', Str::slug($value->name)) . '"
+                    WHERE id_city = ' . (int)$value->id_city;
+            \DB::statement($q2);
+        }
+    }
+
+    public function getAddsafenametocountries()
+    {
+        $query = 'SELECT id_country, name_full
+                    FROM geo_countries
+                    WHERE safe IS NULL OR safe = ""';
+        $results = \DB::select($query);
+
+        foreach ($results as $value)
+        {
+            $q2 = 'UPDATE geo_countries
+                      SET safe = "' . Str::slug($value->name_full) . '"
+                    WHERE id_country = ' . (int)$value->id_country;
+            \DB::statement($q2);
+        }
+    }
+
+    public function getAddsafenametoprovinces()
+    {
+        $query = 'SELECT id_province, name
+                    FROM geo_provinces
+                    WHERE safe IS NULL OR safe = ""';
+        $results = \DB::select($query);
+
+        foreach ($results as $value)
+        {
+            $q2 = 'UPDATE geo_provinces
+                      SET safe = "' . Str::slug($value->name) . '"
+                    WHERE id_province = ' . (int)$value->id_province;
+            \DB::statement($q2);
+        }
+    }
+
+    public function getAddsafenametostates()
+    {
+        $query = 'SELECT id_state, name
+                    FROM geo_states
+                    WHERE safe IS NULL OR safe = ""';
+        $results = \DB::select($query);
+
+        foreach ($results as $value)
+        {
+            $q2 = 'UPDATE geo_states
+                      SET safe = "' . Str::slug($value->name) . '"
+                    WHERE id_state = ' . (int)$value->id_state;
+            \DB::statement($q2);
+        }
+    }
+
+    public function getAddprovincestocities()
+    {
+        $query = 'SELECT id_city, geo_cities.name, zipcode, geo_provinces.id_province,
+                         geo_provinces.name AS PNAME, SUBSTRING(geo_cities.zipcode, 1, 2) AS test
+                    FROM geo_cities
+               LEFT JOIN geo_provinces
+                         ON geo_provinces.iso1 = SUBSTRING(geo_cities.zipcode, 1, 2)
+                    WHERE geo_cities.id_province IS NULL OR geo_cities.id_province = 0
+                    ORDER BY geo_cities.name';
+        $results = \DB::select($query);
+
+        foreach ($results as $value)
+        {
+            $q2 = 'UPDATE geo_cities
+                      SET id_province = "' . Str::slug($value->id_province) . '"
+                    WHERE id_city = ' . (int)$value->id_city;
+            \DB::statement($q2);
+        }
     }
 }
