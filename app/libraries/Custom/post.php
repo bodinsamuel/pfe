@@ -247,30 +247,41 @@ class Post
                          posts.id_user,
                          posts.exclusivity,
                          posts.price,
-                         posts.surface_living,
-                         posts.room,
                          posts.content,
                          posts.date_created,
                          posts.date_updated,
                          posts.date_closed,
                          posts.status,
 
+                         posts_details.room,
+                         posts_details.surface_living,
+
                          addresses.id_address,
                          addresses.id_user,
-                         addresses.id_city,
                          addresses.longitude,
                          addresses.latitude,
 
-                         geo_cities.name AS city_name,
-                         geo_cities.zipcode,
-
-                         geo_countries.id_country,
-                         geo_countries.iso2 AS country_code,
-                         geo_countries.name_full AS country_name,
-
                          galleries.media_count AS has_photo,
-                         galleries.id_cover
+                         galleries.id_cover,
+
+                         geo_cities.id_city AS city_id,
+                         geo_cities.name AS city_name,
+                         geo_cities.zipcode AS city_zipcode,
+
+                         geo_countries.id_country AS country_id,
+                         geo_countries.iso2 AS country_code,
+                         geo_countries.name AS country_name,
+
+                         geo_cities.admin1_id,
+                         admin1.name AS admin1_name,
+
+                         geo_cities.admin2_id,
+                         admin2.name AS admin2_name,
+
+                         geo_cities.admin3_id
                    FROM posts
+                   JOIN posts_details
+                        ON posts_details.id_post_detail = posts.id_post_detail
                    JOIN addresses
                         ON posts.id_address = addresses.id_address
                    JOIN geo_cities
@@ -279,6 +290,12 @@ class Post
                         ON geo_cities.id_country = geo_countries.id_country
                    JOIN galleries
                         ON galleries.id_gallery = posts.id_gallery
+
+              LEFT JOIN geo_states AS admin1
+                        ON admin1.id_state = geo_cities.admin1_id
+              LEFT JOIN geo_provinces AS admin2
+                        ON admin2.id_province = geo_cities.admin2_id
+
                   WHERE posts.id_post IN (' . implode(",", $ids_posts) . ')
                         AND posts.status = ' . Cnst::VALIDATED . '
                         AND posts.date_closed < NOW()
