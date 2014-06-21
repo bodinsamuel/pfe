@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2014 at 11:52 PM
+-- Generation Time: Jun 09, 2014 at 01:48 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12-1~dotdeb.1
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=45 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=177 ;
 
 -- --------------------------------------------------------
 
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_gallery`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=173 ;
 
 -- --------------------------------------------------------
 
@@ -180,6 +180,7 @@ CREATE TABLE IF NOT EXISTS `geo_cities` (
   `latitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `longitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `safe` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `zipcode` varchar(15) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_city`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=36728 ;
@@ -196,9 +197,10 @@ CREATE TABLE IF NOT EXISTS `geo_countries` (
   `continent` enum('','EU') CHARACTER SET utf8 NOT NULL,
   `iso1` int(3) NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
-  `name_short` varchar(155) CHARACTER SET utf8 NOT NULL,
   `name_full` varchar(255) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_country`)
+  `safe` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_country`),
+  KEY `iso2` (`iso2`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=242 ;
 
 -- --------------------------------------------------------
@@ -212,9 +214,10 @@ CREATE TABLE IF NOT EXISTS `geo_provinces` (
   `id_country` int(11) unsigned NOT NULL,
   `id_state` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
+  `safe` varchar(255) NOT NULL,
   `iso1` varchar(3) NOT NULL,
   PRIMARY KEY (`id_province`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=102 ;
 
 -- --------------------------------------------------------
 
@@ -226,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `geo_states` (
   `id_state` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `id_country` int(11) unsigned NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `safe` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id_state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
@@ -251,7 +255,7 @@ CREATE TABLE IF NOT EXISTS `media` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_media`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=227 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=766 ;
 
 -- --------------------------------------------------------
 
@@ -280,15 +284,14 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id_address` int(11) unsigned NOT NULL,
   `exclusivity` tinyint(1) NOT NULL,
   `price` double(11,3) NOT NULL,
-  `surface_living` int(4) unsigned NOT NULL,
-  `room` tinyint(4) unsigned NOT NULL,
+  `price_type` tinyint(4) NOT NULL DEFAULT '1',
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   `date_closed` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_post`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=69 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=198 ;
 
 -- --------------------------------------------------------
 
@@ -305,8 +308,10 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `perf_energy` tinyint(4) DEFAULT NULL,
   `perf_climat` tinyint(4) DEFAULT NULL,
   `orientation` varchar(2) CHARACTER SET utf8 DEFAULT NULL,
+  `surface_living` tinyint(4) NOT NULL,
   `surface_ground` tinyint(4) DEFAULT NULL,
   `story` tinyint(2) NOT NULL,
+  `room` tinyint(4) NOT NULL,
   `bathroom` tinyint(2) NOT NULL,
   `wc` tinyint(1) NOT NULL,
   `attic` tinyint(1) NOT NULL,
@@ -326,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `renting_date_start` datetime DEFAULT NULL,
   `renting_date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`id_post_detail`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=91 ;
 
 -- --------------------------------------------------------
 
@@ -350,6 +355,7 @@ CREATE TABLE IF NOT EXISTS `posts_has_source` (
 CREATE TABLE IF NOT EXISTS `posts_price_history` (
   `id_post` int(10) unsigned NOT NULL,
   `price` double(11,3) unsigned NOT NULL,
+  `type` tinyint(1) NOT NULL,
   `trend` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   KEY `id_post` (`id_post`,`date_created`)
