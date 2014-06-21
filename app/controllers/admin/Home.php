@@ -1,9 +1,7 @@
 <?php namespace Admin;
 
-class Home extends \BaseController
+class Home extends Base
 {
-    protected $layout = 'layouts.admin';
-
     public function get()
     {
         return;

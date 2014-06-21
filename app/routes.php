@@ -18,7 +18,8 @@ Route::group(['domain' => 'media.pfe.dev'], function()
 
 Route::group(['domain' => 'admin.pfe.dev'], function()
 {
-    Route::controller('/', 'Admin\Home');
+    Route::get('/', 'Admin\Home@get');
+    Route::controller('/posts', 'Admin\Posts');
 });
 
 
