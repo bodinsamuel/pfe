@@ -8,7 +8,7 @@
         {{{ $__meta_title }}}
     </title>
     <link href="/assets/lib/css/normalize.min.css" rel="stylesheet"/>
-    <link href="/assets/css/layouts/master.css" rel="stylesheet"/>
+    <link href="/assets/css/layouts/master/base.css" rel="stylesheet"/>
 
     <!-- Temporaire -->
     <link href="/assets/css/modules/account/main.css" rel="stylesheet"/>
@@ -26,11 +26,11 @@
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic' rel='stylesheet' type='text/css'>
 </head>
 <body id="__{{{ $__current_controller }}}_{{{ $__current_method }}}"
-      class="_c_{{{ $__current_controller }}} _m_{{{ $__current_method }}}@if(isset($__body_class)) {{{ $__body_class }}}@endif">
+      class="_c_{{{ $__current_controller }}} _m_{{{ $__current_method }}} @if(isset($__body_class)) {{{ $__body_class }}}@endif">
 
     @include('layouts/master/header')
 
-    <div id="container" class="_c">
+    <div id="container" class="_c @if (isset($_container_cls)) {{{ $_container_cls }}} @endif">
         <div id="content">
             @include('common/notice')
 
