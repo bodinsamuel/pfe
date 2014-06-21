@@ -26,8 +26,11 @@ class SearchController extends BaseController
             'id_province' => $parsed['data']['provinces'],
             'id_city' => $parsed['data']['cities']
         ]);
+
+        $data['meta'] = $results['meta'];
         $data['posts'] = $results['results'];
         $data['__map_markers'] = $results['markers'];
+        // $data['__map_markers_center'] = $results['markers_center'];
 
         return View::make('modules/search/main', $data);
     }

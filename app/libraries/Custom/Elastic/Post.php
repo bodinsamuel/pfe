@@ -217,10 +217,12 @@ class Post extends Base
             $markers[$data['_id']] = [
                 'x'     => $data['_source']['location']['lon'],
                 'y'     => $data['_source']['location']['lat'],
-                'title' => '',
+                'title' => \Custom\Post::make_title($data['_source']['id_property_type'], $data['_source']['details']['surface_living']),
                 'link'  => ''
             ];
         }
+
+        // $run['markers_center'] = \Custom\Geo::get_center_of_geocoord($markers);
 
         $run['results'] = $results;
         $run['markers'] = $markers;
