@@ -7,8 +7,25 @@ class SearchController extends BaseController
         $data = ['__with_bg_map' => TRUE,
                  'map_config' => ['locate' => TRUE]];
 
+        $queries = [
+            'cities' => Input::get('cities'),
+            'provinces' => Input::get('provinces'),
+            'states' => Input::get('states'),
+        ];
+
+        $parsed = \Custom\Geo::string_to_ids($queries);
+        if ($parsed['need_301'] === TRUE)
+        {
+            $query = http_build_query(array_merge(Input::all(), $parsed['params']));
+            return \Redirect::to('/search/?' . $query, 301);
+        }
+
         $elastic = new \Custom\Elastic\Post;
-        $results = $elastic->search(['zipcode' => Input::get('zipcode')]);
+        $results = $elastic->search([
+            'id_state' => $parsed['data']['states'],
+            'id_province' => $parsed['data']['provinces'],
+            'id_city' => $parsed['data']['cities']
+        ]);
         $data['posts'] = $results['results'];
         $data['__map_markers'] = $results['markers'];
 
