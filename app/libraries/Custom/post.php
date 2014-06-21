@@ -337,11 +337,11 @@ class Post
         return $final;
     }
 
-    private static function make_title($id_property_type, $surface_living, $room = NULL, $zipcode = NULL)
+    public static function make_title($id_property_type, $surface_living, $room = NULL, $zipcode = NULL)
     {
-        $title = self::$property_type[$id_property_type];
+        $title = ucfirst(self::$property_type[$id_property_type]);
         if ($surface_living > 0)
-            $title .= $surface_living . 'm²';
+            $title .= ', ' . $surface_living . 'm²';
 
         return $title;
     }
