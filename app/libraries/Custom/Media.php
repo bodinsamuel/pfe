@@ -126,7 +126,7 @@ class Media
 
     public static function url($m, $ratio)
     {
-        if (empty($m))
+        if (empty($m) || !isset($m['id_media']) || empty($m['id_media']))
             return self::URL_ACCESS . '/404-'. $ratio . '-0-not-found.jpg';
 
         $m = (array)$m;
