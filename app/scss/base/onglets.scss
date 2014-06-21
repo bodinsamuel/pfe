@@ -1,0 +1,20 @@
+.onglets {
+    margin: 0 0 20px 0;
+    li {
+        display: inline;
+        border-bottom: 1px solid #ccc;
+        margin: 0;
+        float: left;
+        &.selected, &:hover {
+            border-bottom: 1px solid $color_link_hover;
+            & > a {
+                color: $color_link_hover;
+            }
+        }
+        > a {
+            display: inline-block;
+            padding: 8px 20px;
+            text-decoration: none;
+        }
+    }
+}

@@ -1,0 +1,22 @@
+
+// Link
+a {
+    color: $color_link_normal;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+        color: $color_1_darker;
+    }
+    &.discret {
+        color: $color_link_discret;
+        &:hover {
+            color: $color_link_discret_hover;
+        }
+    }
+    &.invert {
+        color: $color_link_invert;
+        &:hover {
+            color: $color_link_invert_hover;
+        }
+    }
+}

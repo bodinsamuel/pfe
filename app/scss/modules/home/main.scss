@@ -1,4 +1,4 @@
-@import "conf.scss";
+@import "../../base/conf.scss";
 
 #content {
     ._box._fullscreen {
@@ -10,7 +10,6 @@ body#__Home_run {
     #search_main_box {
         #search_type_selection {
             li {
-                padding: 8px 15px;
                 span {
                     vertical-align: bottom;
                     display: inline-block;
@@ -33,14 +32,28 @@ body#__Home_run {
                 }
                 &.type_search {
                     position: relative;
-                    padding: 0 0 0 40px;
+                    padding: 0 0 0 30px;
                     background-color: $color_bg_dark_lighter;
                     input[type="text"] {
                         background-color: transparent;
-                        padding: 15px 0;
                         width: 100%;
                         color: #fff;
+                        font-size: 15px;
                     }
+                }
+            }
+        }
+        .select2-choices {
+            li {
+                background: none;
+                color: #fff;
+                border: none;
+                box-shadow: none;
+                font-size: 17px;
+                padding: 22px 0;
+                .select2-search-choice-close {
+                    display: none;
+
                 }
             }
         }
@@ -53,4 +66,5 @@ body#__Home_run {
     background: none!important;
     background-color: transparent!important;
     background-image: none!important;
+    box-shadow: none!important;
 }

@@ -1,0 +1,41 @@
+fieldset {
+    &._error {
+
+    }
+}
+
+fieldset {
+    border: none;
+    padding: 10px;
+}
+input, textarea, select {
+    padding: 4px 8px;
+    color: $color_text_normal_lighter;
+    line-height: 15px;
+    width: 200px;
+}
+
+input {
+
+}
+
+._btn {
+    display: inline-block;
+}
+
+button, input[type="submit"], ._btn {
+    font-size: 16px;
+    padding: 8px 20px;
+    width: auto;
+    display: inline-block;
+    border: none;
+    background-color: $color_2;
+    color: $color_2_invert;
+    &._bg_dark {
+        background-color: $color_bg_dark_lighter;
+    }
+}
+
+label {
+    display: block;
+}

@@ -1,0 +1,71 @@
+
+// Box
+._box, ._col {
+    position: relative;
+    display: inline-block;
+    float: left;
+    .inner {
+        margin: 0 5px 5px 0;
+    }
+}
+
+._col10 { width: 100%; }
+._col66 { width: 66%; }
+._col6  { width: 60%; }
+._col5  { width: 50%; }
+._col33 { width: 33%; }
+._col3  { width: 30%; }
+._col25 { width: 25%; }
+._col2  { width: 20%; }
+._col15 { width: 15%; }
+._col1  { width: 10%; }
+
+._col_fixed1 {width: 320px; }
+._col_fixed2 {width: 630px; }
+._col_fixed3 {width: 960px; }
+
+
+._box._fullscreen {
+    margin: 30px 0 0 40px;
+    .inner {
+        background-color: $color_bg_front;
+        width: 100%;
+        box-shadow: $box_shadow;
+        > header {
+            padding: 20px 0;
+            text-align: center;
+            h2 {
+                margin: 0;
+            }
+        }
+        > section {
+
+        }
+        footer.action {
+            margin: 15px -15px 0 -15px;
+            input {
+                padding: 15px;
+            }
+        }
+        &._full_form {
+            form {
+                padding: 15px 15px 0 15px;
+                label, input[type="text"], input[type="password"],
+                input[type="submit"], textarea, select {
+                    width: 100%;
+                    padding: 11px 0;
+                    margin: 0;
+                }
+                fieldset {
+                    input, textarea, select {
+                        padding: 18px 5px;
+                        margin: 0 0 8px 0;
+                    }
+                }
+            }
+        }
+    }
+    .outter_bottom {
+        margin: 3px 0 0 0;
+    }
+}

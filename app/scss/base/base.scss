@@ -1,0 +1,55 @@
+@import "conf.scss";
+@import "mixin.scss";
+
+@import "form.scss";
+@import "icon.scss";
+@import "layout.scss";
+@import "link.scss";
+@import "onglets.scss";
+
+
+// Float
+._flr {
+    float: right;
+}
+._fll {
+    float: left;
+    display: inline-block;
+}
+
+// Clear
+._c {
+    &:after {
+        content: " ";
+        clear: both;
+        display: block;
+    }
+}
+
+// Msg
+._msg {
+    &._error {
+        color: red;
+    }
+}
+
+
+// Heading
+h1, h2, h3, h4 {
+    font-weight: normal;
+    margin: 5px 0 10px 0;
+}
+h1 {
+    font-size: 24px;
+}
+h2 {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+// List
+ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}

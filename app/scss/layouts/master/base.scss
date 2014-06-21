@@ -1,11 +1,22 @@
-@import "../global.scss";
-@import "all.scss";
+@import "../../base/base.scss";
+@import "../all.scss";
 
 body {
     min-width: 980px;
+    background-color: $color_bg_back;
+    &.fixed {
+        #container {
+            width: 1020px;
+            background-color: $color_bg_front;
+            padding: 20px;
+            #content {
+            }
+        }
+    }
 }
+
 // ******************* HEADER
-@import "master/header.scss";
+@import "header.scss";
 
 // ******************* CONTAINER
 #container {

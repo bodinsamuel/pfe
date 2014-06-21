@@ -1,4 +1,4 @@
-@import "conf.scss";
+@import "../base/conf.scss";
 
 html {
     height: 100%;
@@ -9,86 +9,7 @@ body {
     font-weight: 400;
     font-size: 14px;
     color: $color_text_normal_lighter;
-    background-color: $color_bg_back;
     height: 100%;
-}
-
-
-// Link
-a {
-    color: $color_link_normal;
-    text-decoration: none;
-    &:hover {
-        text-decoration: underline;
-        color: $color_1_darker;
-    }
-    &.discret {
-        color: $color_link_discret;
-        &:hover {
-            color: $color_link_discret_hover;
-        }
-    }
-    &.invert {
-        color: $color_link_invert;
-        &:hover {
-            color: $color_link_invert_hover;
-        }
-    }
-}
-
-// Heading
-h1, h2, h3, h4 {
-    font-weight: normal;
-    margin: 0;
-}
-h1 {
-    font-size: 24px;
-}
-h2 {
-    font-size: 20px;
-    font-weight: 300;
-}
-
-// List
-ul, li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-// Form
-// Button
-fieldset {
-    border: none;
-    padding: 0;
-}
-button, input, ._btn {
-    padding: 4px 8px;
-    border: none;
-    color: $color_text_normal_lighter;
-    line-height: 15px;
-}
-._btn {
-    display: inline-block;
-}
-button, input[type="submit"], ._btn {
-    background-color: $color_2;
-    color: $color_2_invert;
-    &._bg_dark {
-        background-color: $color_bg_dark_lighter;
-    }
-}
-
-
-// Common
-i, ._icon {
-    &.logo_self {
-        background-image: url($img_sprite + "logo.png");
-        background-position: -143px -2px;
-        &._32 { background-position: -160px -2px; }
-        &._64 { background-position: -211px -2px; }
-        &._128 { background-position: -5px -2px; }
-    }
 }
 
 // Notices
@@ -120,5 +41,30 @@ i, ._icon {
     display: inline-block;
     &._bg_dark {
         background-color: $color_bg_dark_lighter;
+    }
+}
+
+
+// Other
+._thisIsBeta:after {
+    content: "beta";
+    font-style: italic;
+    font-size: 16px;
+    margin: 0 0 0 8px;
+}
+
+.galerie {
+    &.mini {
+        display: inline-block;
+        float: left;
+    }
+    .big {
+        width: 100%;
+    }
+    .thumbnails img {
+        width: 33%;
+        margin: 0;
+        padding: 0;
+        float: left;
     }
 }
