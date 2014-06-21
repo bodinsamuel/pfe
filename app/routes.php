@@ -16,7 +16,7 @@ Route::group(['domain' => 'media.pfe.dev'], function()
     Route::controller('/', 'Services\Mediaserver\Get');
 });
 
-Route::group(['domain' => 'admin.pfe.dev'], function()
+Route::group(['domain' => 'admin.pfe.dev', 'before' => 'auth'], function()
 {
     Route::get('/', 'Admin\Home@get');
     Route::controller('/posts', 'Admin\Posts');
