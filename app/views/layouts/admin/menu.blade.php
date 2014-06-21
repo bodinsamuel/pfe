@@ -1,4 +1,17 @@
 <div id="main-menu">
+    <div class="user-box">
+        <div class="avatar rounded">
+            <img src="/assets/img/admin/avatar.jpg" alt="" />
+        </div>
+        <div class="_flr">
+            <p>{{ \Session::get('acl_name') }}</p>
+            <p>{{ \Custom\Account::user()->email }}</p>
+        </div>
+    </div>
+
+    <div>
+        <a href="/">Dashboard</a>
+    </div>
     <div>
         <h2>Posts</h2>
         <ul>

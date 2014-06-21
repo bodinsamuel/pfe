@@ -1,10 +1,45 @@
 @import "../../base/base.scss";
 @import "../all.scss";
 
-#main-menu {
+body {
     background: #333645;
+}
+#main-menu {
     float: left;
     width: 250px;
     height: 100%;
     color: #fff;
+    font-size: 14px;
+    > div {
+        margin: 10px 0 0 0;
+    }
+    h2 {
+        margin: 0 0 0 15px;
+        font-size: 14px;
+        color: #63747f;
+    }
+    li {
+        &:hover, &.selected {
+            background-color: #1e202c;
+            a {
+                color: #fff;
+            }
+        }
+    }
+    a {
+        padding: 8px 15px;
+        display: inline-block;
+        text-decoration: none;
+        width: 100%;
+    }
+    .user-box {
+        margin: 0;
+        padding: 15px;
+        background-color: #727688;
+    }
+}
+
+#container {
+    margin-left: 250px;
+    background-color: #fff;
 }

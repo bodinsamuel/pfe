@@ -16,6 +16,8 @@ class Posts extends Base
             'limit' => 20,
             'offset' => 0
         ]);
-        return;
+        $data['pending'] = &$posts;
+
+        return \View::make('admin/posts/pending', $data);
     }
 }
