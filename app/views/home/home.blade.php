@@ -10,8 +10,15 @@
             <section id="search_type_selection">
                 <ul class="">
                     <li class="type_search">
-                        <form method="GET" action="/search">
-                            <div><input type="hidden" id="main_search_input" placeholder="Adresse, ville, arrondissement.." name="zipcode"  style="width:250px;height: 70px;" /></div>
+                        <form method="GET" action="/search/">
+                            <div>
+                                <input type="hidden" id="main_search_input"
+                                       placeholder="Adresse, ville, arrondissement.."
+                                       style="width:250px;height: 70px;" />
+                            </div>
+                            <input id="main_search_input_cities" type="hidden" value="" name="cities" />
+                            <input id="main_search_input_states" type="hidden" value="" name="provinces" />
+                            <input id="main_search_input_provinces" type="hidden" value="" name="states" />
                             <input type="submit" value="go" style="float: right;" />
                         </form>
                     </li>
