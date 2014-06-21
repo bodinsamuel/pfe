@@ -2,17 +2,12 @@
 
 class FavoriteController extends BaseController
 {
-    public function get($id_favorite = NULL)
+    public function getSave($id_favorite)
     {
         # code...
     }
 
-    public function save($id_favorite)
-    {
-        # code...
-    }
-
-    public function delete($id_favorite)
+    public function getDelete($id_favorite)
     {
         # code...
     }
