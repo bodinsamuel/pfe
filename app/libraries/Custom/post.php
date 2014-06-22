@@ -168,11 +168,16 @@ class Post
 
         $lid = \DB::getPdo()->lastInsertId();
 
-        // Publish to RabbitMQ that this post need to be inserted in elastic
+        // Publish to Beanstalkd that this post need to be inserted in elastic
         if ($inputs['status'] == Cnst::VALIDATED)
         {
-            $rabbit = Singleton::getRabbit();
-            $rabbit->post_elastic_upsert($lid);
+            $bean = Custom\Singleton::getBeanstalkd();
+            $bean->sendEvents([
+                'action' => 'PostElasticUpsert',
+                'data' => [
+                    'id_post' => $lid
+                ]
+            ]);
         }
 
         return $lid;
@@ -195,45 +200,6 @@ class Post
                 'content'    => 'required'
             ]
         );
-    }
-
-    public function delete($id_post)
-    {
-        $return = [
-            'post'    => FALSE,
-            'gallery' => FALSE
-        ];
-
-        try {
-            // Begin inserting everything
-            \DB::beginTransaction();
-            $query = 'UPDATE posts
-                         SET status = ' . Cnst::DELETED . '
-                       WHERE id_post = ' . (int)$id_post;
-
-            $post = \DB::statement($query, $inputs);
-            if ($post === FALSE)
-                return -1;
-
-            $return['post'] = $post;
-
-            // delete gallery
-            $return['gallery'] = Gallery::delete($id_gallery);
-
-            // Delete from elastic search
-            $elastic = new Custom\Elastic\Post();
-            $deletion = $elatic->delete($id_post);
-
-        } catch (Exception $e) {
-            \DB::rollback();
-
-            if (\App::environment('dev'))
-                throw $e;
-
-            $return['errors'][] = Lang::get('global.error.oops');
-        }
-
-        return $return;
     }
 
     public static function select($ids_posts = NULL, $opts = [])

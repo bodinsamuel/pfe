@@ -73,11 +73,6 @@ class Gallery
         return $final;
     }
 
-    public static function delete()
-    {
-        # code...
-    }
-
     public static function auto_update($id_gallery)
     {
         // Get id_cover

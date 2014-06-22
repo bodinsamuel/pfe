@@ -4,7 +4,8 @@
     @if ($pending['count'] > 0)
         @foreach($pending['posts'] AS $id_post => $post)
             <div>
-                #{{{ $id_post }}}
+                #{{{ $id_post }}} |
+                {{{ $post->title }}}
                 <a href="/posts/validate?id_post={{$id_post}}" class="btn success">Validate</a>
                 <a href="/posts/reject?id_post={{$id_post}}">Reject</a>
             </div>
