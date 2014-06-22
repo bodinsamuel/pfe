@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 09, 2014 at 01:48 AM
+-- Generation Time: Jun 23, 2014 at 01:15 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12-1~dotdeb.1
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_address`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=177 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=182 ;
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `favorites` (
   `id_user` int(11) NOT NULL,
   `date_action` datetime NOT NULL,
   PRIMARY KEY (`id_favorite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
   PRIMARY KEY (`id_gallery`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=173 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=178 ;
 
 -- --------------------------------------------------------
 
@@ -175,8 +175,9 @@ CREATE TABLE IF NOT EXISTS `galleries` (
 CREATE TABLE IF NOT EXISTS `geo_cities` (
   `id_city` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `id_country` int(11) unsigned NOT NULL,
-  `id_state` int(11) unsigned NOT NULL,
-  `id_province` int(11) unsigned NOT NULL,
+  `admin2_id` int(11) unsigned NOT NULL,
+  `admin1_id` int(11) unsigned DEFAULT NULL,
+  `admin3_id` int(11) unsigned DEFAULT NULL,
   `latitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `longitude` varchar(45) CHARACTER SET utf8 NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -197,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `geo_countries` (
   `continent` enum('','EU') CHARACTER SET utf8 NOT NULL,
   `iso1` int(3) NOT NULL,
   `iso2` char(2) CHARACTER SET utf8 NOT NULL,
-  `name_full` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `safe` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id_country`),
   KEY `iso2` (`iso2`)
@@ -254,7 +255,8 @@ CREATE TABLE IF NOT EXISTS `media` (
   `status` tinyint(1) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime NOT NULL,
-  PRIMARY KEY (`id_media`)
+  PRIMARY KEY (`id_media`),
+  KEY `id_gallery` (`id_gallery`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=766 ;
 
 -- --------------------------------------------------------
@@ -291,7 +293,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `date_closed` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_post`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=198 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=203 ;
 
 -- --------------------------------------------------------
 
@@ -331,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `posts_details` (
   `renting_date_start` datetime DEFAULT NULL,
   `renting_date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`id_post_detail`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=91 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=96 ;
 
 -- --------------------------------------------------------
 
@@ -396,7 +398,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_validated` datetime NOT NULL,
   `remember_token` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
