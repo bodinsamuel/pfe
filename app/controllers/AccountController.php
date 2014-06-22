@@ -76,7 +76,10 @@ class AccountController extends BaseController
         else
         {
             $success = Lang::get('account.success.login');
-            return Redirect::to('/')->with('flash.notice.success', $success);
+            if (Session::has('url.intended'))
+                return Redirect::to(Session::get('url.intended'))->with('flash.notice.success', $success);
+            else
+                return Redirect::to('/')->with('flash.notice.success', $success);
         }
     }
 

@@ -33,9 +33,10 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('auth', function()
+Route::filter('auth', function($route, $request)
 {
-	if (!\Custom\Account::check()) return Redirect::guest('login');
+	if (!\Custom\Account::check())
+        return Redirect::guest('login');
 });
 
 
