@@ -318,6 +318,27 @@ class Post
         return $final;
     }
 
+    public static function light($id_post)
+    {
+        $query = 'SELECT posts.id_post,
+                         posts.id_post_type,
+                         posts.id_property_type,
+                         posts.id_post_detail,
+                         posts.id_gallery,
+                         posts.id_user,
+                         posts.exclusivity,
+                         posts.price,
+                         posts.content,
+                         posts.date_created,
+                         posts.date_updated,
+                         posts.date_closed,
+                         posts.status
+                    FROM posts
+                   WHERE id_post = ' . (int)$id_post;
+
+         return \DB::select($query);
+    }
+
     public static function make_title($id_property_type, $surface_living, $room = NULL, $zipcode = NULL)
     {
         $title = ucfirst(self::$property_type[$id_property_type]);
