@@ -38,6 +38,7 @@ if you are not using the box, or for the prod environnement
 
 * Supervisor
   * sudo apt-get install supervisor
+  * supervisor.conf is in __doc__
 
 Nginx and laravel
 -----------------
@@ -63,3 +64,9 @@ Know Error
 
 - restart php-fpm cause to rechmod php5-fpm.sock
   - cd /var/run && sudo chmod 666 php5-fpm.sock
+
+- if supervisor error
+  - unix:///var/run/supervisor.sock no such file
+  - error: , [Errno 13] Permission denied: file: /usr/lib/python2.7/socket.py line: 224
+   - try restarting in sudo mode
+   - chmod 766 /var/run/supervisor.sock
