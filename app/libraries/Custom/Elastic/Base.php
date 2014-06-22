@@ -15,7 +15,7 @@ class Base
         $this->client = new \Elasticsearch\Client($params);
     }
 
-    public function fill_params(&$params)
+    public function fill_params(&$params = [])
     {
         $params['index'] = $this->index;
         $params['type'] = $this->index_type;
@@ -46,7 +46,7 @@ class Base
 
     public function select($id)
     {
-        $params = $this->fill_params([]);
+        $params = $this->fill_params();
         $params['id'] = $id;
 
         return $this->client->get($params);
@@ -54,7 +54,7 @@ class Base
 
     public function delete($id)
     {
-        $params = $this->fill_params([]);
+        $params = $this->fill_params();
         $params['id'] = $id;
 
         return $this->client->delete($params);
