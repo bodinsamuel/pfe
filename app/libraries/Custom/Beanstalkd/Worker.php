@@ -24,6 +24,27 @@ class Worker
         return TRUE;
     }
 
+    public static function PostElasticDelete($data)
+    {
+        if (!isset($data['id_post']))
+            return FALSE;
+
+        // *************************** PROCESSING *************
+        $elastic = new \Custom\Elastic\Post();
+
+        $inserting = $elastic->delete($data['id_post']);
+        // *************************** END ********************
+
+        if (!empty($inserting['error']))
+        {
+            Log::error('[Elastic] failed deleting => ' . $data['id_post']);
+            Log::error($inserting['error']);
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
     public function ImageRatio($data)
     {
         if (!isset($data['id_media']) || !isset($data['ratio']))
