@@ -1,15 +1,14 @@
 server {
-        listen   *:80;
+       listen *:80;
 
-        server_name           pfe.dev media.pfe.dev;
-        access_log            /var/log/nginx/pfe.dev.access.log;
-        error_log             /var/log/nginx/pfe.dev.error.log;
+       server_name       media.pfe.dev;
+       access_log            /var/log/nginx/media.pfe.dev.access.log;
+       error_log             /var/log/nginx/media.pfe.dev.error.log;
 
+       root /var/www/pfe.dev/public;
+       index index.php;
 
-        root /var/www/pfe.dev/public;
-        index index.php index.html index.htm;
-
-        location /media_server {
+       location /media_server {
                  internal;
                  alias /var/www/pfe.dev/media/;
         }
@@ -19,6 +18,34 @@ server {
                  alias /var/www/pfe.dev/media/;
                  return 404;
         }
+
+    location / {
+             try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+    # pass the PHP scripts to FastCGI server listening on /var/run/php5-fpm.sock
+        location ~ \.php$ {
+                try_files $uri /index.php =404;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+                fastcgi_param APP_ENV local;
+        }
+
+        sendfile off;
+}
+
+server {
+        listen   *:80;
+
+        server_name           pfe.dev admin.pfe.dev;
+        access_log            /var/log/nginx/pfe.dev.access.log;
+        error_log             /var/log/nginx/pfe.dev.error.log;
+
+
+        root /var/www/pfe.dev/public;
+        index index.php index.html index.htm;
 
         location / {
              try_files $uri $uri/ /index.php$is_args$args;
@@ -31,6 +58,7 @@ server {
                 fastcgi_index index.php;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                 include fastcgi_params;
+                fastcgi_param APP_ENV local;
         }
 
         sendfile off;
