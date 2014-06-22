@@ -1,8 +1,8 @@
 @extends('layouts.master', ['_content_cls' => 'centered'])
 
-@section('content')
-
-    <div id="search_main_box" class="_col _col_fixed15 _box _fullscreen _centered">
+@section('handlebars')
+    <script type="text/x-handlebars" id="index">
+    <div id="search_main_box" class="_col _col_fixed15 _box _fullscreen centered">
         <div class="inner">
             <header>
                 <h2>Je trouve mon logement</h2>
@@ -11,13 +11,11 @@
                 <ul class="">
                     <li class="type_search">
                         <form method="GET" action="/search/">
-                            <div class="select2-wrapper">
-                                <input type="hidden" id="main_search_input"
+                            <div class="wrapper">
+                                <input type="text" id="main_search_input" class="transparent typeahead"
                                        placeholder="Adresse, ville, arrondissement.." />
                             </div>
-                            <input id="main_search_input_states" type="hidden" value="" name="states" />
-                            <input id="main_search_input_provinces" type="hidden" value="" name="provinces" />
-                            <input id="main_search_input_cities" type="hidden" value="" name="cities" />
+                            <input id="main_search_input_real" type="hidden" value="" name="" />
                             <input type="submit" value="go" />
                         </form>
                     </li>
@@ -28,4 +26,5 @@
             </footer>
         </div>
     </div>
+    </script>
 @stop

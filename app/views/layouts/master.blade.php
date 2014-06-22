@@ -17,11 +17,11 @@
 
     <!-- LIB -->
     <script src="/assets/lib/jquery/jquery.1.11.js"></script>
-    <link href="/assets/lib/select2/select2.css" rel="stylesheet"/>
-    <script src="/assets/lib/select2/select2.js"></script>
+    <script src="/assets/lib/ember/handlebars-1.3.0.js"></script>
+    <script src="/assets/lib/ember/ember-1.5.1.js"></script>
+    <script src="/assets/lib/typeahead/typeahead.min.js"></script>
+    <link href="/assets/lib/typeahead/typeahead.css" rel="stylesheet"/>
 
-    <!-- JS -->
-    <script src="/assets/js/main.js"></script>
     <script src="/assets/js/map.js"></script>
 
     <!-- Font -->
@@ -40,11 +40,20 @@
         </div>
     </div>
 
+    @yield('handlebars')
     @if (isset($__with_bg_map))
         @include('default/map/main', ['map_config' => $map_config])
     @endif
 
+
     @include('layouts/master/footer')
 
+
+    <!-- JS -->
+    <script src="/assets/js/application.js"></script>
+    <script src="/assets/js/router.js"></script>
+
+    <!-- EMBER -->
+    <script src="/assets/js/views/index.js"></script>
 </body>
 </html>
