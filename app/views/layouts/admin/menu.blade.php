@@ -11,6 +11,7 @@
 
     <div>
         <a href="/">Dashboard</a>
+        <a href="http://pfe.dev">Back to site</a>
     </div>
     <div>
         <h2>Posts</h2>
