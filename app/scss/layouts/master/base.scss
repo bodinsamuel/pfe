@@ -41,18 +41,20 @@ body {
 
 // ******************* FOOTER
 #footer {
-    position: absolute;
     min-width: 100%;
     min-height: 170px;
-    bottom: -200px;
     background: $color_bg_dark;
     color: $color_text_invert;
     z-index: 4;
+    &.fullscreen {
+        bottom: -200px;
+        position: absolute;
+
+    }
     h2 {
         color: #fff;
         margin-bottom: 15px;
     }
-
     #footer-about {
         padding: 20px 40px 20px 40px;
         li {

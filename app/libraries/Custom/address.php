@@ -88,8 +88,8 @@ class Address
                 'id_address'  => 'integer',
                 'id_city'     => 'required|integer|min:1',
                 'address1'    => 'required',
-                'longitude'   => 'required|numeric',
-                'latitude'    => 'required|numeric',
+                'longitude'   => 'numeric',
+                'latitude'    => 'numeric',
                 'origin'      => 'required'
             ]
         );

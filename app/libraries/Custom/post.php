@@ -87,7 +87,7 @@ class Post
                 // Everything went well, so good to go
                 \DB::commit();
 
-                if ($inputs['medias'])
+                if (isset($inputs['medias']))
                 {
                     $batch = Media::upload($inputs['post']['id_gallery'], $inputs['medias']);
                     if ($batch['failed'] === TRUE)

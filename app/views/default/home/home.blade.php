@@ -4,7 +4,7 @@
     <script type="text/x-handlebars" id="index">
     <div id="search_main_box" class="_col _col_fixed15 _box _fullscreen centered">
         <div class="inner">
-            <header>
+            <header class="full">
                 <h2>Je trouve mon logement</h2>
             </header>
             <section id="search_type_selection">

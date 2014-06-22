@@ -7,6 +7,11 @@ fieldset {
 fieldset {
     border: none;
     padding: 10px;
+    &.inline {
+        label {
+            display: inline-block;
+        }
+    }
 }
 input, textarea, select {
     padding: 4px 8px;
@@ -20,6 +25,9 @@ input, textarea, select {
 }
 
 input {
+    &[type="radio"] {
+        width: auto;
+    }
 }
 
 .btn {

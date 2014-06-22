@@ -25,7 +25,6 @@ class PostController extends BaseController
         {
             return Redirect::to('post/create')->withInput()
                             ->withErrors($create['errors']);
-
         }
         else
         {
