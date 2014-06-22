@@ -2,7 +2,7 @@
 @import "../all.scss";
 
 body {
-    background: #333645;
+    background: #262830;
 }
 #main-menu {
     float: left;
@@ -11,11 +11,11 @@ body {
     color: #fff;
     font-size: 14px;
     > div {
-        margin: 10px 0 0 0;
+        margin: 15px 0 0 0;
     }
     h2 {
-        margin: 0 0 0 15px;
-        font-size: 14px;
+        margin: 0 0 5px 15px;
+        font-size: 15px;
         color: #63747f;
     }
     li {
@@ -27,7 +27,7 @@ body {
         }
     }
     a {
-        padding: 8px 15px;
+        padding: 6px 15px;
         display: inline-block;
         text-decoration: none;
         width: 100%;

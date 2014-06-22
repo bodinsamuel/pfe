@@ -13,10 +13,13 @@ input, textarea, select {
     color: $color_text_normal_lighter;
     line-height: 15px;
     width: 200px;
+    &.transparent {
+        border: none;
+        background: none;
+    }
 }
 
 input {
-
 }
 
 .btn {

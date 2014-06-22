@@ -1,4 +1,4 @@
-@extends('layouts.master', ['_content_cls' => '_centered'])
+@extends('layouts.master', ['_content_cls' => 'centered'])
 
 @section('content')
 

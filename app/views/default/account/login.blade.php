@@ -1,7 +1,7 @@
-@extends('layouts.master', ['__body_class' => 'fullscreen'])
+@extends('layouts.master', ['_content_cls' => 'centered'])
 
 @section('content')
-<div class="_col _col_fixed1 _box _fullscreen">
+<div class="_col _col_fixed1 _box _fullscreen centered">
     <div class="inner _full_form">
         {{ Form::open(['action' => 'AccountController@post_Login', 'method' => 'post']) }}
 
