@@ -40,6 +40,21 @@ if you are not using the box, or for the prod environnement
   * sudo apt-get install supervisor
   * supervisor.conf is in __doc__
 
+* Sass
+
+Boostrapp
+---------
+Launching
+ * php-fpm
+ * mysql
+ * memcached
+ * elasticsearch
+ * supervisord
+   * sudo services supervisord start
+ * sass-compile
+   * sass --watch app/scss:public/assets/css
+
+
 Nginx and laravel
 -----------------
 Nginx may not understand rewrited url, you need to modify the config file
