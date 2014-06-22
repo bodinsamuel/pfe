@@ -59,7 +59,7 @@ class Bot extends \BaseController
                 ],
                 'details' => [
                     'condition' => $annonce->siLotNeuf === 'false' ? \Custom\Post\Details::CONDITION_USED : CONDITION_NEW,
-                    'bathroom' => empty((array)$annonce->nbsallesdebain) ? 0 : $annonce->nbsallesdebain,
+                    'bathroom' => empty($annonce->nbsallesdebain) ? 0 : $annonce->nbsallesdebain,
                     'wc' => (bool)$annonce->nbtoilettes,
                     'garage' => (bool)$annonce->nbparkings,
                     'balcony' => ($annonce->siterrasse == 'False' ? false : true),

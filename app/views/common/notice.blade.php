@@ -1,4 +1,4 @@
-@if (!empty(Session::get('flash.notice')))
+@if (Session::get('flash.notice'))
     <div id="_notices">
     @if (Session::has('flash.notice.error'))
         <div class="msg _full _error">
