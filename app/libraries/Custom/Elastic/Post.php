@@ -39,6 +39,7 @@ class Post extends Base
                 'price' => (int)$post->price,
                 'has_photo' => (int)$post->has_photo,
                 'content' => $post->content,
+                'url' => $post->url,
                 'cover' => [
                     'id_media' => (int)$post->id_cover,
                     'hash' => $post->cover_hash,
@@ -79,8 +80,8 @@ class Post extends Base
     {
         if ($reset === TRUE)
         {
-            parent::delete_index();
-            sleep(1);
+            // parent::delete_index();
+            // sleep(1);
             parent::create_index();
             sleep(1);
         }
@@ -101,6 +102,7 @@ class Post extends Base
                 'price' => [ 'type' => 'integer' ],
                 'has_photo' => [ 'type' => 'integer' ],
                 'content' => [ 'type' => 'string', 'index' => 'no' ],
+                'url' => [ 'type' => 'string', 'index' => 'no' ],
                 'cover' => [
                     'properties' => [
                         'id_media' => [ 'type' => 'integer'],
@@ -152,7 +154,7 @@ class Post extends Base
 
         // limit [0, 100]
         $offset = isset($opts['offset']) && $opts['offset'] > 0 ? (int)$opts['offset'] : 0;
-        $limit = isset($opts['limit']) && $opts['limit'] < 100 && $opts['limit'] > 0 ? (int)$opts['limit'] : 20;
+        $limit = isset($opts['limit']) && $opts['limit'] <= 100 && $opts['limit'] > 0 ? (int)$opts['limit'] : 20;
         $elastic->setLimit($offset, $limit);
 
         // ids
@@ -225,7 +227,7 @@ class Post extends Base
                 'x'     => $data['_source']['location']['lon'],
                 'y'     => $data['_source']['location']['lat'],
                 'title' => \Custom\Post::make_title($data['_source']['id_property_type'], $data['_source']['details']['surface_living']),
-                'link'  => ''
+                'image' => \Custom\Media::url($data['_source']['cover'], '150x100')
             ];
         }
 
