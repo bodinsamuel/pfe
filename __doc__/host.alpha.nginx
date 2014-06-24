@@ -1,0 +1,126 @@
+# HTTP server
+server {
+       listen 80;
+
+       server_name           loge-ici.fr www.loge-ici.fr;
+       access_log            /var/log/nginx/loge-ici.access.log;
+       error_log             /var/log/nginx/loge-ici.error.log;
+
+
+       root /home/loge-ici/;
+       index index.php index.html index.htm;
+
+       location / {
+            try_files $uri $uri/ /index.php;
+       }
+       location ~ \.php$ {
+                try_files $uri /index.php =404;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+        fastcgi_param APP_ENV prod;
+        }
+        sendfile off;
+
+       location = /50x.html {
+            root /usr/share/nginx/www;
+       }
+
+       location ~ /\.ht {
+            deny all;
+       }
+}
+
+server {
+       listen *:80;
+
+       server_name       media.loge-ici.fr media.alpha.loge-ici.fr;
+       access_log            /var/log/nginx/media.loge-ici.fr.access.log;
+       error_log             /var/log/nginx/media.loge-ici.fr.error.log;
+
+
+       root /home/alpha.loge-ici/public;
+       index index.php;
+
+       location /media_server {
+                 internal;
+                 alias /home/media.loge-ici/;
+        }
+
+        location /media_server_404 {
+                 internal;
+                 alias /home/media.loge-ici/;
+                 return 404;
+        }
+
+    location / {
+             try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+    # pass the PHP scripts to FastCGI server listening on /var/run/php5-fpm.sock
+        location ~ \.php$ {
+                try_files $uri /index.php =404;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+        fastcgi_param APP_ENV prod;
+        }
+
+        sendfile off;
+}
+
+server {
+        listen   *:80;
+
+        server_name  alpha.loge-ici.fr admin.loge-ici.fr admin.alpha.loge-ici.fr;
+        access_log   /var/log/nginx/alpha.loge-ici.access.log;
+        error_log    /var/log/nginx/alpha.loge-ici.error.log;
+
+
+        root /home/alpha.loge-ici/public;
+        index index.php index.html index.htm;
+
+        location / {
+             try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+        # pass the PHP scripts to FastCGI server listening on /var/run/php5-fpm.sock
+        location ~ \.php$ {
+                try_files $uri /index.php =404;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+        fastcgi_param APP_ENV alpha;
+        }
+
+        sendfile off;
+}
+
+server {
+    listen   80; ## listen for ipv4; this line is default and implied
+    #listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
+
+    root /usr/share/nginx/www;
+    index index.html index.htm;
+
+    # Make site accessible from http://localhost/
+    server_name vps70134.ovh.net;
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        try_files $uri $uri/ /index.html;
+     }
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/www;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
