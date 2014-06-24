@@ -9,7 +9,7 @@ class Base
     {
         $params = [];
         $params['hosts'] = [
-            '192.168.56.101'
+            \Config::get('elastic.host')
         ];
 
         $this->client = new \Elasticsearch\Client($params);

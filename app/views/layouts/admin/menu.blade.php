@@ -11,11 +11,14 @@
 
     <div>
         <a href="/">Dashboard</a>
-        <a href="http://pfe.dev">Back to site</a>
+        <a href="{{{ Config::get('app.url') }}}">Back to site</a>
     </div>
     <div>
         <h2>Posts</h2>
         <ul>
+            <li>
+                <a href="/posts/list">List</a>
+            </li>
             <li>
                 <a href="/posts/pending">Pending Validation</a>
             </li>

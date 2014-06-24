@@ -171,7 +171,7 @@ class Post
         // Publish to Beanstalkd that this post need to be inserted in elastic
         if ($inputs['status'] == Cnst::VALIDATED)
         {
-            $bean = Custom\Singleton::getBeanstalkd();
+            $bean = \Custom\Singleton::getBeanstalkd();
             $bean->sendEvents([
                 'action' => 'PostElasticUpsert',
                 'data' => [

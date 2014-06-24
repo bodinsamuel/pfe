@@ -63,7 +63,7 @@ class Get extends \BaseController
         $dir1 = substr($hash, 0, 3);
         $dir2 = substr($hash, 3, 3);
         $dir3 = substr($hash, 6, 3);
-        $dir = \Custom\Media::UPLOAD_DIR . '/' . $dir1  . '/' . $dir2 . '/' . $dir3 . '/' . $hash;
+        $dir = \Config::get('app.media_dir') . '/' . $dir1  . '/' . $dir2 . '/' . $dir3 . '/' . $hash;
 
 
         // Display
@@ -102,7 +102,7 @@ class Get extends \BaseController
         if ($force_404 === FALSE && $status === 404)
             $internal .= '_404';
 
-        $accel_redirect = str_replace(\Custom\Media::UPLOAD_DIR, $internal, $path);
+        $accel_redirect = str_replace(\Config::get('app.media_dir'), $internal, $path);
 
         // Make response
         $response = \Response::make('', $status);

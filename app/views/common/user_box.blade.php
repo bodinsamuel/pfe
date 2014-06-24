@@ -3,7 +3,7 @@
         @if(Custom\Account::check())
             <li><a href="/account/">{{ Custom\Account::user()->email }}</a></li>
             @if (Custom\Acl::isAtLeast('root'))
-                <li><a href="http://admin.pfe.dev/">admin</a></li>
+                <li><a href="http://{{{ Config::get('app.domain.admin') }}}/">admin</a></li>
             @endif
             <li>{{ HTML::linkRoute('logout', 'Logout') }}</li>
         @else

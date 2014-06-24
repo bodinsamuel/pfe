@@ -35,7 +35,7 @@
         "bodinsamuel/PAP-php": "1.0.*",
         "elasticsearch/elasticsearch": "~1.0",
         "videlalvaro/php-amqplib": "2.2.*",
-		"pda/pheanstalk": "dev-master"
+		"pda/pheanstalk": "2.*@dev"
 	},
 	"autoload": {
 		"classmap": [
@@ -68,6 +68,5 @@
 	},
 	"config": {
 		"preferred-install": "dist"
-	},
-	"minimum-stability": "stable"
+	}
 }

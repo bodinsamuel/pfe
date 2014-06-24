@@ -7,9 +7,6 @@ class Media
     const TYPE_AUDIO = 3;
     const TYPE_OTHER = 4;
 
-    const URL_ACCESS = 'http://media.pfe.dev';
-    const UPLOAD_DIR = '/var/www/pfe.dev/media';
-
     public static function create($inputs)
     {
         $inputs = array_fill_base([
@@ -77,7 +74,7 @@ class Media
 
         $uploader = new Media\Uploader();
         $uploader->setAllowed(['image/jpeg', 'image/png']);
-        $uploader->setDir(self::UPLOAD_DIR);
+        $uploader->setDir(\Config::get('app.media_dir'));
         $uploader->setMaxFileSize(1024 * 1024 * 10);
 
         foreach ($medias as $media)
@@ -127,10 +124,10 @@ class Media
     public static function url($m, $ratio)
     {
         if (empty($m) || !isset($m['id_media']) || empty($m['id_media']))
-            return self::URL_ACCESS . '/404-'. $ratio . '-0-not-found.jpg';
+            return 'http://' . \Config::get('app.domain.media') . '/404-'. $ratio . '-0-not-found.jpg';
 
         $m = (array)$m;
-        return self::URL_ACCESS . '/' . $m['hash'] . '-' . $ratio . '-' .
+        return 'http://' . \Config::get('app.domain.media') . '/' . $m['hash'] . '-' . $ratio . '-' .
                $m['id_media'] . '-' . $m['title'] . '.' . $m['extension'];
     }
 }

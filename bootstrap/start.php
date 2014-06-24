@@ -25,6 +25,9 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(function() {
+    if (strpos(__DIR__, '/alpha.'))
+        return 'alpha';
+
     return getenv('APP_ENV') ?: 'local';
 });
 

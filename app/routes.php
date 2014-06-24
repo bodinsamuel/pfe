@@ -11,12 +11,12 @@
 |
 */
 // SUBDOMAIN FIRST
-Route::group(['domain' => 'media.pfe.dev'], function()
+Route::group(['domain' => \Config::get('app.domain.media')], function()
 {
     Route::controller('/', 'Services\Mediaserver\Get');
 });
 
-Route::group(['domain' => 'admin.pfe.dev', 'before' => 'auth'], function()
+Route::group(['domain' => \Config::get('app.domain.admin'), 'before' => 'auth'], function()
 {
     Route::get('/', 'Admin\Home@get');
     Route::controller('/posts', 'Admin\Posts');
@@ -28,11 +28,7 @@ Route::group(['domain' => 'admin.pfe.dev', 'before' => 'auth'], function()
 Route::get('/', 'HomeController@run');
 
 // Post
-Route::get('/post/{id_post}/{title}', 'PostController@get_one');
-Route::get('/renting/{id_post}/{title}', 'PostController@get_one');
-Route::get('/selling/{id_post}/{title}', 'PostController@get_one');
-Route::get('/renting/business/{id_post}/{title}', 'PostController@get_one');
-Route::get('/selling/business/{id_post}/{title}', 'PostController@get_one');
+Route::get('/post/{id_post}/{slug}/', 'PostController@getOne');
 
 // Action
 Route::group(['before' => 'auth'], function()
