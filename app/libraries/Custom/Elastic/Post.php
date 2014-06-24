@@ -7,6 +7,13 @@ class Post extends Base
     // Errors
     const E_MISSING_POS = -1;
 
+    public function init()
+    {
+        parent::create_index();
+        sleep(1);
+
+        $this->put_mapping;
+    }
 
     public function insert($posts, $upsert = FALSE)
     {
