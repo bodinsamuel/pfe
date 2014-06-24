@@ -27,7 +27,8 @@ class SearchController extends BaseController
         $results = $elastic->search([
             'id_state' => $parsed['data']['states'],
             'id_province' => $parsed['data']['provinces'],
-            'id_city' => $parsed['data']['cities']
+            'id_city' => $parsed['data']['cities'],
+            'limit' => 50
         ]);
 
         $data['meta'] = $results['meta'];
