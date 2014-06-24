@@ -3,9 +3,30 @@
 class PostController extends BaseController
 {
 
-    public function get_one()
+    public function getOne($id_post, $slug)
     {
-        # code...
+        $posts = \Custom\Post::select([$id_post], [
+            'limit' => 1,
+        ]);
+
+        // 404 not found
+        if ($posts['count'] == 0)
+            return App::abort(404);
+
+        $post = $posts['posts'][$id_post];
+
+        // 301 found but wrong slug
+        if ($slug != $post->slug)
+            return Redirect::to($post->url);
+
+        $data = [
+            '__page_title' => $post->title,
+            '__with_bg_map' => TRUE,
+            'map_config' => [],
+            'post' => $post
+        ];
+
+        return View::make('default/post/display', $data);
     }
 
     public function get_create()
