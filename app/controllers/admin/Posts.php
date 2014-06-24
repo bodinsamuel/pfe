@@ -9,6 +9,17 @@ class Posts extends Base
         return;
     }
 
+    public function getList()
+    {
+        $posts = \Custom\Post::select(NULL, [
+            'limit' => 20,
+            'offset' => 0
+        ]);
+        $data['list'] = &$posts;
+
+        return \View::make('admin/posts/list', $data);
+    }
+
     public function getPending()
     {
         $posts = \Custom\Post::select(NULL, [
