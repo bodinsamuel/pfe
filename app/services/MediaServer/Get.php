@@ -5,8 +5,7 @@ class Get extends \BaseController
     protected $layout = NULL;
 
     static public $allowed_ratio = [
-        '50x50' => ['50', '50', '1'],
-        '100x100' => ['100', '100', '1'],
+        '150x100' => ['150', '100', '1'],
         '250x175' => ['250', '175', '1']
     ];
 
@@ -40,7 +39,7 @@ class Get extends \BaseController
         if ($hash === '404' && $title === 'not-found' && $id_media === 0
             && $extension === 'jpg')
         {
-            $path = \Custom\Media::UPLOAD_DIR . '/../public/assets/img/404-'. $size .'.jpg';
+            $path = '../public/assets/img/404-'. $size .'.jpg';
             return self::response(404, 'image/jpeg', $path, TRUE);
         }
 
