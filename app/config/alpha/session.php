@@ -2,6 +2,6 @@
 
 return array(
 
-	'domain' => 'alpha.loge-ici.fr',
+	'domain' => '.alpha.loge-ici.fr',
 
 );

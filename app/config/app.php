@@ -27,6 +27,12 @@ return array(
 	*/
 
 	'url' => 'http://pfe.dev',
+    'domain' => [
+        'main' => 'pfe.dev',
+        'admin' => 'admin.pfe.dev',
+        'media' => 'media.pfe.dev'
+    ],
+    'media_dir' => '/var/www/pfe.dev/media',
 
 	/*
 	|--------------------------------------------------------------------------
