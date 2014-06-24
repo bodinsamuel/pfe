@@ -72,6 +72,10 @@ DB::listen(function($sql, $bindings, $time)
     // print_r($sql);
 });
 
+App::missing(function($exception)
+{
+    return Response::view('default/common/404', [], 404);
+});
 /*
 |--------------------------------------------------------------------------
 | Require The Filters File
