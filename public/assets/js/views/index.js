@@ -60,7 +60,7 @@ App.IndexView = Em.View.extend({
         });
 
         this.$('#main_search_input').bind('typeahead:selected', function(obj, datum, name) {
-            console.log(obj, datum, name);
+            self.$('#search_type_selection').find('input[type="submit"]').attr('disabled', false)
             self.$('#main_search_input_real').val(datum.url).attr('name', name)
         });
     }

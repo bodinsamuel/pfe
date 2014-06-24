@@ -16,7 +16,7 @@
                                        placeholder="Adresse, ville, arrondissement.." />
                             </div>
                             <input id="main_search_input_real" type="hidden" value="" name="" />
-                            <input type="submit" value="go" />
+                            <input type="submit" value="go" disabled />
                         </form>
                     </li>
                 </ul>
