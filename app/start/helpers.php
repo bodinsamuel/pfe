@@ -18,3 +18,8 @@ function array_fill_base($base = [], $array)
     $base = array_fill_keys($base, '');
     return array_merge($base, $match);
 }
+
+Validator::extend('boolean', function($attribute, $value, $parameters)
+{
+    return is_bool($value);
+});
