@@ -32,6 +32,9 @@ class Bot extends \BaseController
         $ids = [];
         foreach ($results->annonces->annonce as $key => $annonce)
         {
+            if (!isset($annonce->cp))
+                continue;
+
             $ids[] = $annonce->idAnnonce;
 
             $gallery = [];
@@ -50,6 +53,9 @@ class Bot extends \BaseController
                 }
             }
 
+            $sdb = (array)$annonce->nbsallesdebain;
+            $garage = (array)$annonce->nbparkings;
+            $wc = (array)$annonce->nbtoilettes;
             $list[$annonce->idAnnonce] = [
                 'post' => [
                     'id_post_type' => $annonce->idTypeTransaction == 1 ? 2 : 1,
@@ -59,9 +65,9 @@ class Bot extends \BaseController
                 ],
                 'details' => [
                     'condition' => $annonce->siLotNeuf === 'false' ? \Custom\Post\Details::CONDITION_USED : CONDITION_NEW,
-                    'bathroom' => empty($annonce->nbsallesdebain) ? 0 : $annonce->nbsallesdebain,
-                    'wc' => (bool)$annonce->nbtoilettes,
-                    'garage' => (bool)$annonce->nbparkings,
+                    'bathroom' => (int)$sdb,
+                    'wc' => (int)$wc,
+                    'garage' => (int)$garage,
                     'balcony' => ($annonce->siterrasse == 'False' ? false : true),
                     'surface_living' => isset($annonce->surface) ? (int)$annonce->surface : 0,
                     'room' => (int)$annonce->nbPiece,
@@ -98,6 +104,9 @@ class Bot extends \BaseController
         ];
         foreach ($has as $id => $bool)
         {
+            if (!$list[$id]['address']['id_city'])
+                continue;
+
             if ($bool === FALSE)
             {
                 $stats['new']++;

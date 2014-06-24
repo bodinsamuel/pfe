@@ -2,11 +2,14 @@
 
 class Source
 {
+    private static $sources = [
+        'seloger' => 1
+    ];
     public static function upsert($id_post, $name, $id_source)
     {
         $values = [
-            'id_post'   => $id_post,
-            'name'      => $name,
+            'id_post'   => (int)$id_post,
+            'name'      => self::$sources[$name],
             'id_source' => $id_source,
         ];
 

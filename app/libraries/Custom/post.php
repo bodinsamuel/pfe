@@ -222,6 +222,7 @@ class Post
                          posts.id_post_detail,
                          posts.id_gallery,
                          posts.id_user,
+                         posts.slug,
                          posts.exclusivity,
                          posts.price,
                          posts.content,
@@ -288,6 +289,7 @@ class Post
         if (isset($opts['offset']))
             $query .= ' OFFSET ' . (int)$opts['offset'];
 
+        // Exec
         $select = \DB::select($query);
 
         $final = ['markers' => [], 'posts' => [], 'count' => 0];
@@ -298,6 +300,7 @@ class Post
         $final['count'] = count($select);
         foreach ($select as $k => &$value)
         {
+            $value->url = 'post/' . $value->id_post . '/' . $value->slug . '/';
             $value->title = self::make_title($value->id_property_type, $value->surface_living);
             $final['posts'][$value->id_post] = $value;
             $ids_galleries[] = $value->id_gallery;

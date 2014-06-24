@@ -34,7 +34,7 @@ class Details
                 'room' => 'required|integer',
                 'condition' => 'integer',
                 'bathroom' => 'integer',
-                'wc' => 'boolean',
+                'wc' => 'integer',
                 'garage' => 'integer',
                 'balcony' => 'boolean'
             ]
