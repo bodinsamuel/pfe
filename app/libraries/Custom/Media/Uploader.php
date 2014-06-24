@@ -158,14 +158,7 @@ class Uploader
         $dir = '/';
         $is_dir = is_dir($path);
         if (!$is_dir)
-        {
-            foreach ($paths as $value)
-            {
-                $dir = $dir . $value . '/';
-                if (!is_dir($dir))
-                    mkdir($dir, 0666);
-            }
-        }
+            mkdir($path, 0766, true);
 
         return [
             'existing' => $is_dir,
