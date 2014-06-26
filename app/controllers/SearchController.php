@@ -4,12 +4,6 @@ class SearchController extends BaseController
 {
     public function get_Run()
     {
-        $data = ['__with_bg_map' => TRUE,
-                 'map_config' => [
-                    'locate' => TRUE,
-                    'cluster' => TRUE
-                ]];
-
         $queries = [
             'cities' => Input::get('cities'),
             'provinces' => Input::get('provinces'),
@@ -31,11 +25,16 @@ class SearchController extends BaseController
             'limit' => 50
         ]);
 
-        $data['search_title'] = implode(', ', $parsed['title']);
-        $data['meta'] = $results['meta'];
-        $data['posts'] = $results['results'];
-        $data['__map_markers'] = $results['markers'];
-        // $data['__map_markers_center'] = $results['markers_center'];
+        $data = [
+            'posts' => $results['results'],
+            'meta' => $results['meta'],
+            'search_title' => implode(', ', $parsed['title']),
+            '__map' => [
+                'cluster' => TRUE,
+                'locate' => TRUE,
+                'markers' => $results['markers']
+            ]
+        ];
 
         return View::make('default/search/main', $data);
     }

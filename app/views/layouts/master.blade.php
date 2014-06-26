@@ -42,8 +42,8 @@
     </div>
 
     @yield('handlebars')
-    @if (isset($__with_bg_map))
-        @include('default/map/main', ['map_config' => $map_config])
+    @if (isset($__map))
+        @include('default/map/main')
     @endif
 
 

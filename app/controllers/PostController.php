@@ -21,9 +21,14 @@ class PostController extends BaseController
 
         $data = [
             '__page_title' => $post->title,
-            '__with_bg_map' => TRUE,
-            'map_config' => [],
-            'post' => $post
+            '__map' => [
+                'cluster' => TRUE,
+                'markers' => $posts['markers'],
+                'center' => $posts['markers'][$post->id_post],
+                'static' => TRUE,
+                'openOnLoad' => TRUE
+            ],
+            'post' => $post,
         ];
 
         return View::make('default/post/display', $data);

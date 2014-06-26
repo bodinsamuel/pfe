@@ -6,18 +6,19 @@ Map = (function() {
         this.featureLayer = {};
     }
 
-
     Map.prototype.init = function()
     {
         this.map = L.mapbox.map('mapbox-screen-map', 'bodinsamuel.hj2ocb3b', {
             maxZoom: 17,
             zoom: 12,
             center: [48.855, 2.32]
-        })
+        });
 
         this.featureLayer = L.mapbox.featureLayer().addTo(this.map);
 
-        L.control.locate().addTo(this.map).setPosition('topright');
+        if (L.control.locate)
+            L.control.locate().addTo(this.map).setPosition('topright');
+
         this.map.zoomControl.setPosition('topright');
 
         this.icons = Map.prototype.customIcon();
@@ -41,22 +42,31 @@ Map = (function() {
                 title: json[i].title,
                 image: json[i].image,
                 riseOnHover: true,
+                riseOffset: 300,
+                closeOnClick: false
             });
             var popupContent =  '<a target="_blank" class="popup" href="' + json[i].url + '">' +
                                     '<img src="' + json[i].image + '" />' +
                                     json[i].title +
                                 '</a>';
             marker.bindPopup(popupContent, {minWidth: 170});
+
             markers.addLayer(marker);
         };
-        markers.on('mouseover', function(e) {
-            e.layer.openPopup();
-        }).on('click', function(e) {
+
+        markers.on('click', function(e) {
             e.layer.openPopup();
             map.panTo(e.layer.getLatLng());
         });
 
         this.map.addLayer(markers);
+
+        if (this.openOnLoad)
+        {
+            markers.zoomToShowLayer(marker, function() {
+                marker.openPopup();
+            });
+        }
     };
 
     Map.prototype.customIcon = function()

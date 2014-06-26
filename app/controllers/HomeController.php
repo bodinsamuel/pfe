@@ -8,8 +8,11 @@ class HomeController extends BaseController
      */
     public function run()
     {
-        $data = ['__with_bg_map' => TRUE,
-                 'map_config' => ['locate' => TRUE]];
+        $data = [
+            '__map' => [
+                'locate' => TRUE
+            ]
+        ];
 
         return View::make('default/home/home', $data);
     }
