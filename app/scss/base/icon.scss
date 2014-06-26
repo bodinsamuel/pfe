@@ -1,7 +1,7 @@
 @import "conf.scss";
 
 // Icon
-i, ._icon {
+i, .icon {
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center center;
@@ -30,9 +30,9 @@ i, ._icon {
 }
 
 // Fix button iconed
-._btn._icnd {
+.btn._icnd {
     &:hover {
-        i, ._icon {
+        i, .icon {
             &._hvr {
                 background-image: url($img_sprite + 'icon_invert.png');
             }
@@ -43,7 +43,7 @@ i, ._icon {
     }
 }
 
-i, ._icon {
+i, .icon {
     &.logo_self {
         background-image: url($img_sprite + "logo.png");
         background-position: -143px -2px;

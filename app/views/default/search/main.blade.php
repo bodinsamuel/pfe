@@ -5,7 +5,7 @@
 <div class="_col _col_fixed2 _box _fullscreen " style="max-height: 85vh;position: relative;overflow-y:scroll;">
     <div class="inner">
         <header class="full">
-            <h2>{{{ $meta['total'] }}} resultats</h2>
+            <h2>{{{ $search_title }}} | {{{ $meta['total'] }}} resultats</h2>
         </header>
         @if(count($posts) > 0)
             <ul>

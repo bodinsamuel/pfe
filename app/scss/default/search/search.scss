@@ -1,0 +1,62 @@
+@import "../../base/conf.scss";
+
+#post_display {
+    > .inner {
+        min-height: 500px;
+    }
+    .cover {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+        .inner {
+            z-index: 2;
+            position: relative;
+            height: 210px;
+        }
+    }
+    .galerie {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+        .big {
+            position: relative;
+            &:after {
+                display: block;
+                content: ' ';
+                background-color: rgba(60, 67, 76, 0.45);
+                height: 250px;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                z-index: 2;
+            }
+        }
+        .minis {
+            position: absolute;
+            right: 30px;
+            bottom: 20px;
+        }
+    }
+    .localisation {
+        z-index: 2;
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+    }
+    .details_quick {
+        color: #fff;
+        position: absolute;
+        bottom: 0;
+        font-size: 16px;
+        width: 300px;
+        li {
+            line-height: 20px;
+            display: inline-block;
+            width: 45%;
+        }
+    }
+    .content {
+        padding: 30px;
+    }
+}

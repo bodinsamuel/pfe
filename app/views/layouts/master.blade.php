@@ -13,6 +13,7 @@
     <!-- Temporaire -->
     <link href="/assets/css/default/account/main.css" rel="stylesheet"/>
     <link href="/assets/css/default/home/main.css" rel="stylesheet"/>
+    <link href="/assets/css/default/search/search.css" rel="stylesheet"/>
     <link href="/assets/css/default/map.css" rel="stylesheet"/>
 
     <!-- LIB -->
