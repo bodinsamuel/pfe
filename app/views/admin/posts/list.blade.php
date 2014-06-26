@@ -6,6 +6,8 @@
             <div>
                 #{{{ $id_post }}} |
                 {{{ $post->title }}}
+                <a href="/posts/reindex?id_post={{$id_post}}">Reindex</a>
+                <a href="{{ \Config::get('app.url') }}/{{ $post->url }}">View</a>
                 <a href="/posts/reject?id_post={{$id_post}}">Reject</a>
             </div>
         @endforeach

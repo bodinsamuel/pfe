@@ -5,6 +5,7 @@ class Get extends \BaseController
     protected $layout = NULL;
 
     static public $allowed_ratio = [
+        '75x75' => ['75', '75', '1'],
         '150x100' => ['150', '100', '1'],
         '250x175' => ['250', '175', '1']
     ];
