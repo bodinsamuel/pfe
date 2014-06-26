@@ -148,10 +148,13 @@ class Post
     {
         $inputs = array_only($inputs, [
             'id_post_type', 'id_property_type', 'id_post_detail', 'id_gallery',
-            'id_address', 'content'
+            'id_address', 'content', 'surface_living'
         ]);
         $inputs['status'] = Acl::isAtLeast('root') ? Cnst::VALIDATED : Cnst::NEED_VALIDATION;
         $inputs['id_user'] = \User::getIdOrZero();
+
+        $title = self::make_title($inputs['id_property_type'], $inputs['surface_living']);
+        $slug = \Str::slug($title);
 
         // Query
         $query = 'INSERT INTO posts
@@ -197,7 +200,8 @@ class Post
                 'id_post_detail' => 'required|integer',
                 'id_gallery' => 'required|integer',
                 'id_address' => 'required|integer',
-                'content'    => 'required'
+                'content'    => 'required',
+                'surface_living'    => 'required'
             ]
         );
     }
@@ -342,7 +346,7 @@ class Post
          return \DB::select($query);
     }
 
-    public static function make_title($id_property_type, $surface_living, $room = NULL, $zipcode = NULL)
+    public static function make_title($id_property_type, $surface_living, $room = NULL)
     {
         $title = ucfirst(self::$property_type[$id_property_type]);
         if ($surface_living > 0)
