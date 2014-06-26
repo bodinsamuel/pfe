@@ -227,7 +227,8 @@ class Post extends Base
                 'x'     => $data['_source']['location']['lon'],
                 'y'     => $data['_source']['location']['lat'],
                 'title' => \Custom\Post::make_title($data['_source']['id_property_type'], $data['_source']['details']['surface_living']),
-                'image' => \Custom\Media::url($data['_source']['cover'], '150x100')
+                'image' => \Custom\Media::url($data['_source']['cover'], '150x100'),
+                'url'  => isset($data['_source']['url']) ? $data['_source']['url'] : ''
             ];
         }
 

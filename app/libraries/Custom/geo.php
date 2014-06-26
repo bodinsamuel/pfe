@@ -24,7 +24,9 @@ class Geo
         if (!empty($whereor))
             $where[] = '(' . implode(' OR ', $whereor) . ')';
 
-        $query = 'SELECT id_state AS id, name,
+        $query = 'SELECT id_state AS id,
+                         name,
+                         name AS name_original,
                          CONCAT(safe, "-", id_state) AS url,
                          "states" AS type
                     FROM geo_states
@@ -58,7 +60,9 @@ class Geo
         if (!empty($whereor))
             $where[] = '(' . implode(' OR ', $whereor) . ')';
 
-        $query = 'SELECT id_province AS id, name,
+        $query = 'SELECT id_province AS id,
+                         name,
+                         name AS name_original,
                          CONCAT(safe, "-", id_province) AS url,
                          "provinces" AS type
                     FROM geo_provinces
@@ -92,7 +96,9 @@ class Geo
         if (!empty($whereor))
             $where[] = '(' . implode(' OR ', $whereor) . ')';
 
-        $query = 'SELECT id_city AS id, CONCAT(name, ", ", zipcode) AS name,
+        $query = 'SELECT id_city AS id,
+                         CONCAT(name, ", ", zipcode) AS name,
+                         name AS name_original,
                          CONCAT(safe, "-", id_city) AS url,
                          "cities" AS type
                     FROM geo_cities
@@ -147,7 +153,8 @@ class Geo
                 'cities' => [],
                 'states' => [],
                 'provinces' => [],
-            ]
+            ],
+            'title' => [],
         ];
 
         if (empty($queries['cities']) && empty($queries['provinces']) && empty($queries['states']))
@@ -190,6 +197,7 @@ class Geo
                 {
                     $return['data'][$value->type][] = $value->id;
                     $return['params'][$value->type][] = $value->url;
+                    $return['title'][] = $value->name_original;
                 }
             }
 

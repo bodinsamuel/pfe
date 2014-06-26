@@ -31,6 +31,7 @@ class SearchController extends BaseController
             'limit' => 50
         ]);
 
+        $data['search_title'] = implode(', ', $parsed['title']);
         $data['meta'] = $results['meta'];
         $data['posts'] = $results['results'];
         $data['__map_markers'] = $results['markers'];

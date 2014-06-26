@@ -5,6 +5,11 @@ class Price
     const ALL_INCLUSIVE = 1;
     const NOT_INCLUDED = 2;
 
+    public static $type = [
+        1 => 'cc',
+        2 => 'ht'
+    ];
+
     public static function get_current($id_post)
     {
         $query = 'SELECT price, price_type

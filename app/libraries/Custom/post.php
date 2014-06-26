@@ -224,6 +224,7 @@ class Post
                          posts.slug,
                          posts.exclusivity,
                          posts.price,
+                         posts.price_type,
                          posts.content,
                          posts.date_created,
                          posts.date_updated,
@@ -299,7 +300,7 @@ class Post
         $final['count'] = count($select);
         foreach ($select as $k => &$value)
         {
-            $value->url = 'post/' . $value->id_post . '/' . $value->slug . '/';
+            $value->url = '/post/' . $value->id_post . '/' . $value->slug . '/';
             $value->title = self::make_title($value->id_property_type, $value->surface_living);
             $final['posts'][$value->id_post] = $value;
             $ids_galleries[] = $value->id_gallery;

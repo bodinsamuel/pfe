@@ -28,7 +28,7 @@ Route::group(['domain' => \Config::get('app.domain.admin'), 'before' => 'auth'],
 Route::get('/', 'HomeController@run');
 
 // Post
-Route::get('/post/{id_post}/{slug}/', 'PostController@getOne');
+Route::get('/post/{id_post}/{slug?}', 'PostController@getOne');
 
 // Action
 Route::group(['before' => 'auth'], function()

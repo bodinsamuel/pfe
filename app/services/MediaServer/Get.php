@@ -7,7 +7,8 @@ class Get extends \BaseController
     static public $allowed_ratio = [
         '75x75' => ['75', '75', '1'],
         '150x100' => ['150', '100', '1'],
-        '250x175' => ['250', '175', '1']
+        '250x175' => ['250', '175', '1'],
+        'cover_post' => ['630', '250', '1']
     ];
 
     public function get($inputs = NULL)
@@ -15,7 +16,7 @@ class Get extends \BaseController
         if ($inputs === NULL)
             \App::abort(403, 'Unauthorized action.');
 
-        $url_regex = '/([A-z0-9]+)-(original|[0-9]+x[0-9]+)-([0-9]+)(-([A-z0-9-]+))?.([a-z0-9]{2,5})/i';
+        $url_regex = '/([A-z0-9]+)-(original|[0-9]+x[0-9]+|[a-z_]+)-([0-9]+)(-([A-z0-9-]+))?.([a-z0-9]{2,5})/i';
         $matched = preg_match($url_regex, $inputs, $matchs);
 
         if ($matched === 0 || count($matchs) < 6)
@@ -68,7 +69,7 @@ class Get extends \BaseController
 
 
         // Display
-        $path = $dir . '/' . $size . '.' . $extension;
+        $path = $dir . '/' . $ratio[0] . 'x' . $ratio[1] . '.' . $extension;
         $is_file = is_file($path);
 
         if ($size === 'original' && !$is_file)

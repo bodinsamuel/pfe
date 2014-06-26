@@ -3,7 +3,7 @@
 class PostController extends BaseController
 {
 
-    public function getOne($id_post, $slug)
+    public function getOne($id_post, $slug = NULL)
     {
         $posts = \Custom\Post::select([$id_post], [
             'limit' => 1,
