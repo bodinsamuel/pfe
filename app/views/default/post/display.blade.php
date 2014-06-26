@@ -29,11 +29,11 @@
                 <div class="details_quick">
                     <ul>
                         <li>
-                            <i class="_16 i_cursor"></i>
+                            <i class="_16 i_post_surface"></i>
                             <span>{{ $post->surface_living }} m²</span>
                         </li>
                         <li>
-                            <i class="_16 i_cursor"></i>
+                            <i class="_16 i_post_price"></i>
                             <span>{{ $post->price }} € {{ \Custom\Post\Price::$type[$post->price_type] }}</span>
                         </li>
                     </ul>
