@@ -154,16 +154,16 @@ class Post
         $inputs['id_user'] = \User::getIdOrZero();
 
         $title = self::make_title($inputs['id_property_type'], $inputs['surface_living']);
-        $slug = \Str::slug($title);
+        $inputs['slug'] = \Str::slug($title);
         unset($inputs['surface_living']);
 
         // Query
         $query = 'INSERT INTO posts
                               (id_post_type, id_property_type, id_post_detail,
-                               id_gallery, id_user, id_address, content,
+                               id_gallery, id_user, id_address, slug, content,
                                date_created, date_updated, date_closed, status)
                        VALUES (:id_post_type, :id_property_type, :id_post_detail,
-                               :id_gallery, :id_user, :id_address, :content,
+                               :id_gallery, :id_user, :id_address, :slug, :content,
                                NOW(), NOW(), "NULL", :status)';
 
         $stmt = \DB::statement($query, $inputs);
