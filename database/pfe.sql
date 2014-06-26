@@ -3,12 +3,18 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 23, 2014 at 01:15 AM
+-- Generation Time: Jun 26, 2014 at 10:05 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12-1~dotdeb.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `pfe`
@@ -284,6 +290,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id_gallery` int(11) unsigned NOT NULL,
   `id_user` int(11) unsigned NOT NULL,
   `id_address` int(11) unsigned NOT NULL,
+  `slug` varchar(125) COLLATE utf8_unicode_ci NOT NULL,
   `exclusivity` tinyint(1) NOT NULL,
   `price` double(11,3) NOT NULL,
   `price_type` tinyint(4) NOT NULL DEFAULT '1',
@@ -421,3 +428,7 @@ CREATE TABLE IF NOT EXISTS `users_has_acl` (
 --
 ALTER TABLE `posts_has_source`
   ADD CONSTRAINT `posts_has_source_ibfk_1` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id_post`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
