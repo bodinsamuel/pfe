@@ -61,7 +61,8 @@ class Bot extends \BaseController
                     'id_post_type' => $annonce->idTypeTransaction == 1 ? 2 : 1,
                     'id_property_type' => 1,
                     'content' => $annonce->descriptif,
-                    'date_created' => $annonce->dtCreation
+                    'date_created' => $annonce->dtCreation,
+                    'surface_living' => isset($annonce->surface) ? (int)$annonce->surface : 0,
                 ],
                 'details' => [
                     'condition' => $annonce->siLotNeuf === 'false' ? \Custom\Post\Details::CONDITION_USED : CONDITION_NEW,

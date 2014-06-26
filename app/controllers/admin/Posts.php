@@ -65,4 +65,13 @@ class Posts extends Base
         $success = \Lang::get('post.success.rejected');
         return \Redirect::to('posts/pending')->with('flash.notice.success', $success);
     }
+
+    public function getReindex()
+    {
+        $id_post = \Input::get('id_post');
+        if (!$id_post)
+            return;
+
+        $validation = \Custom\Post::index($id_post);
+    }
 }

@@ -155,6 +155,7 @@ class Post
 
         $title = self::make_title($inputs['id_property_type'], $inputs['surface_living']);
         $slug = \Str::slug($title);
+        unset($inputs['surface_living']);
 
         // Query
         $query = 'INSERT INTO posts
@@ -174,13 +175,7 @@ class Post
         // Publish to Beanstalkd that this post need to be inserted in elastic
         if ($inputs['status'] == Cnst::VALIDATED)
         {
-            $bean = \Custom\Singleton::getBeanstalkd();
-            $bean->sendEvents([
-                'action' => 'PostElasticUpsert',
-                'data' => [
-                    'id_post' => $lid
-                ]
-            ]);
+            self::index($lid);
         }
 
         return $lid;
@@ -353,5 +348,16 @@ class Post
             $title .= ', ' . $surface_living . 'm²';
 
         return $title;
+    }
+
+    public static function index($id_post)
+    {
+        $bean = \Custom\Singleton::getBeanstalkd();
+        $bean->sendEvents([
+            'action' => 'PostElasticUpsert',
+            'data' => [
+                'id_post' => $id_post
+            ]
+        ]);
     }
 }
