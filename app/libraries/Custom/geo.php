@@ -246,4 +246,16 @@ class Geo
             'lon' => $lon * 180 / pi()
         ];
     }
+
+    public static function create_marker($lon, $lat, $title, $image, $url)
+    {
+        return [
+            'x' => $lon,
+            'y' => $lat,
+            'title' => $title,
+            'image' => \Custom\Media::url($image, '150x100'),
+            'url' => $url,
+            'open' => TRUE
+        ];
+    }
 }

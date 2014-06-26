@@ -223,13 +223,13 @@ class Post extends Base
             $results[$data['_id']] = $data['_source'];
             $results[$data['_id']]['_score'] = $data['_score'];
 
-            $markers[$data['_id']] = [
-                'x'     => $data['_source']['location']['lon'],
-                'y'     => $data['_source']['location']['lat'],
-                'title' => \Custom\Post::make_title($data['_source']['id_property_type'], $data['_source']['details']['surface_living']),
-                'image' => \Custom\Media::url($data['_source']['cover'], '150x100'),
-                'url'  => isset($data['_source']['url']) ? $data['_source']['url'] : ''
-            ];
+            $url = isset($data['_source']['url']) ? $data['_source']['url'] : '/post/' . $data['_id'];
+            $markers[$data['_id']] = \Custom\Geo::create_marker($data['_source']['location']['lon']
+                , $data['_source']['location']['lat']
+                , \Custom\Post::make_title($data['_source']['id_property_type'], $data['_source']['details']['surface_living'])
+                , $data['_source']['cover']
+                , $url
+            );
         }
 
         // $run['markers_center'] = \Custom\Geo::get_center_of_geocoord($markers);

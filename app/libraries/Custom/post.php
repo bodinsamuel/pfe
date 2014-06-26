@@ -304,6 +304,18 @@ class Post
             $value->title = self::make_title($value->id_property_type, $value->surface_living);
             $final['posts'][$value->id_post] = $value;
             $ids_galleries[] = $value->id_gallery;
+
+            $final['markers'][$value->id_post] = \Custom\Geo::create_marker($value->longitude,
+                $value->latitude,
+                $value->title,
+                [
+                    'id_media' => $value->id_cover,
+                    'hash' => $value->cover_hash,
+                    'title' => $value->cover_title,
+                    'extension' => $value->cover_extension
+                ],
+                $value->url
+            );
         }
 
         if (!isset($opts['galleries']) || (isset($opts['galleries']) && $opts['galleries'] === TRUE))
