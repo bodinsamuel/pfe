@@ -3,7 +3,7 @@
 @section('content')
     @include('default/account/inc/menu')
 
-    @if($favorites['linked']['meta']['count'] > 0)
+    @if(isset($favorites['linked']['meta']['count']) && $favorites['linked']['meta']['count'] > 0)
         <ul>
             @foreach($favorites['linked']['results'] AS $id_post => $post)
                 @include('default/post/one')

@@ -10,7 +10,7 @@ class UserDashboardController extends BaseController
 
     public function getAlert()
     {
-        # code...
+        App::abort(404);
     }
 
     public function getFavorite()
