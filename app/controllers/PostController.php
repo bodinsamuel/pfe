@@ -34,14 +34,14 @@ class PostController extends BaseController
         return View::make('default/post/display', $data);
     }
 
-    public function get_create()
+    public function getCreate()
     {
         $data = ['__page_title' => 'Create Post'];
 
         return View::make('default/post/create', $data);
     }
 
-    public function post_create()
+    public function postCreate()
     {
         $inputs = Input::all();
 

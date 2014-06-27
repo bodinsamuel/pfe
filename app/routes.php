@@ -28,13 +28,13 @@ Route::group(['domain' => \Config::get('app.domain.admin'), 'before' => 'auth'],
 Route::get('/', 'HomeController@run');
 
 // Post
-Route::get('/post/{id_post}/{slug?}', 'PostController@getOne');
+Route::get('/post/{id_post}/{slug?}', 'PostController@getOne')->where('id_post', '[0-9]+');
 
 // Action
 Route::group(['before' => 'auth'], function()
 {
-    Route::get('/post/create/', ['as' => 'post_create', 'uses' => 'PostController@get_create']);
-    Route::post('/post/create/', 'PostController@post_create');
+    Route::get('/post/create/', ['as' => 'post_create', 'uses' => 'PostController@getCreate']);
+    Route::post('/post/create/', 'PostController@postCreate');
     Route::get('/post/edit/{id_post}', ['as' => 'post_edit', 'uses' => 'PostController@get_edit']);
     Route::post('/post/edit/{id_post}', 'PostController@post_edit');
     Route::get('/post/delete/{id_post}',['as' => 'post_delete', 'uses' => 'PostController@get_delete']);
@@ -52,10 +52,10 @@ Route::group(['before' => 'auth'], function()
     Route::post('/login', ['before' => 'csrf', 'uses' => 'AccountController@post_Login']);
 
     // Active / Deactivate
-    // Route::get('/account/validate', ['as' => 'account_validate', 'before' => 'guest', 'uses' => 'AccountController@get_validate']);
-    // Route::get('/account/send_validation', [ 'before' => 'guest', 'uses' => 'AccountController@get_sendValidation']);
-    // Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
-    // Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
+    Route::get('/account/validate', ['as' => 'account_validate', 'before' => 'guest', 'uses' => 'AccountController@get_validate']);
+    Route::get('/account/send_validation', [ 'before' => 'guest', 'uses' => 'AccountController@get_sendValidation']);
+    Route::get('/account/deactivate', ['as' => 'account_deactivate', 'before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
+    Route::post('/account/deactivate', ['before' => 'auth', 'uses' => 'AccountController@post_Deactivate']);
 
     // Password
     Route::get('/password/forgotten', ['as' => 'password_forgot', 'before' => 'guest', 'uses' => 'AccountController@get_ForgotPassword']);
